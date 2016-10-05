@@ -91,9 +91,18 @@ class receive {
     }
     public ImageIcon[] cam = new ImageIcon[4];
     Boolean fut = true;
+    ServerSocket sc;
+    Socket s;
+    DataInputStream in;
 
     void start() {
         fut = true;
+        try {
+            sc = new ServerSocket(6666);
+            s = sc.accept();
+            in = new DataInputStream(s.getInputStream());
+        } catch (Exception e) {
+        }
     }
 
     void stop() {
@@ -102,10 +111,6 @@ class receive {
 
     void fogad() {
         try {
-            ServerSocket sc = new ServerSocket(6666);
-            Socket s = sc.accept();
-
-            DataInputStream in = new DataInputStream(s.getInputStream());
             while (fut) {
                 int came = in.readInt();
                 int length = in.readInt();
