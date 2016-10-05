@@ -7,6 +7,7 @@ package webcum;
 
 import java.awt.image.BufferedImage;
 import java.io.FileReader;
+import java.util.ArrayList;
 import java.util.Scanner;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -23,15 +24,13 @@ public class kiiras extends javax.swing.JFrame {
      */
     main cam;
     Boolean int_cam_update = true, send = false;
+    public ArrayList<send> client = new ArrayList<send>();
 
     public kiiras() {
         initComponents();
-        client[0] = new send();
-        client[1] = new send();
-        client[2] = new send();
+
         server = new Server(6666);
     }
-    send[] client = new send[3];
     Server server;
 
     void update() {
@@ -58,13 +57,12 @@ public class kiiras extends javax.swing.JFrame {
     void video_send() {
         while (send) {
             BufferedImage im = cam.getcam();
-            for (int i = 0; i < client.length; i++) {
-                client[i].kuld(im);
+            for (int i = 0; i < client.size(); i++) {
+                client.get(i).kuld(im);
             }
             varas(16);
         }
     }
-
 
     void varas(int ido) {
         try {
@@ -103,7 +101,6 @@ public class kiiras extends javax.swing.JFrame {
         }
 
     }
-
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -253,12 +250,15 @@ public class kiiras extends javax.swing.JFrame {
     void server_setup() {
         try {
             Scanner in = new Scanner(new FileReader("ip.txt"));
-            String kecske = in.nextLine();
-            client[0].setup(Integer.parseInt(kecske.split(":")[0]), kecske.split(":")[1], 6666);
-            kecske = in.nextLine();
-            client[1].setup(Integer.parseInt(kecske.split(":")[0]), kecske.split(":")[1], 6666);
-            kecske = in.nextLine();
-            client[2].setup(Integer.parseInt(kecske.split(":")[0]), kecske.split(":")[1], 6666);
+            while (in.hasNext()) {
+                String kecske = in.nextLine();
+                if (!kecske.isEmpty()) {
+                    send k = new send();
+                    k.setup(Integer.parseInt(kecske.split(":")[0]), kecske.split(":")[1], 6666);
+                    client.add(k);
+                }
+            }
+            System.out.println(client.size());
             //client[2].setup(3, "127.0.0.1", 6666);
         } catch (Exception e) {
             e.printStackTrace();
