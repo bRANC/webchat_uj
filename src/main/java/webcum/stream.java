@@ -68,7 +68,7 @@ class send {
             System.out.println("socket connect start");
             s = new Socket(ip, port);
             out = new DataOutputStream(s.getOutputStream());
-            System.out.println("dos done - output setup done");
+            System.out.println("output setup done");
         } catch (IOException ex) {
             System.out.println("Socket open error! ip: " + ip);
         }
@@ -103,13 +103,10 @@ class Server {
     Server(int port) {
 
         try {
-
             sc = new ServerSocket(port);
-
         } catch (Exception e) {
             System.out.println("Server socket open error!");
         }
-        System.out.println("thread start");
         Thread t = new Thread(new Runnable() {
             @Override
             public void run() {
@@ -117,10 +114,9 @@ class Server {
                     try {
                         System.out.println("waiting connection");
                         Socket a = sc.accept();
-                        System.out.println("connected: " + a.getInetAddress());
+                        System.out.println("connected: " + a.getInetAddress()+":"+a.getPort());
                         connections.add(a);   // a cooncetion-t átadom egy socketnek
                         befele.add(new receiv(a));
-                        System.out.println("New Connection");
                     } catch (IOException ex) {
                         Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
                     }
@@ -143,9 +139,9 @@ class receiv extends Thread {
 
     public void run() {
         try {
-
             int came = in.readInt();
             int length = in.readInt();
+            System.out.println(came+"  "+length);
             byte[] buffer;
             BufferedImage img;
 
