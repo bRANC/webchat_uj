@@ -100,7 +100,7 @@ class receive {
         try {
             sc = new ServerSocket(6666);
         } catch (Exception e) {
-
+            e.printStackTrace();
         }
     }
 
@@ -110,7 +110,9 @@ class receive {
 
     void fogad() {
         try {
+            System.out.println("waiting for connection");
             s = sc.accept();
+            System.out.println("connection: " + s.isConnected());
             in = new DataInputStream(s.getInputStream());
             while (fut) {
                 int came = in.readInt();
