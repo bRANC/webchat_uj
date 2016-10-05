@@ -59,6 +59,7 @@ public class kiiras extends javax.swing.JFrame {
             BufferedImage im = cam.getcam();
             for (int i = 0; i < client.size(); i++) {
                 client.get(i).kuld(im);
+                
             }
             varas(16);
         }

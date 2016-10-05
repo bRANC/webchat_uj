@@ -80,7 +80,6 @@ class send {
 
     public void kuld(BufferedImage im) {
         try {
-
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             ImageIO.write(im, "jpg", baos);
             byte[] buffer = baos.toByteArray();
@@ -114,9 +113,10 @@ class Server {
                     try {
                         System.out.println("waiting connection");
                         Socket a = sc.accept();
-                        System.out.println("connected: " + a.getInetAddress()+":"+a.getPort());
+                        System.out.println("connected: " + a.getInetAddress() + ":" + a.getPort());
                         connections.add(a);   // a cooncetion-t átadom egy socketnek
                         befele.add(new receiv(a));
+                        befele.get(befele.size() - 1).start();
                     } catch (IOException ex) {
                         Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
                     }
@@ -134,33 +134,38 @@ class Server {
 class receiv extends Thread {
 
     DataInputStream in;
+    Socket be;
     public ImageIcon cam = new ImageIcon();
     public int wall = 0;
 
+    @Override
     public void run() {
-        try {
-            int came = in.readInt();
-            int length = in.readInt();
-            System.out.println(came+"  "+length);
-            byte[] buffer;
-            BufferedImage img;
+        while (true) {
+            try {
+                int came = in.readInt();
+                int length = in.readInt();
+                byte[] buffer;
+                BufferedImage img;
 
-            if (length > 0) {
-                buffer = new byte[length];
-                in.readFully(buffer);
-                img = ImageIO.read(new ByteArrayInputStream(buffer));
-                cam = new ImageIcon(img);
-                wall = came;
+                if (length > 0) {
+                    buffer = new byte[length];
+                    in.readFully(buffer);
+                    img = ImageIO.read(new ByteArrayInputStream(buffer));
+                    cam = new ImageIcon(img);
+                    wall = came;
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-        } catch (Exception e) {
         }
-
     }
 
     receiv(Socket be) {
         try {
+            this.be = be;
             in = new DataInputStream(be.getInputStream());
         } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }
