@@ -12,10 +12,13 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.Timer;
@@ -30,6 +33,9 @@ public class stream {
 
 class send {
 
+    Socket s;//hova megy, connect
+    DataOutputStream out;
+
     String ip = "";
     int port = 0;
     int cam;
@@ -41,6 +47,12 @@ class send {
     void setup(String ip_, int port_) {
         ip = ip_;
         port = port_;
+        try {
+            s = new Socket(ip, port);
+            out = new DataOutputStream(s.getOutputStream());
+        } catch (IOException ex) {
+            System.out.println("Socket open error!");
+        }
     }
 
     void setup(int cam, String ip_, int port_) {
@@ -59,12 +71,10 @@ class send {
 
     public void kuld(BufferedImage im) {
         try {
-            Socket s = new Socket(ip, port);//hova megy, connect
-            DataOutputStream out;
+
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             ImageIO.write(im, "jpg", baos);
             byte[] buffer = baos.toByteArray();
-            out = new DataOutputStream(s.getOutputStream());
             out.writeInt(cam);
             out.writeInt(buffer.length);
             out.write(buffer);
