@@ -99,9 +99,8 @@ class receive {
         fut = true;
         try {
             sc = new ServerSocket(6666);
-            s = sc.accept();
-            in = new DataInputStream(s.getInputStream());
         } catch (Exception e) {
+
         }
     }
 
@@ -111,6 +110,8 @@ class receive {
 
     void fogad() {
         try {
+            s = sc.accept();
+            in = new DataInputStream(s.getInputStream());
             while (fut) {
                 int came = in.readInt();
                 int length = in.readInt();
