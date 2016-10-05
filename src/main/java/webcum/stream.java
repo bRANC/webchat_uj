@@ -48,22 +48,30 @@ class send {
     void setup(String ip_, int port_) {
         ip = ip_;
         port = port_;
-        try {
-            s = new Socket(ip, port);
-            out = new DataOutputStream(s.getOutputStream());
-        } catch (IOException ex) {
-            System.out.println("Socket open error!");
-        }
+        cummection();
     }
 
     void setup(int cam, String ip_, int port_) {
         ip = ip_;
         port = port_;
         this.cam = cam;
+        cummection();
     }
 
     void setup(int cam) {
         this.cam = cam;
+        cummection();
+    }
+
+    void cummection() {
+        try {
+            System.out.println("socket connect start");
+            s = new Socket(ip, port);
+            out = new DataOutputStream(s.getOutputStream());
+            System.out.println("dos done - output setup done");
+        } catch (IOException ex) {
+            System.out.println("Socket open error! ip: " + ip);
+        }
     }
 
     void discoverlocalhost() {
