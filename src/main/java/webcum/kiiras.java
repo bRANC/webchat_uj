@@ -112,7 +112,33 @@ public class kiiras extends javax.swing.JFrame {
 
     }
 
-    class external_cam_receive extends SwingWorker<Void, Void> {
+    class external_cam_receive1 extends SwingWorker<Void, Void> {
+
+        @Override
+        protected Void doInBackground() throws Exception {
+            video_receiv();
+            return null;
+        }
+
+        @Override
+        protected void done() {
+        }
+    }
+
+    class external_cam_receive2 extends SwingWorker<Void, Void> {
+
+        @Override
+        protected Void doInBackground() throws Exception {
+            video_receiv();
+            return null;
+        }
+
+        @Override
+        protected void done() {
+        }
+    }
+
+    class external_cam_receive3 extends SwingWorker<Void, Void> {
 
         @Override
         protected Void doInBackground() throws Exception {
@@ -267,7 +293,9 @@ public class kiiras extends javax.swing.JFrame {
         client[1].setup(2, "127.0.0.1", 6666);
         client[2].setup(3, "127.0.0.1", 6666);*/
         System.out.println(send);
-        new external_cam_receive().execute();
+        new external_cam_receive1().execute();
+        new external_cam_receive2().execute();
+        new external_cam_receive3().execute();
         new external_cam_send().execute();
     }//GEN-LAST:event_jButton3ActionPerformed
 
