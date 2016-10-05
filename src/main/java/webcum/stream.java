@@ -95,17 +95,21 @@ class Server {
     Server(int port) {
 
         try {
+
             sc = new ServerSocket(port);
+
         } catch (Exception e) {
             System.out.println("Server socket open error!");
         }
-
+        System.out.println("thread start");
         Thread t = new Thread(new Runnable() {
             @Override
             public void run() {
                 while (true) {
                     try {
+                        System.out.println("witing connection");
                         Socket a = sc.accept();
+                        System.out.println("connected: " + a.getInetAddress());
                         connections.add(a);   // a cooncetion-t átadom egy socketnek
                         befele.add(new receiv(a));
                         System.out.println("New Connection");
