@@ -90,6 +90,15 @@ class receive {
 
     }
     public ImageIcon[] cam = new ImageIcon[4];
+    Boolean fut = true;
+
+    void start() {
+        fut = true;
+    }
+
+    void stop() {
+        fut = false;
+    }
 
     void fogad() {
         try {
@@ -97,23 +106,24 @@ class receive {
             Socket s = sc.accept();
 
             DataInputStream in = new DataInputStream(s.getInputStream());
+            while (fut) {
+                int came = in.readInt();
+                int length = in.readInt();
+                byte[] buffer;
+                BufferedImage img;
 
-            int came = in.readInt();
-            int length = in.readInt();
-            byte[] buffer;
-            BufferedImage img;
+                if (length > 0) {
+                    buffer = new byte[length];
+                    //  System.out.println(length);
+                    in.readFully(buffer);
+                    //  System.out.println(buffer[100]);
 
-            if (length > 0) {
-                buffer = new byte[length];
-                //  System.out.println(length);
-                in.readFully(buffer);
-                //  System.out.println(buffer[100]);
-
-                img = ImageIO.read(new ByteArrayInputStream(buffer));
-                //System.out.println(buffer.length);
-                cam[came] = new ImageIcon(img);
+                    img = ImageIO.read(new ByteArrayInputStream(buffer));
+                    //System.out.println(buffer.length);
+                    cam[came] = new ImageIcon(img);
+                }
             }
-            sc.close();
+            // sc.close();
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -273,6 +273,11 @@ public class kiiras extends javax.swing.JFrame {
 
     void server_setup() {
         try {
+            if (send) {
+                server.start();
+            } else {
+                server.stop();
+            }
             Scanner in = new Scanner(new FileReader("ip.txt"));
             String kecske = in.nextLine();
             client[0].setup(Integer.parseInt(kecske.split(":")[0]), kecske.split(":")[1], 6666);
