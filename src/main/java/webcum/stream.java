@@ -17,6 +17,7 @@ import java.io.InputStreamReader;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
@@ -84,56 +85,74 @@ class send {
     }
 }
 
-class receive {
+class Server {
 
-    receive() {
-
-    }
-    public ImageIcon[] cam = new ImageIcon[4];
-    Boolean fut = true;
     ServerSocket sc;
-    Socket s;
-    DataInputStream in;
+    public ArrayList<Socket> connections = new ArrayList<Socket>();
+    public ArrayList<receiv> befele = new ArrayList<receiv>();
+    public ImageIcon lol;
 
-    void start() {
-        fut = true;
+    Server(int port) {
+
         try {
-            sc = new ServerSocket(6666);
+            sc = new ServerSocket(port);
         } catch (Exception e) {
-            e.printStackTrace();
+            System.out.println("Server socket open error!");
         }
-    }
 
-    void stop() {
-        fut = false;
-    }
+        Thread t = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while (true) {
+                    try {
+                        Socket a = sc.accept();
+                        connections.add(a);   // a cooncetion-t átadom egy socketnek
+                        befele.add(new receiv(a));
+                        System.out.println("New Connection");
+                    } catch (IOException ex) {
+                        Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
+                    }
 
-    void fogad() {
-        try {
-            System.out.println("waiting for connection");
-            s = sc.accept();
-            System.out.println("connection: " + s.isConnected());
-            in = new DataInputStream(s.getInputStream());
-            while (fut) {
-                int came = in.readInt();
-                int length = in.readInt();
-                byte[] buffer;
-                BufferedImage img;
-
-                if (length > 0) {
-                    buffer = new byte[length];
-                    //  System.out.println(length);
-                    in.readFully(buffer);
-                    //  System.out.println(buffer[100]);
-
-                    img = ImageIO.read(new ByteArrayInputStream(buffer));
-                    //System.out.println(buffer.length);
-                    cam[came] = new ImageIcon(img);
                 }
+
             }
-            // sc.close();
+        });
+        t.start();
+
+    }
+
+}
+
+class receiv extends Thread {
+
+    DataInputStream in;
+    public ImageIcon cam = new ImageIcon();
+    public int wall = 0;
+
+    public void run() {
+        try {
+
+            int came = in.readInt();
+            int length = in.readInt();
+            byte[] buffer;
+            BufferedImage img;
+
+            if (length > 0) {
+                buffer = new byte[length];
+                in.readFully(buffer);
+                img = ImageIO.read(new ByteArrayInputStream(buffer));
+                cam = new ImageIcon(img);
+                wall = came;
+            }
         } catch (Exception e) {
-            e.printStackTrace();
+        }
+
+    }
+
+    receiv(Socket be) {
+        try {
+            in = new DataInputStream(be.getInputStream());
+        } catch (Exception e) {
         }
     }
 }

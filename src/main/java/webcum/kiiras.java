@@ -29,28 +29,24 @@ public class kiiras extends javax.swing.JFrame {
         client[0] = new send();
         client[1] = new send();
         client[2] = new send();
-        server = new receive();
+        server = new Server(6666);
     }
     send[] client = new send[3];
-    receive server = new receive();
+    Server server = new Server(6666);
 
     void update() {
         while (int_cam_update) {
             cam0.setIcon(resize(cam0, cam.getcam_icon()));
             //cam0.setIcon(cam.getcam_icon());
-            try {
-                cam1.setIcon(resize(cam1, server.cam[1]));
-            } catch (Exception e) {
+            for (int i = 0; i < server.befele.size(); i++) {
+                if (server.befele.get(i).wall == 1) {
+                    cam1.setIcon(resize(cam1, server.befele.get(i).cam));
+                } else if (server.befele.get(i).wall == 2) {
+                    cam2.setIcon(resize(cam2, server.befele.get(i).cam));
+                } else if (server.befele.get(i).wall == 2) {
+                    cam3.setIcon(resize(cam3, server.befele.get(i).cam));
+                }
             }
-            try {
-                cam2.setIcon(resize(cam2, server.cam[2]));
-            } catch (Exception e) {
-            }
-            try {
-                cam3.setIcon(resize(cam3, server.cam[3]));
-            } catch (Exception e) {
-            }
-
             varas(16);
         }
     }
@@ -69,11 +65,6 @@ public class kiiras extends javax.swing.JFrame {
         }
     }
 
-    void video_receiv() {
-        while (send) {
-            server.fogad();
-        }
-    }
 
     void varas(int ido) {
         try {
@@ -113,57 +104,6 @@ public class kiiras extends javax.swing.JFrame {
 
     }
 
-    class external_cam_start extends SwingWorker<Void, Void> {
-
-        @Override
-        protected Void doInBackground() throws Exception {
-            server.start();
-            return null;
-        }
-
-        @Override
-        protected void done() {
-        }
-    }
-
-    class external_cam_receive1 extends SwingWorker<Void, Void> {
-
-        @Override
-        protected Void doInBackground() throws Exception {
-            video_receiv();
-            return null;
-        }
-
-        @Override
-        protected void done() {
-        }
-    }
-
-    class external_cam_receive2 extends SwingWorker<Void, Void> {
-
-        @Override
-        protected Void doInBackground() throws Exception {
-            video_receiv();
-            return null;
-        }
-
-        @Override
-        protected void done() {
-        }
-    }
-
-    class external_cam_receive3 extends SwingWorker<Void, Void> {
-
-        @Override
-        protected Void doInBackground() throws Exception {
-            video_receiv();
-            return null;
-        }
-
-        @Override
-        protected void done() {
-        }
-    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -302,25 +242,16 @@ public class kiiras extends javax.swing.JFrame {
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         send = !send;
-        new external_cam_start().execute();
         server_setup();
         /*client[0].setup(1, "127.0.0.1", 6666);
         client[1].setup(2, "127.0.0.1", 6666);
         client[2].setup(3, "127.0.0.1", 6666);*/
         System.out.println(send);
-        new external_cam_receive1().execute();
-        new external_cam_receive2().execute();
-        new external_cam_receive3().execute();
         new external_cam_send().execute();
     }//GEN-LAST:event_jButton3ActionPerformed
 
     void server_setup() {
         try {
-            if (send) {
-                //server.start();
-            } else {
-                server.stop();
-            }
             Scanner in = new Scanner(new FileReader("ip.txt"));
             String kecske = in.nextLine();
             client[0].setup(Integer.parseInt(kecske.split(":")[0]), kecske.split(":")[1], 6666);
