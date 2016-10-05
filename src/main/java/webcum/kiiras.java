@@ -32,7 +32,7 @@ public class kiiras extends javax.swing.JFrame {
         server = new Server(6666);
     }
     send[] client = new send[3];
-    Server server = new Server(6666);
+    Server server;
 
     void update() {
         while (int_cam_update) {
