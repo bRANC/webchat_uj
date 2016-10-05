@@ -115,7 +115,7 @@ class Server {
             public void run() {
                 while (true) {
                     try {
-                        System.out.println("witing connection");
+                        System.out.println("waiting connection");
                         Socket a = sc.accept();
                         System.out.println("connected: " + a.getInetAddress());
                         connections.add(a);   // a cooncetion-t átadom egy socketnek
