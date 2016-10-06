@@ -160,6 +160,7 @@ class receiv extends Thread {
                 }
             } catch (Exception e) {
                 e.printStackTrace();
+                System.out.println(fut);
                 fut = false;
             }
         }

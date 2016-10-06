@@ -229,7 +229,7 @@ public class kiiras extends javax.swing.JFrame {
     internal_cam int_cam = new internal_cam();
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         cam = new camera();
-
+        client.clear();
         int_cam.execute();
     }//GEN-LAST:event_jButton1ActionPerformed
 
@@ -251,7 +251,6 @@ public class kiiras extends javax.swing.JFrame {
 
     void server_setup() {
         try {
-            client.clear();
             Scanner in = new Scanner(new FileReader("ip.txt"));
             while (in.hasNext()) {
                 String kecske = in.nextLine();
