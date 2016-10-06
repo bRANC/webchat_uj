@@ -110,7 +110,7 @@
                           <EmptySpace max="32767" attributes="0"/>
                           <Group type="103" groupAlignment="0" max="-2" attributes="0">
                               <Component id="ippassword" pref="76" max="32767" attributes="0"/>
-                              <Component id="ipuser" max="32767" attributes="0"/>
+                              <Component id="ip_user" max="32767" attributes="0"/>
                               <Component id="ipip" max="32767" attributes="0"/>
                           </Group>
                       </Group>
@@ -131,7 +131,7 @@
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="jLabel3" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="ipuser" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="ip_user" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
@@ -166,7 +166,7 @@
         </Component>
         <Component class="javax.swing.JPasswordField" name="ippassword">
         </Component>
-        <Component class="javax.swing.JTextField" name="ipuser">
+        <Component class="javax.swing.JTextField" name="ip_user">
         </Component>
         <Component class="javax.swing.JTextField" name="ipip">
         </Component>

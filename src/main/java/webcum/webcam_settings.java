@@ -42,7 +42,7 @@ public class webcam_settings extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         ippassword = new javax.swing.JPasswordField();
-        ipuser = new javax.swing.JTextField();
+        ip_user = new javax.swing.JTextField();
         ipip = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -93,7 +93,7 @@ public class webcam_settings extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(ippassword, javax.swing.GroupLayout.DEFAULT_SIZE, 76, Short.MAX_VALUE)
-                            .addComponent(ipuser)
+                            .addComponent(ip_user)
                             .addComponent(ipip))))
                 .addContainerGap())
         );
@@ -108,7 +108,7 @@ public class webcam_settings extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
-                    .addComponent(ipuser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(ip_user, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
@@ -151,12 +151,12 @@ public class webcam_settings extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        String ip = ipip.getText().trim(), user = ipuser.getText().trim(), ippass = ippassword.getText().trim();
-        if (ip.isEmpty() || user.isEmpty() || ippass.isEmpty()) {
+        String ip = ipip.getText().trim(), ipuser = ip_user.getText().trim(), ippass = ippassword.getText().trim();
+        if (ip.isEmpty() || ipuser.isEmpty() || ippass.isEmpty()) {
             System.out.println("valami hiba van");
         } else {
             try {
-                Cm.camera_feed(new URL("http://" + ip + "/snapshot.jpg%20?user=" + ippass + "&pwd=" + ippass));
+                Cm.camera_feed(new URL("http://" + ip + "/snapshot.jpg%20?user=" + ipuser + "&pwd=" + ippass));
             } catch (Exception e) {
             }
         }
@@ -174,9 +174,9 @@ public class webcam_settings extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup buttonGroup1;
+    private javax.swing.JTextField ip_user;
     private javax.swing.JTextField ipip;
     private javax.swing.JPasswordField ippassword;
-    private javax.swing.JTextField ipuser;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
