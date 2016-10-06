@@ -23,7 +23,7 @@ public class server_settings extends javax.swing.JFrame {
     public server_settings() {
         initComponents();
         try {
-            InetAddress IP=InetAddress.getLocalHost();
+            InetAddress IP = InetAddress.getLocalHost();
             jip.setText(IP.toString());
         } catch (Exception e) {
         }
@@ -139,9 +139,15 @@ public class server_settings extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         try (PrintWriter iro = new PrintWriter(new File("ip.txt"))) {
-            iro.println("1:" + jcam1.getText().trim());
-            iro.println("2:" + jcam2.getText().trim());
-            iro.println("3:" + jcam3.getText().trim());
+            if (!jcam1.getText().trim().isEmpty()) {
+                iro.println("1:" + jcam1.getText().trim());
+            }
+            if (!jcam2.getText().trim().isEmpty()) {
+                iro.println("2:" + jcam2.getText().trim());
+            }
+            if (!jcam3.getText().trim().isEmpty()) {
+                iro.println("3:" + jcam3.getText().trim());
+            }
             iro.flush();
             iro.close();
         } catch (Exception e) {
