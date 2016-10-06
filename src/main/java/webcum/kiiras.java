@@ -28,7 +28,6 @@ public class kiiras extends javax.swing.JFrame {
 
     public kiiras() {
         initComponents();
-
         server = new Server(6666);
     }
     Server server;
@@ -59,7 +58,7 @@ public class kiiras extends javax.swing.JFrame {
             BufferedImage im = cam.getcam();
             for (int i = 0; i < client.size(); i++) {
                 client.get(i).kuld(im);
-                
+
             }
             varas(16);
         }
@@ -236,6 +235,8 @@ public class kiiras extends javax.swing.JFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         int_cam.done();
+        server.close();
+        server = new Server(6666);
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
@@ -250,6 +251,7 @@ public class kiiras extends javax.swing.JFrame {
 
     void server_setup() {
         try {
+            client.clear();
             Scanner in = new Scanner(new FileReader("ip.txt"));
             while (in.hasNext()) {
                 String kecske = in.nextLine();

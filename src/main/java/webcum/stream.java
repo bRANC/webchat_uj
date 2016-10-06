@@ -99,6 +99,13 @@ class Server {
     public ArrayList<receiv> befele = new ArrayList<receiv>();
     public ImageIcon lol;
 
+    void close() {
+        try {
+            sc.close();
+        } catch (Exception e) {
+        }
+    }
+
     Server(int port) {
 
         try {
@@ -133,10 +140,11 @@ class receiv extends Thread {
     Socket be;
     public ImageIcon cam = new ImageIcon();
     public int wall = 0;
+    Boolean fut = true;
 
     @Override
     public void run() {
-        while (true) {
+        while (fut) {
             try {
                 int came = in.readInt();
                 int length = in.readInt();
@@ -152,6 +160,7 @@ class receiv extends Thread {
                 }
             } catch (Exception e) {
                 e.printStackTrace();
+                fut = false;
             }
         }
     }
