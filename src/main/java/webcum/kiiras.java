@@ -102,6 +102,21 @@ public class kiiras extends javax.swing.JFrame {
 
     }
 
+    class camera_conect extends SwingWorker<Void, Void> {
+
+        @Override
+        protected Void doInBackground() throws Exception {
+            server_setup();
+            new external_cam_send().execute();
+            return null;
+        }
+
+        @Override
+        protected void done() {
+        }
+
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -241,12 +256,13 @@ public class kiiras extends javax.swing.JFrame {
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         send = !send;
-        server_setup();
+
         /*client[0].setup(1, "127.0.0.1", 6666);
         client[1].setup(2, "127.0.0.1", 6666);
         client[2].setup(3, "127.0.0.1", 6666);*/
         System.out.println(send);
-        new external_cam_send().execute();
+        new camera_conect().execute();
+
     }//GEN-LAST:event_jButton3ActionPerformed
 
     void server_setup() {
