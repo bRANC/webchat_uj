@@ -7,26 +7,43 @@ package webcum;
 
 import java.net.InetSocketAddress;
 import com.github.sarxos.webcam.Webcam;
-import java.awt.Dimension;
 import java.awt.image.BufferedImage;
+import java.net.URL;
+import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 
 /**
  *
  * @author branc
  */
-public class main {
+public class camera {
 
     Webcam webcam = Webcam.getDefault();
 
-    public main() {
+    public camera() {
         start();
-        // Dimension dimension = new Dimension(320, 240);
-        // webcam.setViewSize(dimension);
+    }
+    Boolean ip = false;
+    URL ip_addres;
+
+    public void camera_feed(Boolean a) {
+        ip = a;
+    }
+
+    public void camera_feed(URL a) {
+        ip_addres = a;
     }
 
     public BufferedImage getcam() {
-        return webcam.getImage();
+        if (ip) {
+            try {
+                return ImageIO.read(ip_addres);
+            } catch (Exception e) {
+            }
+        } else {
+            return webcam.getImage();
+        }
+        return null;
     }
 
     public ImageIcon getcam_icon() {

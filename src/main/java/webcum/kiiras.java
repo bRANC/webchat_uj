@@ -22,7 +22,7 @@ public class kiiras extends javax.swing.JFrame {
     /**
      * Creates new form kiiras
      */
-    main cam;
+    camera cam;
     Boolean int_cam_update = true, send = false;
     public ArrayList<send> client = new ArrayList<send>();
 
@@ -229,7 +229,7 @@ public class kiiras extends javax.swing.JFrame {
 
     internal_cam int_cam = new internal_cam();
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        cam = new main();
+        cam = new camera();
 
         int_cam.execute();
     }//GEN-LAST:event_jButton1ActionPerformed

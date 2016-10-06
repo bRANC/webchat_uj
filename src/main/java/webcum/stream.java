@@ -120,15 +120,11 @@ class Server {
                     } catch (IOException ex) {
                         Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
                     }
-
                 }
-
             }
         });
         t.start();
-
     }
-
 }
 
 class receiv extends Thread {
