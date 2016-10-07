@@ -21,7 +21,6 @@ public class camera {
     Webcam webcam = Webcam.getDefault();
 
     public camera() {
-        start();
     }
     Boolean ip = false;
     URL ip_addres;

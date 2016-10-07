@@ -5,6 +5,8 @@
  */
 package webcum;
 
+import com.github.sarxos.webcam.WebcamResolution;
+import java.awt.Dimension;
 import java.net.URL;
 
 /**
@@ -21,6 +23,20 @@ public class webcam_settings extends javax.swing.JFrame {
     public webcam_settings(camera be) {
         initComponents();
         Cm = be;
+        get_kamera_things();
+    }
+
+    public void kamera_res_setup() {
+        if (Cm.webcam.getName().contains("HD")) {
+            Cm.webcam.setCustomViewSizes(new Dimension[]{WebcamResolution.HD720.getSize()});//új felbontás regisztrálása
+            Cm.webcam.setViewSize(WebcamResolution.HD720.getSize());//be állítása
+        }
+    }
+
+    void get_kamera_things() {
+        System.out.println(Cm.webcam.getFPS());
+        System.out.println(Cm.webcam.getName());
+        System.out.println(Cm.webcam.getViewSize().height + "  " + Cm.webcam.getViewSize().width);
     }
 
     /**
@@ -45,9 +61,10 @@ public class webcam_settings extends javax.swing.JFrame {
         ip_user = new javax.swing.JTextField();
         ipip = new javax.swing.JTextField();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         buttonGroup1.add(jRadioButton1);
+        jRadioButton1.setSelected(true);
         jRadioButton1.setText("Usb camera");
         jRadioButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
