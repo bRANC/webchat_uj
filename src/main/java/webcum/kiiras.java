@@ -37,11 +37,11 @@ public class kiiras extends javax.swing.JFrame {
             cam0.setIcon(resize(cam0, cam.getcam_icon()));
             //cam0.setIcon(cam.getcam_icon());
             for (int i = 0; i < server.befele.size(); i++) {
-                if (server.befele.get(i).wall == 1) {
+                if (i == 1) {
                     cam1.setIcon(resize(cam1, server.befele.get(i).cam));
-                } else if (server.befele.get(i).wall == 2) {
+                } else if (i == 2) {
                     cam2.setIcon(resize(cam2, server.befele.get(i).cam));
-                } else if (server.befele.get(i).wall == 2) {
+                } else if (i == 2) {
                     cam3.setIcon(resize(cam3, server.befele.get(i).cam));
                 }
             }
