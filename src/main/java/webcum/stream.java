@@ -66,6 +66,8 @@ class send {
 
     }
 
+    Boolean hiba=false;
+    
     public void kuld(BufferedImage im) {
         try {
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -75,6 +77,8 @@ class send {
             out.write(buffer);
             out.flush();
         } catch (Exception e) {
+            hiba=true;
+            e.printStackTrace();
         }
     }
 }

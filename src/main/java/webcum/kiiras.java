@@ -61,7 +61,9 @@ public class kiiras extends javax.swing.JFrame {
         while (send) {
             BufferedImage im = cam.getcam();
             for (int i = 0; i < client.size(); i++) {
-                client.get(i).kuld(im);
+                if (!client.get(i).hiba) {
+                    client.get(i).kuld(im);
+                }
             }
         }
     }
@@ -275,7 +277,7 @@ public class kiiras extends javax.swing.JFrame {
                 String kecske = in.nextLine();
                 if (!kecske.isEmpty()) {
                     send k = new send();
-                    k.setup(kecske.split(":")[1], 6666);
+                    k.setup(kecske, 6666);
                     client.add(k);
                 }
             }

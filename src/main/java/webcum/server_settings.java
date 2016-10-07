@@ -6,10 +6,12 @@
 package webcum;
 
 import java.io.File;
+import java.io.FileReader;
 import java.io.PrintWriter;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.Scanner;
 
 /**
  *
@@ -26,6 +28,31 @@ public class server_settings extends javax.swing.JFrame {
             InetAddress IP = InetAddress.getLocalHost();
             jip.setText(IP.toString());
         } catch (Exception e) {
+        }
+
+    }
+
+    public void text_be() {
+        try {
+            Scanner in = new Scanner(new FileReader("ip.txt"));
+            int a = 0;
+            while (in.hasNext()) {
+                String kecske = in.nextLine();
+                if (!kecske.isEmpty()) {
+                    a++;
+                    if (a == 1) {
+                        jcam1.setText(kecske);
+                    } else if (a == 2) {
+                        jcam2.setText(kecske);
+                    } else if (a == 3) {
+                        jcam3.setText(kecske);
+                    }
+                }
+            }
+            //client[2].setup(3, "127.0.0.1", 6666);
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("not configured");
         }
     }
 
@@ -140,13 +167,13 @@ public class server_settings extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         try (PrintWriter iro = new PrintWriter(new File("ip.txt"))) {
             if (!jcam1.getText().trim().isEmpty()) {
-                iro.println("1:" + jcam1.getText().trim());
+                iro.println(jcam1.getText().trim());
             }
             if (!jcam2.getText().trim().isEmpty()) {
-                iro.println("2:" + jcam2.getText().trim());
+                iro.println(jcam2.getText().trim());
             }
             if (!jcam3.getText().trim().isEmpty()) {
-                iro.println("3:" + jcam3.getText().trim());
+                iro.println(jcam3.getText().trim());
             }
             iro.flush();
             iro.close();
