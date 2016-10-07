@@ -39,7 +39,6 @@ class send {
 
     String ip = "";
     int port = 0;
-    int cam;
 
     send() {
 
@@ -51,17 +50,6 @@ class send {
         cummection();
     }
 
-    void setup(int cam, String ip_, int port_) {
-        ip = ip_;
-        port = port_;
-        this.cam = cam;
-        cummection();
-    }
-
-    void setup(int cam) {
-        this.cam = cam;
-        cummection();
-    }
 
     void cummection() {
         try {
@@ -83,7 +71,6 @@ class send {
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             ImageIO.write(im, "jpg", baos);
             byte[] buffer = baos.toByteArray();
-            out.writeInt(cam);
             out.writeInt(buffer.length);
             out.write(buffer);
             out.flush();
@@ -103,6 +90,7 @@ class Server {
         try {
             sc.close();
         } catch (Exception e) {
+            System.out.println("ServerSocket closed");
         }
     }
 
@@ -139,14 +127,13 @@ class receiv extends Thread {
     DataInputStream in;
     Socket be;
     public ImageIcon cam = new ImageIcon();
-    public int wall = 0;
     Boolean fut = true;
+    String ip = "";
 
     @Override
     public void run() {
         while (fut) {
             try {
-                int came = in.readInt();
                 int length = in.readInt();
                 byte[] buffer;
                 BufferedImage img;
@@ -156,11 +143,10 @@ class receiv extends Thread {
                     in.readFully(buffer);
                     img = ImageIO.read(new ByteArrayInputStream(buffer));
                     cam = new ImageIcon(img);
-                    wall = came;
                 }
             } catch (Exception e) {
                 e.printStackTrace();
-                System.out.println(fut);
+                System.out.println("szál le állsítása ip: " + ip);
                 fut = false;
             }
         }
@@ -170,6 +156,7 @@ class receiv extends Thread {
         try {
             this.be = be;
             in = new DataInputStream(be.getInputStream());
+            ip = be.getInetAddress().toString();
         } catch (Exception e) {
             e.printStackTrace();
         }

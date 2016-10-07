@@ -24,7 +24,7 @@ public class kiiras extends javax.swing.JFrame {
      */
     camera cam;
     Boolean int_cam_update = true, send = false;
-    public ArrayList<send> client = new ArrayList<send>();
+    ArrayList<send> client = new ArrayList<>();
 
     public kiiras() {
         initComponents();
@@ -35,17 +35,21 @@ public class kiiras extends javax.swing.JFrame {
     void update() {
         while (int_cam_update) {
             cam0.setIcon(resize(cam0, cam.getcam_icon()));
-            //cam0.setIcon(cam.getcam_icon());
             for (int i = 0; i < server.befele.size(); i++) {
-                if (i == 1) {
-                    cam1.setIcon(resize(cam1, server.befele.get(i).cam));
-                } else if (i == 2) {
-                    cam2.setIcon(resize(cam2, server.befele.get(i).cam));
-                } else if (i == 3) {
-                    cam3.setIcon(resize(cam3, server.befele.get(i).cam));
+                switch (i) {
+                    case 1:
+                        cam1.setIcon(resize(cam1, server.befele.get(i).cam));
+                        break;
+                    case 2:
+                        cam2.setIcon(resize(cam2, server.befele.get(i).cam));
+                        break;
+                    case 3:
+                        cam3.setIcon(resize(cam3, server.befele.get(i).cam));
+                        break;
+                    default:
+                        break;
                 }
             }
-            varas(16);
         }
     }
 
@@ -58,9 +62,7 @@ public class kiiras extends javax.swing.JFrame {
             BufferedImage im = cam.getcam();
             for (int i = 0; i < client.size(); i++) {
                 client.get(i).kuld(im);
-
             }
-            varas(16);
         }
     }
 
@@ -209,7 +211,7 @@ public class kiiras extends javax.swing.JFrame {
         gridBagConstraints.weighty = 1.0;
         getContentPane().add(cam3, gridBagConstraints);
 
-        jButton4.setText("Setup");
+        jButton4.setText("StartServer");
         jButton4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton4ActionPerformed(evt);
@@ -244,7 +246,6 @@ public class kiiras extends javax.swing.JFrame {
     internal_cam int_cam = new internal_cam();
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         cam = new camera();
-        client.clear();
         int_cam.execute();
     }//GEN-LAST:event_jButton1ActionPerformed
 
@@ -261,7 +262,9 @@ public class kiiras extends javax.swing.JFrame {
         client[1].setup(2, "127.0.0.1", 6666);
         client[2].setup(3, "127.0.0.1", 6666);*/
         System.out.println(send);
-        new camera_conect().execute();
+        if (send) {
+            new camera_conect().execute();
+        }
 
     }//GEN-LAST:event_jButton3ActionPerformed
 
@@ -272,7 +275,7 @@ public class kiiras extends javax.swing.JFrame {
                 String kecske = in.nextLine();
                 if (!kecske.isEmpty()) {
                     send k = new send();
-                    k.setup(Integer.parseInt(kecske.split(":")[0]), kecske.split(":")[1], 6666);
+                    k.setup(kecske.split(":")[1], 6666);
                     client.add(k);
                 }
             }
@@ -290,7 +293,9 @@ public class kiiras extends javax.swing.JFrame {
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         //setup
-
+        if (server.sc.isClosed()) {
+            server = new Server(6666);
+        }
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jMenu1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu1MouseClicked
