@@ -29,17 +29,17 @@ public class server_settings extends javax.swing.JFrame {
             jip.setText(IP.toString());
         } catch (Exception e) {
         }
-
+        text_be();
     }
 
     public void text_be() {
         try {
             Scanner in = new Scanner(new FileReader("ip.txt"));
-            int a = 0;
+            int a = 1;
             while (in.hasNext()) {
                 String kecske = in.nextLine();
                 if (!kecske.isEmpty()) {
-                    a++;
+                    System.out.println("txt tartalom: " + kecske);
                     if (a == 1) {
                         jcam1.setText(kecske);
                     } else if (a == 2) {
@@ -47,9 +47,9 @@ public class server_settings extends javax.swing.JFrame {
                     } else if (a == 3) {
                         jcam3.setText(kecske);
                     }
+                    a++;
                 }
             }
-            //client[2].setup(3, "127.0.0.1", 6666);
         } catch (Exception e) {
             e.printStackTrace();
             System.out.println("not configured");
@@ -76,7 +76,7 @@ public class server_settings extends javax.swing.JFrame {
         jLabel4 = new javax.swing.JLabel();
         jip = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jLabel1.setText("wall1 ip:");
 
