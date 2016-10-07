@@ -45,7 +45,7 @@ public class kiiras extends javax.swing.JFrame {
                         cam3.setIcon(resize(cam3, server.befele.get(i).cam));
                     }
                 } catch (Exception e) {
-                    e.printStackTrace();
+                 //   e.printStackTrace();
                 }
             }
         }
