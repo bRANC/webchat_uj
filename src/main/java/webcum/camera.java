@@ -81,18 +81,15 @@ public class camera {
                 String kecske = in.nextLine();
                 if (!kecske.isEmpty()) {
                     System.out.println("txt tartalom: " + kecske);
-                    if (kecske.equals("true")) {
-                        flip = true;
-                    } else {
-                        flip = false;
-                    }
+                    flip = kecske.equals("true");
                     a++;
                 }
             }
+            in.close();
         } catch (Exception e) {
             e.printStackTrace();
             System.out.println("not configured");
-        }
+        }        
     }
 
     public ImageIcon getcam_icon() {
