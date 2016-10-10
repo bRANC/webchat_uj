@@ -22,6 +22,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
+import javax.swing.SwingWorker;
 import javax.swing.Timer;
 
 /**
@@ -50,15 +51,16 @@ class send {
         cummection();
     }
 
-
     void cummection() {
         try {
             System.out.println("socket connect start");
             s = new Socket(ip, port);
             out = new DataOutputStream(s.getOutputStream());
             System.out.println("output setup done");
+            hiba = false;
         } catch (IOException ex) {
             System.out.println("Socket open error! ip: " + ip);
+            hiba = true;
         }
     }
 
@@ -66,8 +68,8 @@ class send {
 
     }
 
-    Boolean hiba=false;
-    
+    Boolean hiba = false;
+
     public void kuld(BufferedImage im) {
         try {
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -77,10 +79,29 @@ class send {
             out.write(buffer);
             out.flush();
         } catch (Exception e) {
-            hiba=true;
+            hiba = true;
+            new reconnect().execute();
             e.printStackTrace();
         }
     }
+
+    class reconnect extends SwingWorker<Void, Void> {
+
+        @Override
+        protected Void doInBackground() throws Exception {
+            wait(5000);
+            cummection();
+            return null;
+        }
+
+        @Override
+        protected void done() {
+            if (hiba) {
+                System.out.println("failed to reconnect!: " + ip + ":" + port);
+            }
+        }
+    }
+
 }
 
 class Server {

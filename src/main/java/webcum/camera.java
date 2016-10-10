@@ -36,9 +36,13 @@ public class camera {
     public void set_camera(Webcam wb) {
         if (!webcam.getName().equals(wb.getName())) {
             System.out.println("set new camera");
+            //bcam.
+            webcam.close();
+            // webcam.shutdown();
             webcam = wb;
+        } else {
+            System.out.println("same camera selected");
         }
-        System.out.println("same camera selected");
     }
 
     public void camera_feed(Boolean a) {
@@ -49,18 +53,22 @@ public class camera {
         ip_addres = a;
     }
 
+    BufferedImage last;
+
     public BufferedImage getcam() {
         if (ip) {
             try {
-                return ImageIO.read(ip_addres);
+                last = ImageIO.read(ip_addres);
             } catch (Exception e) {
             }
-        } else if (flip) {
-            return webcam.getImage();
-        } else {
-            return flipHoriz(webcam.getImage());
+        } else if (webcam.isOpen()) {
+            if (flip) {
+                last = webcam.getImage();
+            } else {
+                last = flipHoriz(webcam.getImage());
+            }
         }
-        return null;
+        return last;
     }
     boolean flip = true;
 
@@ -95,7 +103,6 @@ public class camera {
     }
 
     public ImageIcon getcam_icon() {
-
         return new ImageIcon(getcam());
     }
 
@@ -108,6 +115,7 @@ public class camera {
     }
 
     public void start() {
+        new webcam_settings(this).kamera_res_setup();
         webcam.open();
     }
 

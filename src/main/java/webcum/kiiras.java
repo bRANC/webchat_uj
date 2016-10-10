@@ -79,7 +79,6 @@ public class kiiras extends javax.swing.JFrame {
         @Override
         protected Void doInBackground() throws Exception {
             int_cam_update = true;
-            new webcam_settings(cam).kamera_res_setup();
             cam.start();
             update();
             return null;
