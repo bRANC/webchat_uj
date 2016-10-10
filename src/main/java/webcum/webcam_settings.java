@@ -341,7 +341,7 @@ public class webcam_settings extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-    
+        Cm.flip_flop_cam_horiz_write();
     }//GEN-LAST:event_jButton3ActionPerformed
 
 
