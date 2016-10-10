@@ -25,6 +25,14 @@ public class camera {
     Boolean ip = false;
     URL ip_addres;
 
+    public void set_camera(Webcam wb) {
+        if (!webcam.getName().equals(wb.getName())) {
+            System.out.println("set new camera");
+            webcam = wb;
+        }
+        System.out.println("same camera selected");
+    }
+
     public void camera_feed(Boolean a) {
         ip = a;
     }
