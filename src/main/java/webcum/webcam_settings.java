@@ -29,16 +29,18 @@ public class webcam_settings extends javax.swing.JFrame {
     public void kamera_res_setup() {
         if (Cm.webcam.getName().contains("HD") || Cm.webcam.getName().contains("EasyCamera")) {
             Cm.webcam.setCustomViewSizes(new Dimension[]{WebcamResolution.HD720.getSize()});//új felbontás regisztrálása
-           // Cm.webcam.setViewSize(WebcamResolution.HD720.getSize());//be állítása HD
-           //VGA
-           Cm.webcam.setViewSize(WebcamResolution.VGA.getSize());//be állítása VGA
+            // Cm.webcam.setViewSize(WebcamResolution.HD720.getSize());//be állítása HD
+            //VGA
+            Cm.webcam.setViewSize(WebcamResolution.VGA.getSize());//be állítása VGA
         }
     }
 
     void get_kamera_things() {
-        System.out.println(Cm.webcam.getFPS());
-        System.out.println(Cm.webcam.getName());
-        System.out.println(Cm.webcam.getViewSize().height + "  " + Cm.webcam.getViewSize().width);
+        if (Cm.webcam.isOpen()) {
+            System.out.println(Cm.webcam.getFPS());
+            System.out.println(Cm.webcam.getName());
+            System.out.println(Cm.webcam.getViewSize().height + "  " + Cm.webcam.getViewSize().width);
+        }
     }
 
     /**
