@@ -28,6 +28,7 @@ public class camera {
     Webcam webcam = Webcam.getDefault();
 
     public camera() {
+        flip_flop_cam_horiz_read();
     }
     Boolean ip = false;
     URL ip_addres;
