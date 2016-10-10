@@ -55,8 +55,10 @@ public class camera {
                 return ImageIO.read(ip_addres);
             } catch (Exception e) {
             }
-        } else {
+        } else if (flip) {
             return webcam.getImage();
+        } else {
+            return flipHoriz(webcam.getImage());
         }
         return null;
     }
@@ -89,15 +91,12 @@ public class camera {
         } catch (Exception e) {
             e.printStackTrace();
             System.out.println("not configured");
-        }        
+        }
     }
 
     public ImageIcon getcam_icon() {
-        if (flip) {
-            return new ImageIcon(flipHoriz(getcam()));
-        } else {
-            return new ImageIcon(getcam());
-        }
+
+        return new ImageIcon(getcam());
     }
 
     BufferedImage flipHoriz(BufferedImage image) {
