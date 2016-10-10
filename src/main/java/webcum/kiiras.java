@@ -28,9 +28,18 @@ public class kiiras extends javax.swing.JFrame {
 
     public kiiras() {
         initComponents();
-        server = new Server(6666);
+        server_start();
     }
     Server server;
+
+    void server_start() {
+        try {
+            server.sc.close();
+            server.close();
+        } catch (Exception e) {
+        }
+        server = new Server(6666);
+    }
 
     void update() {
         while (int_cam_update) {
@@ -275,7 +284,7 @@ public class kiiras extends javax.swing.JFrame {
                 String kecske = in.nextLine();
                 if (!kecske.isEmpty()) {
                     send k = new send();
-                    k.setup(kecske, 6666);
+                    k.setup(kecske.split(":")[0], Integer.parseInt(kecske.split(":")[1]));
                     client.add(k);
                 }
             }
