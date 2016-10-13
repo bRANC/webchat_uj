@@ -6,7 +6,6 @@
 package webcum;
 
 import com.github.sarxos.webcam.WebcamResolution;
-import java.awt.Dimension;
 import java.awt.image.BufferedImage;
 import java.net.InetSocketAddress;
 import webcum.agent.StreamClientAgent;

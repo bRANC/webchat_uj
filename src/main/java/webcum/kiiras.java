@@ -330,6 +330,7 @@ StreamServerAgent serverAgent;
             serverAgent = new StreamServerAgent(cam.webcam, WebcamResolution.VGA.getSize());
         }
         serverAgent.start(new InetSocketAddress("0.0.0.0", port_szam()));
+        cam.stream(serverAgent);
         vph.get(0).connect("localhost", port_szam());
 
     }

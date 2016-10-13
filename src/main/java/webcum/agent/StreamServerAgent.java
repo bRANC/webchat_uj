@@ -62,15 +62,6 @@ public class StreamServerAgent implements IStreamServerAgent {
         this.encodeWorker = Executors.newSingleThreadExecutor();
         this.h264StreamEncoder = new H264StreamEncoder(dimension, false);
     }
-
-    public int getFPS() {
-        return FPS;
-    }
-
-    public void setFPS(int fPS) {
-        FPS = fPS;
-    }
-
     boolean flip = true;
 
     public void flip_flop_cam_horiz_write() {
@@ -82,6 +73,14 @@ public class StreamServerAgent implements IStreamServerAgent {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public int getFPS() {
+        return FPS;
+    }
+
+    public void setFPS(int fPS) {
+        FPS = fPS;
     }
 
     @Override
@@ -106,6 +105,7 @@ public class StreamServerAgent implements IStreamServerAgent {
         public void onClientConnectedIn(Channel channel) {
             //here we just start to stream when the first client connected in
             //
+            flip_flop_cam_horiz_read();
             channelGroup.add(channel);
             if (!isStreaming) {
                 //do some thing

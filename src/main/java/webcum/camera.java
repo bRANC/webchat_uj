@@ -32,7 +32,7 @@ public class camera {
     Webcam webcam = Webcam.getDefault();
 
     public camera() {
-        flip_flop_cam_horiz_read();
+        //flip_flop_cam_horiz_read();
     }
     Boolean ip = false;
     URL ip_addres;
@@ -60,25 +60,14 @@ public class camera {
     BufferedImage last;
     StreamServerAgent serverAgent;
 
-    public void stream(videopanelhandler a) {
-        /*//webcam.open();
-        //    WebcamStreamer WS = new WebcamStreamer(5555, webcam, 25, true);
-        webcam.setAutoOpenMode(true);
-        Dimension dimension = new Dimension(320, 240);
-        webcam.setViewSize(dimension);
-        if (webcam.getName().contains("HD") || webcam.getName().contains("EasyCamera")) {
-            webcam.setCustomViewSizes(new Dimension[]{WebcamResolution.VGA.getSize(), WebcamResolution.HD720.getSize()});//új felbontás regisztrálása
-            //Cm.webcam.setViewSize(WebcamResolution.HD720.getSize());//be állítása HD
-            //VGA
-            webcam.setViewSize(WebcamResolution.HD720.getSize());//be állítása VGA
-            serverAgent = new StreamServerAgent(webcam, WebcamResolution.HD720.getSize());
-        } else if (webcam.getName().contains("VGA")) {
-            serverAgent = new StreamServerAgent(webcam, WebcamResolution.VGA.getSize());
-        }
-        serverAgent.start(new InetSocketAddress("localhost", 20000));
-        a.connect("localhost", 6666);
-         */
+    public void stream(StreamServerAgent sa) {
+        serverAgent = sa;
     }
+
+    void flip_flop_cam_horiz_write() {
+        serverAgent.flip_flop_cam_horiz_write();
+    }
+    boolean flip = true;
 
     public BufferedImage getcam() {
         if (ip) {
@@ -94,38 +83,6 @@ public class camera {
             }
         }
         return last;
-    }
-    boolean flip = true;
-
-    void flip_flop_cam_horiz_write() {
-        serverAgent.flip_flop_cam_horiz_write();/*
-        flip = !flip;
-        try (PrintWriter iro = new PrintWriter(new File("camera_horiz.txt"))) {
-            iro.println(flip);
-            iro.flush();
-            iro.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }*/
-    }
-
-    void flip_flop_cam_horiz_read() {
-        try {
-            Scanner in = new Scanner(new FileReader("camera_horiz.txt"));
-            int a = 1;
-            while (in.hasNext()) {
-                String kecske = in.nextLine();
-                if (!kecske.isEmpty()) {
-                    System.out.println("txt tartalom: " + kecske);
-                    flip = kecske.equals("true");
-                    a++;
-                }
-            }
-            in.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-            System.out.println("not configured");
-        }
     }
 
     public ImageIcon getcam_icon() {
