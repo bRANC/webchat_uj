@@ -66,13 +66,13 @@ public class camera {
         webcam.setAutoOpenMode(true);
         Dimension dimension = new Dimension(320, 240);
         webcam.setViewSize(dimension);
-        if (webcam.getName().contains("HD") || webcam.getName().contains("EasyCamera")|| webcam.getName().contains("VGA")) {
-            webcam.setCustomViewSizes(new Dimension[]{WebcamResolution.HD720.getSize()});//új felbontás regisztrálása
+        if (webcam.getName().contains("HD") || webcam.getName().contains("EasyCamera") || webcam.getName().contains("VGA")) {
+            webcam.setCustomViewSizes(new Dimension[]{WebcamResolution.VGA.getSize(), WebcamResolution.HD720.getSize()});//új felbontás regisztrálása
             //Cm.webcam.setViewSize(WebcamResolution.HD720.getSize());//be állítása HD
             //VGA
-            webcam.setViewSize(WebcamResolution.VGA.getSize());//be állítása VGA
+            webcam.setViewSize(WebcamResolution.HD720.getSize());//be állítása VGA
         }
-        serverAgent = new StreamServerAgent(webcam, WebcamResolution.VGA.getSize());
+        serverAgent = new StreamServerAgent(webcam, WebcamResolution.HD720.getSize());
         serverAgent.start(new InetSocketAddress("localhost", 20000));
 
     }

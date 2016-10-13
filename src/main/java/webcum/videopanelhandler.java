@@ -24,7 +24,7 @@ public class videopanelhandler {
 
     public videopanelhandler() {
         videopanel = new VideoPanel();
-        clientAgent = new StreamClientAgent(new StreamFrameListenerIMPL(), WebcamResolution.VGA.getSize());
+        clientAgent = new StreamClientAgent(new StreamFrameListenerIMPL(), WebcamResolution.HD720.getSize());
     }
 
     VideoPanel get_vp() {
