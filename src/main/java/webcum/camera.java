@@ -57,6 +57,7 @@ public class camera {
     }
 
     BufferedImage last;
+    StreamServerAgent serverAgent;
 
     public void stream() {
         //webcam.open();
@@ -64,7 +65,7 @@ public class camera {
         webcam.setAutoOpenMode(true);
         Dimension dimension = new Dimension(320, 240);
         webcam.setViewSize(dimension);
-        StreamServerAgent serverAgent = new StreamServerAgent(webcam, dimension);
+        serverAgent = new StreamServerAgent(webcam, dimension);
         serverAgent.start(new InetSocketAddress("localhost", 20000));
 
     }
@@ -87,6 +88,7 @@ public class camera {
     boolean flip = true;
 
     void flip_flop_cam_horiz_write() {
+        serverAgent.flip_flop_cam_horiz_write();/*
         flip = !flip;
         try (PrintWriter iro = new PrintWriter(new File("camera_horiz.txt"))) {
             iro.println(flip);
@@ -94,7 +96,7 @@ public class camera {
             iro.close();
         } catch (Exception e) {
             e.printStackTrace();
-        }
+        }*/
     }
 
     void flip_flop_cam_horiz_read() {

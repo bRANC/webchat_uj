@@ -71,6 +71,19 @@ public class StreamServerAgent implements IStreamServerAgent {
         FPS = fPS;
     }
 
+    boolean flip = true;
+
+    public void flip_flop_cam_horiz_write() {
+        flip = !flip;
+        try (PrintWriter iro = new PrintWriter(new File("camera_horiz.txt"))) {
+            iro.println(flip);
+            iro.flush();
+            iro.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     @Override
     public void start(SocketAddress streamAddress) {
         logger.info("Server started :{}", streamAddress);
@@ -145,7 +158,7 @@ public class StreamServerAgent implements IStreamServerAgent {
             public void run() {
 
                 //logger.info("image grabed ,count :{}",frameCount++);
-                BufferedImage bufferedImage = webcam.getImage();
+                BufferedImage bufferedImage = getcam();
 
                 /**
                  * using this when the h264 encoder is added to the pipeline
@@ -161,6 +174,7 @@ public class StreamServerAgent implements IStreamServerAgent {
             }
 
         }
+
         BufferedImage last;
         Boolean ip = false;
         URL ip_addres;
@@ -171,12 +185,10 @@ public class StreamServerAgent implements IStreamServerAgent {
                     last = ImageIO.read(ip_addres);
                 } catch (Exception e) {
                 }
-            } else if (webcam.isOpen()) {
-                if (flip) {
-                    last = webcam.getImage();
-                } else {
-                    last = flipHoriz(webcam.getImage());
-                }
+            } else if (flip) {
+                last = flipHoriz(webcam.getImage());
+            } else {
+                last = webcam.getImage();
             }
             return last;
         }
@@ -184,22 +196,10 @@ public class StreamServerAgent implements IStreamServerAgent {
         BufferedImage flipHoriz(BufferedImage image) {
             BufferedImage newImage = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_INT_ARGB);
             Graphics2D gg = newImage.createGraphics();
-            gg.drawImage(image, image.getHeight(), image.getWidth(), -image.getWidth() + (image.getWidth() / 4), image.getHeight(), null);
+            gg.drawImage(image, 0 + image.getWidth(), 0, -image.getWidth(), image.getHeight(), null);
             gg.dispose();
             logger.info(newImage.getHeight() + "  " + newImage.getWidth());
             return newImage;
-        }
-        boolean flip = true;
-
-        void flip_flop_cam_horiz_write() {
-            flip = !flip;
-            try (PrintWriter iro = new PrintWriter(new File("camera_horiz.txt"))) {
-                iro.println(flip);
-                iro.flush();
-                iro.close();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
         }
 
         void flip_flop_cam_horiz_read() {
