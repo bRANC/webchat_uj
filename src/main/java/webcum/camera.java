@@ -72,7 +72,7 @@ public class camera {
             //VGA
             webcam.setViewSize(WebcamResolution.VGA.getSize());//be állítása VGA
         }
-        serverAgent = new StreamServerAgent(webcam, dimension);
+        serverAgent = new StreamServerAgent(webcam, WebcamResolution.VGA.getSize());
         serverAgent.start(new InetSocketAddress("localhost", 20000));
 
     }

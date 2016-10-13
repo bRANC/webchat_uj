@@ -5,6 +5,7 @@
  */
 package webcum;
 
+import com.github.sarxos.webcam.WebcamResolution;
 import java.awt.Dimension;
 import java.awt.image.BufferedImage;
 import java.net.InetSocketAddress;
@@ -23,7 +24,7 @@ public class videopanelhandler {
 
     public videopanelhandler() {
         videopanel = new VideoPanel();
-        clientAgent = new StreamClientAgent(new StreamFrameListenerIMPL(), new Dimension(340, 240));
+        clientAgent = new StreamClientAgent(new StreamFrameListenerIMPL(), WebcamResolution.VGA.getSize());
     }
 
     VideoPanel get_vp() {
