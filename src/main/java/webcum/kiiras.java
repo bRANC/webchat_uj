@@ -322,6 +322,7 @@ StreamServerAgent serverAgent;
             cam.webcam.setViewSize(WebcamResolution.VGA.getSize());//be állítása VGA
             serverAgent = new StreamServerAgent(cam.webcam, WebcamResolution.VGA.getSize());
         } else if (cam.webcam.getName().contains("VGA") || cam.webcam.getName().contains("")) {
+            cam.webcam.setViewSize(WebcamResolution.VGA.getSize());//be állítása VGA
             serverAgent = new StreamServerAgent(cam.webcam, WebcamResolution.VGA.getSize());
         }
         serverAgent.start(new InetSocketAddress("0.0.0.0", 6666));
