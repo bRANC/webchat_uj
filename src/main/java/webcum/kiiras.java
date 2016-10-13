@@ -312,26 +312,53 @@ public class kiiras extends javax.swing.JFrame {
 StreamServerAgent serverAgent;
     internal_cam int_cam = new internal_cam();
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        start_local_cam_server();            //VGA
+
+    }//GEN-LAST:event_jButton1ActionPerformed
+    void start_local_cam_server() {
         cam.webcam.setAutoOpenMode(true);
         Dimension dimension = new Dimension(320, 240);
         cam.webcam.setViewSize(dimension);
         cam.webcam.setCustomViewSizes(new Dimension[]{WebcamResolution.VGA.getSize(), WebcamResolution.HD720.getSize()});//új felbontás regisztrálása
-        if (cam.webcam.getName().contains("HD") || cam.webcam.getName().contains("EasyCamera")) {            
+        if (cam.webcam.getName().contains("HD") || cam.webcam.getName().contains("EasyCamera")) {
             //Cm.webcam.setViewSize(WebcamResolution.HD720.getSize());//be állítása HD
-            //VGA
+
             cam.webcam.setViewSize(WebcamResolution.VGA.getSize());//be állítása VGA
             serverAgent = new StreamServerAgent(cam.webcam, WebcamResolution.VGA.getSize());
         } else if (cam.webcam.getName().contains("VGA") || cam.webcam.getName().contains("")) {
             cam.webcam.setViewSize(WebcamResolution.VGA.getSize());//be állítása VGA
             serverAgent = new StreamServerAgent(cam.webcam, WebcamResolution.VGA.getSize());
         }
-        serverAgent.start(new InetSocketAddress("0.0.0.0", 6666));
-        vph.get(0).connect("localhost", 6666);
-        //vph.get(1).connect("192.168.1.19", 6666);
-          
-                // You should execute this part on the Event Dispatch Thread
-                // because it modifies a Swing component 
-    }//GEN-LAST:event_jButton1ActionPerformed
+        serverAgent.start(new InetSocketAddress("0.0.0.0", port_szam()));
+        vph.get(0).connect("localhost", port_szam());
+
+    }
+
+    int port_szam() {
+        int vissza = 6666;
+        try {
+            Scanner in = new Scanner(new FileReader("port.txt"));
+            int a = 1;
+            while (in.hasNext()) {
+                String kecske = in.nextLine();
+                if (!kecske.isEmpty()) {
+                    System.out.println("(port)txt tartalom: " + kecske);
+                    try {
+                        vissza = Integer.parseInt(kecske);
+                    } catch (Exception e) {
+                        System.out.println("nem szám a port.txt");
+                    }
+                    a++;
+                }
+            }
+            in.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("not configured");
+        }
+        return vissza;
+    }
+
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         /*        int_cam.done();
@@ -365,13 +392,6 @@ StreamServerAgent serverAgent;
             e.printStackTrace();
             System.out.println("not configured");
         }
-
-        /*        send = !send;
-        System.out.println(send);
-        if (send) {
-            new camera_conect().execute();
-        }
-         */
     }//GEN-LAST:event_jButton3ActionPerformed
 
     void server_setup() {
