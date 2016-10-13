@@ -324,7 +324,7 @@ StreamServerAgent serverAgent;
         } else if (cam.webcam.getName().contains("VGA") || cam.webcam.getName().contains("")) {
             serverAgent = new StreamServerAgent(cam.webcam, WebcamResolution.VGA.getSize());
         }
-        serverAgent.start(new InetSocketAddress("localhost", 6666));
+        serverAgent.start(new InetSocketAddress("0.0.0.0", 6666));
         vph.get(0).connect("localhost", 6666);
         //vph.get(1).connect("192.168.1.19", 6666);
           
