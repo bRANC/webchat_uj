@@ -84,19 +84,10 @@ public class kiiras extends javax.swing.JFrame {
             GridBagLayout layout = (GridBagLayout) panelcam.get(i).getLayout();
             panelcam.get(i).add(vph.get(i).get_vp());
             layout.addLayoutComponent(vph.get(i).get_vp(), gbc);
-            //panelcam.get(i).add(vph.get(i).get_vp());
-            //vph.get(i).set_parent_size(dm);
         }
-        /*        panelcam0.setPreferredSize(dm);
-        panelcam2.setPreferredSize(dm);
-        panelcam1.setPreferredSize(dm);
-        panelcam3.setPreferredSize(dm);*/
+
         this.pack();
-        /*panelcam0.add(vlc.get(0), BorderLayout.CENTER);
-        panelcam1.add(vlc.get(1), BorderLayout.CENTER);
-        panelcam2.add(vlc.get(2), BorderLayout.CENTER);
-        panelcam3.add(vlc.get(3), BorderLayout.CENTER);
-         */
+
     }
 
     void server_start() {
@@ -326,8 +317,9 @@ public class kiiras extends javax.swing.JFrame {
         Dimension dimension = new Dimension(320, 240);
         cam.webcam.setViewSize(dimension);
         StreamServerAgent serverAgent = new StreamServerAgent(cam.webcam, dimension);
-        serverAgent.start(new InetSocketAddress("localhost", 6666));
+        serverAgent.start(new InetSocketAddress("0.0.0.0", 6666));
         vph.get(0).connect("localhost", 6666);
+        //vph.get(1).connect("192.168.1.19", 6666);
 
 // You should execute this part on the Event Dispatch Thread
 // because it modifies a Swing component 
@@ -340,6 +332,28 @@ public class kiiras extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        try {
+            Scanner in = new Scanner(new FileReader("ip.txt"));
+            int a = 1;
+            while (in.hasNext()) {
+                String kecske = in.nextLine();
+                if (!kecske.isEmpty()) {
+                    System.out.println("txt tartalom: " + kecske);
+                    if (a == 1) {
+                        vph.get(1).connect(kecske.split(":")[0], Integer.parseInt(kecske.split(":")[1]));
+                    } else if (a == 2) {
+                        vph.get(2).connect(kecske.split(":")[0], Integer.parseInt(kecske.split(":")[1]));
+                    } else if (a == 3) {
+                        vph.get(3).connect(kecske.split(":")[0], Integer.parseInt(kecske.split(":")[1]));
+                    }
+                    a++;
+                }
+            }
+            in.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("not configured");
+        }
 
         /*        send = !send;
         System.out.println(send);

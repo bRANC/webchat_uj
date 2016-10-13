@@ -86,6 +86,7 @@ public class server_settings extends javax.swing.JFrame {
                     a++;
                 }
             }
+            in.close();
         } catch (Exception e) {
             e.printStackTrace();
             System.out.println("not configured");
