@@ -2,9 +2,12 @@ package webcum.agent.ui;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.util.concurrent.ExecutorService;
@@ -16,6 +19,25 @@ import net.coobird.thumbnailator.makers.ScaledThumbnailMaker;
 
 public class VideoPanel extends JPanel {
 
+    {
+        //setLayout(new GridBagLayout());
+        // GridBagConstraints gbc = new GridBagConstraints();
+        // this.setBackground(Color.yellow);
+        /*
+       
+        
+        gbc.gridx = gbc.gridy = 1;
+        gbc.fill = GridBagConstraints.BOTH;
+        
+        gbc.anchor = GridBagConstraints.CENTER;
+        gbc.fill = GridBagConstraints.BOTH;
+        gbc.weightx = gbc.weighty = 1.0; */
+
+    }
+
+    public void set_parent_size(Dimension a) {
+        this.setSize(a);
+    }
     /**
      *
      */
@@ -72,10 +94,10 @@ public class VideoPanel extends JPanel {
             //g2.clearRect(0, 0, image.getWidth(), image.getHeight());
             int width = image.getWidth();
             int height = image.getHeight();
-            g2.clearRect(0, 0, width, height);
-            g2.drawImage(image, 0, 0, width, height, null);
+            g2.clearRect(0, 0, getWidth(), getHeight());
+            g2.drawImage(image, 0, 0, getWidth(), getHeight(), null);
             //setBounds(getBounds().x	, getBounds().y, image.getWidth(), image.getHeight());
-            setSize(width, height);
+            setSize(getWidth(), getHeight());
         }
     }
 

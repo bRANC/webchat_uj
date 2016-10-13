@@ -7,7 +7,11 @@ package webcum;
 
 import com.sun.jna.NativeLibrary;
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.LayoutManager;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileReader;
@@ -56,21 +60,37 @@ public class kiiras extends javax.swing.JFrame {
     Server server;
 
     ArrayList<videopanelhandler> vph = new ArrayList<>();
+    ArrayList<JPanel> panelcam = new ArrayList<>();
 
     void setup_receiv() {
+        panelcam.add(panelcam0);
+        panelcam.add(panelcam1);
+        panelcam.add(panelcam2);
+        panelcam.add(panelcam3);
         for (int i = 0; i < 4; i++) {
             vph.add(new videopanelhandler());
         }
+
+        //gridbaglayout beállítások
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.anchor = GridBagConstraints.CENTER;
+        gbc.fill = GridBagConstraints.BOTH;
+        gbc.weightx = gbc.weighty = 1.0;
+        //automata méretezés madafaka
+
         //videoPannel.setPreferredSize(dimension);
-        Dimension dm = new Dimension(320, 240);
-        panelcam0.add(vph.get(0).get_vp());
-        panelcam1.add(vph.get(1).get_vp());
-        panelcam2.add(vph.get(2).get_vp());
-        panelcam3.add(vph.get(3).get_vp());
-        panelcam0.setPreferredSize(dm);
-        panelcam1.setPreferredSize(dm);
+        //Dimension dm = new Dimension(600, 600);
+        for (int i = 0; i < vph.size(); i++) {
+            GridBagLayout layout = (GridBagLayout) panelcam.get(i).getLayout();
+            panelcam.get(i).add(vph.get(i).get_vp());
+            layout.addLayoutComponent(vph.get(i).get_vp(), gbc);
+            //panelcam.get(i).add(vph.get(i).get_vp());
+            //vph.get(i).set_parent_size(dm);
+        }
+        /*        panelcam0.setPreferredSize(dm);
         panelcam2.setPreferredSize(dm);
-        panelcam3.setPreferredSize(dm);
+        panelcam1.setPreferredSize(dm);
+        panelcam3.setPreferredSize(dm);*/
         this.pack();
         /*panelcam0.add(vlc.get(0), BorderLayout.CENTER);
         panelcam1.add(vlc.get(1), BorderLayout.CENTER);
@@ -187,8 +207,8 @@ public class kiiras extends javax.swing.JFrame {
         jButton3 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
         panelcam0 = new javax.swing.JPanel();
-        panelcam1 = new javax.swing.JPanel();
         panelcam2 = new javax.swing.JPanel();
+        panelcam1 = new javax.swing.JPanel();
         panelcam3 = new javax.swing.JPanel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
@@ -240,25 +260,41 @@ public class kiiras extends javax.swing.JFrame {
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 2;
         getContentPane().add(jButton4, gridBagConstraints);
+
+        panelcam0.setLayout(new java.awt.GridBagLayout());
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.weighty = 1.0;
         getContentPane().add(panelcam0, gridBagConstraints);
+
+        panelcam2.setLayout(new java.awt.GridBagLayout());
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        getContentPane().add(panelcam1, gridBagConstraints);
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.weighty = 1.0;
+        getContentPane().add(panelcam2, gridBagConstraints);
+
+        panelcam1.setLayout(new java.awt.GridBagLayout());
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 3;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        getContentPane().add(panelcam2, gridBagConstraints);
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.weighty = 1.0;
+        getContentPane().add(panelcam1, gridBagConstraints);
+
+        panelcam3.setLayout(new java.awt.GridBagLayout());
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 3;
         gridBagConstraints.gridy = 1;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.weighty = 1.0;
         getContentPane().add(panelcam3, gridBagConstraints);
 
         jMenu1.setText("Camera setup");

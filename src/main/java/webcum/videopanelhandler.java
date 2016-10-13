@@ -30,6 +30,10 @@ public class videopanelhandler {
         return videopanel;
     }
 
+    public void set_parent_size(Dimension a) {
+        videopanel.set_parent_size(a);
+    }
+
     void connect(String ip, int port) {
         clientAgent.connect(new InetSocketAddress(ip, port));
     }
