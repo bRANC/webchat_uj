@@ -28,7 +28,9 @@ public class StreamClientHandler extends SimpleChannelHandler {
             throws Exception {
         Channel channel = e.getChannel();
         Throwable t = e.getCause();
-        logger.debug("exception at :{}", channel);
+        //logger.debug("exception at :{}", channel);
+        logger.debug("exception at :{}", e.getCause().toString());
+        t.printStackTrace();
         streamClientListener.onException(channel, t);
         //super.exceptionCaught(ctx, e);
     }
@@ -55,7 +57,7 @@ public class StreamClientHandler extends SimpleChannelHandler {
     public void messageReceived(ChannelHandlerContext ctx, MessageEvent e)
             throws Exception {
         ChannelBuffer channelBuffer = (ChannelBuffer) e.getMessage();
-        logger.info("message received :{}", channelBuffer.readableBytes());
+        // logger.info("message received :{}", channelBuffer.readableBytes());
         super.messageReceived(ctx, e);
     }
 

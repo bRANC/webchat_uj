@@ -7,6 +7,7 @@ package webcum;
 
 import java.net.InetSocketAddress;
 import com.github.sarxos.webcam.Webcam;
+import com.github.sarxos.webcam.WebcamResolution;
 import com.github.sarxos.webcam.WebcamStreamer;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
@@ -65,6 +66,12 @@ public class camera {
         webcam.setAutoOpenMode(true);
         Dimension dimension = new Dimension(320, 240);
         webcam.setViewSize(dimension);
+        if (webcam.getName().contains("HD") || webcam.getName().contains("EasyCamera")|| webcam.getName().contains("VGA")) {
+            webcam.setCustomViewSizes(new Dimension[]{WebcamResolution.HD720.getSize()});//új felbontás regisztrálása
+            //Cm.webcam.setViewSize(WebcamResolution.HD720.getSize());//be állítása HD
+            //VGA
+            webcam.setViewSize(WebcamResolution.VGA.getSize());//be állítása VGA
+        }
         serverAgent = new StreamServerAgent(webcam, dimension);
         serverAgent.start(new InetSocketAddress("localhost", 20000));
 
