@@ -60,21 +60,24 @@ public class camera {
     BufferedImage last;
     StreamServerAgent serverAgent;
 
-    public void stream() {
-        //webcam.open();
+    public void stream(videopanelhandler a) {
+        /*//webcam.open();
         //    WebcamStreamer WS = new WebcamStreamer(5555, webcam, 25, true);
         webcam.setAutoOpenMode(true);
         Dimension dimension = new Dimension(320, 240);
         webcam.setViewSize(dimension);
-        if (webcam.getName().contains("HD") || webcam.getName().contains("EasyCamera") || webcam.getName().contains("VGA")) {
+        if (webcam.getName().contains("HD") || webcam.getName().contains("EasyCamera")) {
             webcam.setCustomViewSizes(new Dimension[]{WebcamResolution.VGA.getSize(), WebcamResolution.HD720.getSize()});//új felbontás regisztrálása
             //Cm.webcam.setViewSize(WebcamResolution.HD720.getSize());//be állítása HD
             //VGA
             webcam.setViewSize(WebcamResolution.HD720.getSize());//be állítása VGA
+            serverAgent = new StreamServerAgent(webcam, WebcamResolution.HD720.getSize());
+        } else if (webcam.getName().contains("VGA")) {
+            serverAgent = new StreamServerAgent(webcam, WebcamResolution.VGA.getSize());
         }
-        serverAgent = new StreamServerAgent(webcam, WebcamResolution.HD720.getSize());
         serverAgent.start(new InetSocketAddress("localhost", 20000));
-
+        a.connect("localhost", 6666);
+         */
     }
 
     public BufferedImage getcam() {

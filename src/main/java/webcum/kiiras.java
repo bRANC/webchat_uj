@@ -5,6 +5,7 @@
  */
 package webcum;
 
+import com.github.sarxos.webcam.WebcamResolution;
 import com.sun.jna.NativeLibrary;
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -308,21 +309,27 @@ public class kiiras extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
+StreamServerAgent serverAgent;
     internal_cam int_cam = new internal_cam();
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-//        int_cam.execute();
-        //cam.stream();
         cam.webcam.setAutoOpenMode(true);
         Dimension dimension = new Dimension(320, 240);
         cam.webcam.setViewSize(dimension);
-        StreamServerAgent serverAgent = new StreamServerAgent(cam.webcam, dimension);
-        serverAgent.start(new InetSocketAddress("0.0.0.0", 6666));
+        cam.webcam.setCustomViewSizes(new Dimension[]{WebcamResolution.VGA.getSize(), WebcamResolution.HD720.getSize()});//új felbontás regisztrálása
+        if (cam.webcam.getName().contains("HD") || cam.webcam.getName().contains("EasyCamera")) {            
+            //Cm.webcam.setViewSize(WebcamResolution.HD720.getSize());//be állítása HD
+            //VGA
+            cam.webcam.setViewSize(WebcamResolution.VGA.getSize());//be állítása VGA
+            serverAgent = new StreamServerAgent(cam.webcam, WebcamResolution.VGA.getSize());
+        } else if (cam.webcam.getName().contains("VGA")) {
+            serverAgent = new StreamServerAgent(cam.webcam, WebcamResolution.VGA.getSize());
+        }
+        serverAgent.start(new InetSocketAddress("localhost", 6666));
         vph.get(0).connect("localhost", 6666);
         //vph.get(1).connect("192.168.1.19", 6666);
-
-// You should execute this part on the Event Dispatch Thread
-// because it modifies a Swing component 
+          
+                // You should execute this part on the Event Dispatch Thread
+                // because it modifies a Swing component 
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
