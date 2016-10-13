@@ -31,6 +31,7 @@ import uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer;
 import uk.co.caprica.vlcj.runtime.RuntimeUtil;
 import webcum.agent.StreamClient;
 import webcum.agent.StreamClientAgent;
+import webcum.agent.StreamServerAgent;
 import webcum.agent.ui.VideoPanel;
 import webcum.handler.StreamFrameListener;
 
@@ -54,40 +55,28 @@ public class kiiras extends javax.swing.JFrame {
     }
     Server server;
 
-    ArrayList<PlayerPanel> vlc = new ArrayList<>();
-    VideoPanel videopanel0, videopanel1, videopanel2, videopanel3;
+    ArrayList<videopanelhandler> vph = new ArrayList<>();
 
     void setup_receiv() {
-        /* for (int i = 0; i < 4; i++) {
-            vlc.add(new PlayerPanel());
-        }*/
+        for (int i = 0; i < 4; i++) {
+            vph.add(new videopanelhandler());
+        }
         //videoPannel.setPreferredSize(dimension);
-        panelcam0.add(videopanel0 = new VideoPanel());
-        panelcam1.add(videopanel1 = new VideoPanel());
-        panelcam2.add(videopanel2 = new VideoPanel());
-        panelcam3.add(videopanel3 = new VideoPanel());
-        panelcam0.setPreferredSize(new Dimension(320, 240));
-        panelcam1.setPreferredSize(new Dimension(320, 240));
-        panelcam2.setPreferredSize(new Dimension(320, 240));
-        panelcam3.setPreferredSize(new Dimension(320, 240));
+        Dimension dm = new Dimension(320, 240);
+        panelcam0.add(vph.get(0).get_vp());
+        panelcam1.add(vph.get(1).get_vp());
+        panelcam2.add(vph.get(2).get_vp());
+        panelcam3.add(vph.get(3).get_vp());
+        panelcam0.setPreferredSize(dm);
+        panelcam1.setPreferredSize(dm);
+        panelcam2.setPreferredSize(dm);
+        panelcam3.setPreferredSize(dm);
         this.pack();
         /*panelcam0.add(vlc.get(0), BorderLayout.CENTER);
         panelcam1.add(vlc.get(1), BorderLayout.CENTER);
         panelcam2.add(vlc.get(2), BorderLayout.CENTER);
         panelcam3.add(vlc.get(3), BorderLayout.CENTER);
          */
-    }
-
-    class StreamFrameListenerIMPL implements StreamFrameListener {
-
-        private volatile long count = 0;
-
-        @Override
-        public void onFrameReceived(BufferedImage image) {
-            //logger.info("frame received :{}",count++);
-            videopanel0.updateImage(image);
-        }
-
     }
 
     void server_start() {
@@ -174,21 +163,6 @@ public class kiiras extends javax.swing.JFrame {
         @Override
         protected Void doInBackground() throws Exception {
             video_send();
-            return null;
-        }
-
-        @Override
-        protected void done() {
-        }
-
-    }
-
-    class camera_conect extends SwingWorker<Void, Void> {
-
-        @Override
-        protected Void doInBackground() throws Exception {
-            server_setup();
-            new external_cam_send().execute();
             return null;
         }
 
@@ -311,10 +285,15 @@ public class kiiras extends javax.swing.JFrame {
     internal_cam int_cam = new internal_cam();
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
 //        int_cam.execute();
-        cam.stream();
-        StreamClientAgent clientAgent = new StreamClientAgent(new StreamFrameListenerIMPL(), new Dimension(340, 240));
-        clientAgent.connect(new InetSocketAddress("localhost", 20000));
-        // You should execute this part on the Event Dispatch Thread
+        //cam.stream();
+        cam.webcam.setAutoOpenMode(true);
+        Dimension dimension = new Dimension(320, 240);
+        cam.webcam.setViewSize(dimension);
+        StreamServerAgent serverAgent = new StreamServerAgent(cam.webcam, dimension);
+        serverAgent.start(new InetSocketAddress("localhost", 6666));
+        vph.get(0).connect("localhost", 6666);
+
+// You should execute this part on the Event Dispatch Thread
 // because it modifies a Swing component 
     }//GEN-LAST:event_jButton1ActionPerformed
 
