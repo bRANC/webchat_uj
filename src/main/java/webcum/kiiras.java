@@ -209,7 +209,7 @@ public class kiiras extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new java.awt.GridBagLayout());
 
-        jButton1.setText("Start");
+        jButton1.setText("Camera on");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
@@ -231,7 +231,7 @@ public class kiiras extends javax.swing.JFrame {
         gridBagConstraints.gridy = 2;
         getContentPane().add(jButton2, gridBagConstraints);
 
-        jButton3.setText("stream");
+        jButton3.setText("connect");
         jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton3ActionPerformed(evt);
