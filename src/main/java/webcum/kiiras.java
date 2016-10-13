@@ -339,12 +339,15 @@ public class kiiras extends javax.swing.JFrame {
                 String kecske = in.nextLine();
                 if (!kecske.isEmpty()) {
                     System.out.println("txt tartalom: " + kecske);
-                    if (a == 1) {
-                        vph.get(1).connect(kecske.split(":")[0], Integer.parseInt(kecske.split(":")[1]));
-                    } else if (a == 2) {
-                        vph.get(2).connect(kecske.split(":")[0], Integer.parseInt(kecske.split(":")[1]));
-                    } else if (a == 3) {
-                        vph.get(3).connect(kecske.split(":")[0], Integer.parseInt(kecske.split(":")[1]));
+                    try {
+                        if (a == 1) {
+                            vph.get(1).connect(kecske.split(":")[0], Integer.parseInt(kecske.split(":")[1]));
+                        } else if (a == 2) {
+                            vph.get(2).connect(kecske.split(":")[0], Integer.parseInt(kecske.split(":")[1]));
+                        } else if (a == 3) {
+                            vph.get(3).connect(kecske.split(":")[0], Integer.parseInt(kecske.split(":")[1]));
+                        }
+                    } catch (Exception e) {
                     }
                     a++;
                 }
