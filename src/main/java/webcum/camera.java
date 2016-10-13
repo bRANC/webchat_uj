@@ -7,6 +7,8 @@ package webcum;
 
 import java.net.InetSocketAddress;
 import com.github.sarxos.webcam.Webcam;
+import com.github.sarxos.webcam.WebcamStreamer;
+import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
 import java.awt.image.AffineTransformOp;
@@ -18,6 +20,7 @@ import java.net.URL;
 import java.util.Scanner;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
+import webcum.agent.StreamServerAgent;
 
 /**
  *
@@ -54,6 +57,17 @@ public class camera {
     }
 
     BufferedImage last;
+
+    public void stream() {
+        //webcam.open();
+        //    WebcamStreamer WS = new WebcamStreamer(5555, webcam, 25, true);
+        webcam.setAutoOpenMode(true);
+        Dimension dimension = new Dimension(320, 240);
+        webcam.setViewSize(dimension);
+        StreamServerAgent serverAgent = new StreamServerAgent(webcam, dimension);
+        serverAgent.start(new InetSocketAddress("localhost", 20000));
+
+    }
 
     public BufferedImage getcam() {
         if (ip) {

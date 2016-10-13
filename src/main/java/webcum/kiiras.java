@@ -5,13 +5,34 @@
  */
 package webcum;
 
+import com.sun.jna.NativeLibrary;
+import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.FileReader;
+import java.net.InetSocketAddress;
 import java.util.ArrayList;
 import java.util.Scanner;
+import javafx.application.Platform;
+import javafx.embed.swing.JFXPanel;
+import javafx.scene.Group;
+import javafx.scene.Scene;
+import javafx.scene.web.WebEngine;
+import javafx.scene.web.WebView;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JPanel;
 import javax.swing.SwingWorker;
+import uk.co.caprica.vlcj.binding.LibVlc;
+import uk.co.caprica.vlcj.component.EmbeddedMediaPlayerComponent;
+import uk.co.caprica.vlcj.discovery.NativeDiscovery;
+import uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer;
+import uk.co.caprica.vlcj.runtime.RuntimeUtil;
+import webcum.agent.StreamClient;
+import webcum.agent.StreamClientAgent;
+import webcum.agent.ui.VideoPanel;
+import webcum.handler.StreamFrameListener;
 
 /**
  *
@@ -28,9 +49,46 @@ public class kiiras extends javax.swing.JFrame {
 
     public kiiras() {
         initComponents();
-        server_start();
+        // server_start();
+        setup_receiv();
     }
     Server server;
+
+    ArrayList<PlayerPanel> vlc = new ArrayList<>();
+    VideoPanel videopanel0, videopanel1, videopanel2, videopanel3;
+
+    void setup_receiv() {
+        /* for (int i = 0; i < 4; i++) {
+            vlc.add(new PlayerPanel());
+        }*/
+        //videoPannel.setPreferredSize(dimension);
+        panelcam0.add(videopanel0 = new VideoPanel());
+        panelcam1.add(videopanel1 = new VideoPanel());
+        panelcam2.add(videopanel2 = new VideoPanel());
+        panelcam3.add(videopanel3 = new VideoPanel());
+        panelcam0.setPreferredSize(new Dimension(320, 240));
+        panelcam1.setPreferredSize(new Dimension(320, 240));
+        panelcam2.setPreferredSize(new Dimension(320, 240));
+        panelcam3.setPreferredSize(new Dimension(320, 240));
+        this.pack();
+        /*panelcam0.add(vlc.get(0), BorderLayout.CENTER);
+        panelcam1.add(vlc.get(1), BorderLayout.CENTER);
+        panelcam2.add(vlc.get(2), BorderLayout.CENTER);
+        panelcam3.add(vlc.get(3), BorderLayout.CENTER);
+         */
+    }
+
+    class StreamFrameListenerIMPL implements StreamFrameListener {
+
+        private volatile long count = 0;
+
+        @Override
+        public void onFrameReceived(BufferedImage image) {
+            //logger.info("frame received :{}",count++);
+            videopanel0.updateImage(image);
+        }
+
+    }
 
     void server_start() {
         try {
@@ -43,15 +101,16 @@ public class kiiras extends javax.swing.JFrame {
 
     void update() {
         while (int_cam_update) {
-            cam0.setIcon(resize(cam0, cam.getcam_icon()));
+            varas(30);
+//            cam0.setIcon(resize(cam0, cam.getcam_icon()));
             for (int i = 0; i < server.befele.size(); i++) {
                 try {
                     if ((i + 1) == 1) {
-                        cam1.setIcon(resize(cam1, server.befele.get(i).cam));
+                        //                      cam1.setIcon(resize(cam1, server.befele.get(i).cam));
                     } else if ((i + 1) == 2) {
-                        cam2.setIcon(resize(cam2, server.befele.get(i).cam));
+                        //                    cam2.setIcon(resize(cam2, server.befele.get(i).cam));
                     } else if ((i + 1) == 3) {
-                        cam3.setIcon(resize(cam3, server.befele.get(i).cam));
+                        //                  cam3.setIcon(resize(cam3, server.befele.get(i).cam));
                     }
                 } catch (Exception e) {
                     //   e.printStackTrace();
@@ -60,22 +119,24 @@ public class kiiras extends javax.swing.JFrame {
         }
     }
 
-    ImageIcon resize(JButton a, ImageIcon b) {
+    ImageIcon resize(JButton a, ImageIcon b
+    ) {
         return new ImageIcon(b.getImage().getScaledInstance(a.getWidth() - 50, a.getHeight() - 50, 2));
     }
 
     void video_send() {
         while (send) {
-            BufferedImage im = cam.getcam();
+            //BufferedImage im = cam.getcam();
             for (int i = 0; i < client.size(); i++) {
                 if (!client.get(i).hiba) {
-                    client.get(i).kuld(im);
+                    client.get(i).kuld(cam.getcam());
                 }
             }
         }
     }
 
-    void varas(int ido) {
+    void varas(int ido
+    ) {
         try {
             Thread.sleep(ido);
         } catch (Exception e) {
@@ -88,14 +149,22 @@ public class kiiras extends javax.swing.JFrame {
         @Override
         protected Void doInBackground() throws Exception {
             int_cam_update = true;
-            cam.start();
-            update();
+//            cam.start();
+
+            /* Platform.runLater(() -> {
+                WebView webView = new WebView();
+                jfxPanel.setScene(new Scene(webView));
+                //webView.getEngine().load(vlc.get(0).formatHttpStream("127.0.0.1", 5555));
+                webView.getEngine().load("http://youtube.com");
+            });*/
+            //vlc.get(0).play("127.0.0.1", 5555);
+//update();
             return null;
         }
 
         @Override
         protected void done() {
-            cam.stop();
+            //cam.stop();
             int_cam_update = false;
         }
     }
@@ -142,11 +211,11 @@ public class kiiras extends javax.swing.JFrame {
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
-        cam0 = new javax.swing.JButton();
-        cam1 = new javax.swing.JButton();
-        cam2 = new javax.swing.JButton();
-        cam3 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
+        panelcam0 = new javax.swing.JPanel();
+        panelcam1 = new javax.swing.JPanel();
+        panelcam2 = new javax.swing.JPanel();
+        panelcam3 = new javax.swing.JPanel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenu2 = new javax.swing.JMenu();
@@ -186,40 +255,6 @@ public class kiiras extends javax.swing.JFrame {
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 2;
         getContentPane().add(jButton3, gridBagConstraints);
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.weighty = 1.0;
-        getContentPane().add(cam0, gridBagConstraints);
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 3;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.weighty = 1.0;
-        getContentPane().add(cam1, gridBagConstraints);
-
-        cam2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cam2ActionPerformed(evt);
-            }
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.weighty = 1.0;
-        getContentPane().add(cam2, gridBagConstraints);
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 3;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.weighty = 1.0;
-        getContentPane().add(cam3, gridBagConstraints);
 
         jButton4.setText("StartServer");
         jButton4.addActionListener(new java.awt.event.ActionListener() {
@@ -231,6 +266,26 @@ public class kiiras extends javax.swing.JFrame {
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 2;
         getContentPane().add(jButton4, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        getContentPane().add(panelcam0, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        getContentPane().add(panelcam1, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 3;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        getContentPane().add(panelcam2, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 3;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        getContentPane().add(panelcam3, gridBagConstraints);
 
         jMenu1.setText("Camera setup");
         jMenu1.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -255,26 +310,28 @@ public class kiiras extends javax.swing.JFrame {
 
     internal_cam int_cam = new internal_cam();
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        int_cam.execute();
+//        int_cam.execute();
+        cam.stream();
+        StreamClientAgent clientAgent = new StreamClientAgent(new StreamFrameListenerIMPL(), new Dimension(340, 240));
+        clientAgent.connect(new InetSocketAddress("localhost", 20000));
+        // You should execute this part on the Event Dispatch Thread
+// because it modifies a Swing component 
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        int_cam.done();
+        /*        int_cam.done();
         server.close();
-        server = new Server(6666);
+        server = new Server(6666);*/
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        send = !send;
 
-        /*client[0].setup(1, "127.0.0.1", 6666);
-        client[1].setup(2, "127.0.0.1", 6666);
-        client[2].setup(3, "127.0.0.1", 6666);*/
+        /*        send = !send;
         System.out.println(send);
         if (send) {
             new camera_conect().execute();
         }
-
+         */
     }//GEN-LAST:event_jButton3ActionPerformed
 
     void server_setup() {
@@ -296,15 +353,12 @@ public class kiiras extends javax.swing.JFrame {
         }
     }
 
-    private void cam2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cam2ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_cam2ActionPerformed
-
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        //setup
-        if (server.sc.isClosed()) {
-            server = new Server(6666);
-        }
+        /*        //setup
+        if (server.sisClosed()) {
+        server = new Server(6666);
+        }*/
+        // vlc_stream_player vlcsp = new vlc_stream_player();
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jMenu1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu1MouseClicked
@@ -350,10 +404,6 @@ public class kiiras extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton cam0;
-    private javax.swing.JButton cam1;
-    private javax.swing.JButton cam2;
-    private javax.swing.JButton cam3;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
@@ -361,5 +411,43 @@ public class kiiras extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JPanel panelcam0;
+    private javax.swing.JPanel panelcam1;
+    private javax.swing.JPanel panelcam2;
+    private javax.swing.JPanel panelcam3;
     // End of variables declaration//GEN-END:variables
+}
+
+class PlayerPanel extends JPanel {
+
+    private File vlcInstallPath = new File("C:/Program Files/VideoLAN/VLC");
+    private EmbeddedMediaPlayer player;
+
+    public PlayerPanel() {
+        boolean found = new NativeDiscovery().discover();
+        System.out.println(found);
+        System.out.println(LibVlc.INSTANCE.libvlc_get_version());
+
+        EmbeddedMediaPlayerComponent videoCanvas = new EmbeddedMediaPlayerComponent();
+        this.setLayout(new BorderLayout());
+        this.add(videoCanvas, BorderLayout.CENTER);
+        this.player = videoCanvas.getMediaPlayer();
+    }
+
+    public void play(String media, int port) {
+        player.prepareMedia(formatHttpStream(media, port));
+        player.parseMedia();
+        player.play();
+    }
+
+    public String formatHttpStream(String serverAddress, int serverPort) {
+        StringBuilder sb = new StringBuilder(60);
+        sb.append(":sout=#duplicate{dst=std{access=http,mux=ts,");
+        sb.append("dst=");
+        sb.append(serverAddress);
+        sb.append(':');
+        sb.append(serverPort);
+        sb.append("}}");
+        return sb.toString();
+    }
 }
