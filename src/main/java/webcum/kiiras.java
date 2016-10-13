@@ -365,8 +365,7 @@ StreamServerAgent serverAgent;
         server.close();
         server = new Server(6666);*/
     }//GEN-LAST:event_jButton2ActionPerformed
-
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+    void connect_to_ips() {
         try {
             Scanner in = new Scanner(new FileReader("ip.txt"));
             int a = 1;
@@ -392,6 +391,9 @@ StreamServerAgent serverAgent;
             e.printStackTrace();
             System.out.println("not configured");
         }
+    }
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        connect_to_ips();
     }//GEN-LAST:event_jButton3ActionPerformed
 
     void server_setup() {
