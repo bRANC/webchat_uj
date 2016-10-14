@@ -6,6 +6,8 @@ import java.awt.Dimension;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.GraphicsConfiguration;
+import java.awt.GraphicsEnvironment;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.RenderingHints;
@@ -92,10 +94,23 @@ public class VideoPanel extends JPanel {
         } else {
             //owner.getGraphics().drawImage(image, 0, 0, image.getWidth(), image.getHeight(), null);
             //g2.clearRect(0, 0, image.getWidth(), image.getHeight());
-            int width = image.getWidth();
-            int height = image.getHeight();
-            g2.clearRect(0, 0, getWidth(), getHeight());
-            g2.drawImage(image, 0, 0, getWidth(), getHeight(), null);
+
+            if (image.getColorModel().equals(gfx_config.getColorModel())) {
+                g2.clearRect(0, 0, getWidth(), getHeight());
+                g2.drawImage(image, 0, 0, getWidth(), getHeight(), null);
+            } else {
+                BufferedImage new_image = gfx_config.createCompatibleImage(
+                        image.getWidth(), image.getHeight(), image.getTransparency());
+
+                // get the graphics context of the new image to draw the old image on
+                Graphics2D g2d = (Graphics2D) new_image.getGraphics();
+
+                // actually draw the image and dispose of context no longer needed
+                g2d.drawImage(image, 0, 0, getWidth(), getHeight(), null);
+                g2d.dispose();
+                g2.drawImage(image, 0, 0, getWidth(), getHeight(), null);
+            }
+
             //setBounds(getBounds().x	, getBounds().y, image.getWidth(), image.getHeight());
             setSize(getWidth(), getHeight());
         }
@@ -111,6 +126,24 @@ public class VideoPanel extends JPanel {
                 repaint();
             }
         });
+    }
+    // obtain the current system graphical settings
+    GraphicsConfiguration gfx_config = GraphicsEnvironment.
+            getLocalGraphicsEnvironment().getDefaultScreenDevice().
+            getDefaultConfiguration();
+
+    private BufferedImage toCompatibleImage(BufferedImage image) {
+        /*
+	 * if image is already compatible and optimized for current system 
+	 * settings, simply return it
+         */
+        if (image.getColorModel().equals(gfx_config.getColorModel())) {
+            return image;
+        }
+
+        // image is not optimized, so create a new image that is
+        // return the new optimized image
+        return null;
     }
 
     public void close() {

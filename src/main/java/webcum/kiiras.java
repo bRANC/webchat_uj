@@ -54,6 +54,9 @@ public class kiiras extends javax.swing.JFrame {
     ArrayList<send> client = new ArrayList<>();
 
     public kiiras() {
+        // System.setProperty("sun.java2d.opengl", "True");
+        System.setProperty("Dsun.java2d.d3d", "True");
+
         initComponents();
         // server_start();
         setup_receiv();
@@ -322,7 +325,6 @@ StreamServerAgent serverAgent;
         cam.webcam.setCustomViewSizes(new Dimension[]{WebcamResolution.VGA.getSize(), WebcamResolution.HD720.getSize()});//új felbontás regisztrálása
         if (cam.webcam.getName().contains("HD") || cam.webcam.getName().contains("EasyCamera")) {
             //Cm.webcam.setViewSize(WebcamResolution.HD720.getSize());//be állítása HD
-
             cam.webcam.setViewSize(WebcamResolution.VGA.getSize());//be állítása VGA
             serverAgent = new StreamServerAgent(cam.webcam, WebcamResolution.VGA.getSize());
         } else if (cam.webcam.getName().contains("VGA") || cam.webcam.getName().contains("")) {
