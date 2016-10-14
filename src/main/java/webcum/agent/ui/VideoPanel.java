@@ -110,7 +110,7 @@ public class VideoPanel extends JPanel {
                 g2d.dispose();
                 g2.drawImage(image, 0, 0, getWidth(), getHeight(), null);
             }
-
+            g2.dispose();
             //setBounds(getBounds().x	, getBounds().y, image.getWidth(), image.getHeight());
             setSize(getWidth(), getHeight());
         }

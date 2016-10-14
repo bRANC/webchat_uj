@@ -87,7 +87,7 @@ public class H264StreamEncoder extends OneToOneEncoder{
 		if (!(msg instanceof BufferedImage)) {
 			throw new IllegalArgumentException("your need to pass into an bufferedimage");
 		}
-		logger.info("encode the frame");
+		//logger.info("encode the frame");
 		BufferedImage bufferedImage = (BufferedImage)msg;
 		//here is the encode
 		//convert the image
