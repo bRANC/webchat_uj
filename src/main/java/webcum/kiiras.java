@@ -40,10 +40,11 @@ public class kiiras extends javax.swing.JFrame {
     ArrayList<send> client = new ArrayList<>();
 
     public kiiras() {
-        // System.setProperty("sun.java2d.opengl", "True");
+        System.setProperty("sun.java2d.opengl", "True");
         System.setProperty("Dsun.java2d.d3d", "True");
         initComponents();
         // server_start();
+        //VolatileImage <-- video memóriában is leképződő image
         setup_receiv();
     }
     Server server;
