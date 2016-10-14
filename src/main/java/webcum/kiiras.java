@@ -6,25 +6,15 @@
 package webcum;
 
 import com.github.sarxos.webcam.WebcamResolution;
-import com.sun.jna.NativeLibrary;
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.LayoutManager;
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileReader;
 import java.net.InetSocketAddress;
 import java.util.ArrayList;
 import java.util.Scanner;
-import javafx.application.Platform;
-import javafx.embed.swing.JFXPanel;
-import javafx.scene.Group;
-import javafx.scene.Scene;
-import javafx.scene.web.WebEngine;
-import javafx.scene.web.WebView;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JPanel;
@@ -33,12 +23,8 @@ import uk.co.caprica.vlcj.binding.LibVlc;
 import uk.co.caprica.vlcj.component.EmbeddedMediaPlayerComponent;
 import uk.co.caprica.vlcj.discovery.NativeDiscovery;
 import uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer;
-import uk.co.caprica.vlcj.runtime.RuntimeUtil;
-import webcum.agent.StreamClient;
-import webcum.agent.StreamClientAgent;
 import webcum.agent.StreamServerAgent;
-import webcum.agent.ui.VideoPanel;
-import webcum.handler.StreamFrameListener;
+
 
 /**
  *
@@ -56,7 +42,6 @@ public class kiiras extends javax.swing.JFrame {
     public kiiras() {
         // System.setProperty("sun.java2d.opengl", "True");
         System.setProperty("Dsun.java2d.d3d", "True");
-
         initComponents();
         // server_start();
         setup_receiv();

@@ -120,7 +120,7 @@ public class StreamServerAgent implements IStreamServerAgent {
                 imageGrabTaskFuture = imageGrabFuture;
                 isStreaming = true;
             }
-            logger.info("current connected clients :{}", channelGroup.size());
+            logger.info("Client connected :{}", channel.getRemoteAddress());
         }
 
         @Override
@@ -134,6 +134,7 @@ public class StreamServerAgent implements IStreamServerAgent {
                 webcam.close();
                 isStreaming = false;
             }
+            logger.info("Client disconnected :{}", channel.getRemoteAddress());
         }
 
         @Override

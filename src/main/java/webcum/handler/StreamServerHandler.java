@@ -53,7 +53,7 @@ public class StreamServerHandler extends SimpleChannelHandler {
         Channel channel = e.getChannel();
         long size = e.getWrittenAmount();
         if (!channel.toString().contains("127.0.0.1")) {
-            logger.error("frame send at :{} size :{}", channel, size);
+            //logger.error("frame send at :{} size :{}", channel, size);
         }
         super.writeComplete(ctx, e);
     }

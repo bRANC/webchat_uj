@@ -5,20 +5,10 @@
  */
 package webcum;
 
-import java.net.InetSocketAddress;
 import com.github.sarxos.webcam.Webcam;
-import com.github.sarxos.webcam.WebcamResolution;
-import com.github.sarxos.webcam.WebcamStreamer;
-import java.awt.Dimension;
 import java.awt.Graphics2D;
-import java.awt.geom.AffineTransform;
-import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.FileReader;
-import java.io.PrintWriter;
 import java.net.URL;
-import java.util.Scanner;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import webcum.agent.StreamServerAgent;
@@ -32,6 +22,9 @@ public class camera {
     Webcam webcam = Webcam.getDefault();
 
     public camera() {
+        //  for (int i = 0; i < webcam.getWebcamListenersCount(); i++) {
+        //      webcam.removeWebcamListener(webcam.getWebcamListeners()[i]);
+        //  }
         //flip_flop_cam_horiz_read();
     }
     Boolean ip = false;
