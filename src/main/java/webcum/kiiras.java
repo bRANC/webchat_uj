@@ -19,12 +19,13 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.SwingWorker;
+import sx.blah.discord.api.ClientBuilder;
+import sx.blah.discord.api.IDiscordClient;
 import uk.co.caprica.vlcj.binding.LibVlc;
 import uk.co.caprica.vlcj.component.EmbeddedMediaPlayerComponent;
 import uk.co.caprica.vlcj.discovery.NativeDiscovery;
 import uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer;
 import webcum.agent.StreamServerAgent;
-
 
 /**
  *
@@ -42,9 +43,10 @@ public class kiiras extends javax.swing.JFrame {
     public kiiras() {
         System.setProperty("sun.java2d.opengl", "True");
         System.setProperty("Dsun.java2d.d3d", "True");
+        System.setProperty("Dsun.java2d.accthreshold","0");
         initComponents();
-        // server_start();
-        //VolatileImage <-- video memóriában is leképződő image
+        // server_start();  
+        //VolatileImage <-- video memóriában is leképződő image   -Dsun.java2d.accthreshold=0
         setup_receiv();
     }
     Server server;
@@ -87,31 +89,6 @@ public class kiiras extends javax.swing.JFrame {
         } catch (Exception e) {
         }
         server = new Server(6666);
-    }
-
-    void update() {
-        while (int_cam_update) {
-            varas(30);
-//            cam0.setIcon(resize(cam0, cam.getcam_icon()));
-            for (int i = 0; i < server.befele.size(); i++) {
-                try {
-                    if ((i + 1) == 1) {
-                        //                      cam1.setIcon(resize(cam1, server.befele.get(i).cam));
-                    } else if ((i + 1) == 2) {
-                        //                    cam2.setIcon(resize(cam2, server.befele.get(i).cam));
-                    } else if ((i + 1) == 3) {
-                        //                  cam3.setIcon(resize(cam3, server.befele.get(i).cam));
-                    }
-                } catch (Exception e) {
-                    //   e.printStackTrace();
-                }
-            }
-        }
-    }
-
-    ImageIcon resize(JButton a, ImageIcon b
-    ) {
-        return new ImageIcon(b.getImage().getScaledInstance(a.getWidth() - 50, a.getHeight() - 50, 2));
     }
 
     void video_send() {
@@ -404,7 +381,49 @@ StreamServerAgent serverAgent;
         }
     }
 
+    class discorder {
+
+        public IDiscordClient getClient(String token, boolean login) { // Returns an instance of the Discord client
+            ClientBuilder clientBuilder = new ClientBuilder(); // Creates the ClientBuilder instance
+            clientBuilder.withToken(token); // Adds the login info to the builder
+            if (login) {
+                try {
+                    return clientBuilder.login(); // Creates the client instance and logs the client in
+                } catch (Exception e) {
+                }
+            } else {
+                try {
+                    return clientBuilder.build(); // Creates the client instance but it doesn't log the client in yet, you would have to call client.login() yourself    
+                } catch (Exception e) {
+                }
+            }
+            return null;
+        }
+
+        public IDiscordClient getClient(String email, String pw, Boolean login) { // Returns an instance of the Discord client
+            ClientBuilder clientBuilder = new ClientBuilder(); // Creates the ClientBuilder instance
+            clientBuilder.withLogin(email, pw); // Adds the login info to the builder
+            if (login) {
+                try {
+                    return clientBuilder.login(); // Creates the client instance and logs the client in
+                } catch (Exception e) {
+                }
+            } else {
+                try {
+                    return clientBuilder.build(); // Creates the client instance but it doesn't log the client in yet, you would have to call client.login() yourself    
+                } catch (Exception e) {
+                }
+            }
+            return null;
+        }
+
+    }
+
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        //discord:start
+
+        //discord:end
+
         /*        //setup
         if (server.sisClosed()) {
         server = new Server(6666);

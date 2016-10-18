@@ -103,7 +103,7 @@ public class VideoPanel extends JPanel {
                         image.getWidth(), image.getHeight(), image.getTransparency());
 
                 // get the graphics context of the new image to draw the old image on
-                Graphics2D g2d = (Graphics2D) new_image.getGraphics();
+                Graphics2D g2d = (Graphics2D) new_image.createGraphics();
 
                 // actually draw the image and dispose of context no longer needed
                 g2d.drawImage(image, 0, 0, getWidth(), getHeight(), null);
@@ -131,20 +131,6 @@ public class VideoPanel extends JPanel {
     GraphicsConfiguration gfx_config = GraphicsEnvironment.
             getLocalGraphicsEnvironment().getDefaultScreenDevice().
             getDefaultConfiguration();
-
-    private BufferedImage toCompatibleImage(BufferedImage image) {
-        /*
-	 * if image is already compatible and optimized for current system 
-	 * settings, simply return it
-         */
-        if (image.getColorModel().equals(gfx_config.getColorModel())) {
-            return image;
-        }
-
-        // image is not optimized, so create a new image that is
-        // return the new optimized image
-        return null;
-    }
 
     public void close() {
         worker.shutdown();
