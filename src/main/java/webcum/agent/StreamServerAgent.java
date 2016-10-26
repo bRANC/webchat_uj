@@ -155,6 +155,10 @@ public class StreamServerAgent implements IStreamServerAgent {
 
         protected volatile long frameCount = 0;
 
+        class msg {
+
+        }
+
         private class ImageGrabTask implements Runnable {
 
             @Override
@@ -237,6 +241,7 @@ public class StreamServerAgent implements IStreamServerAgent {
             public void run() {
                 try {
                     Object msg = h264StreamEncoder.encode(image);
+                    //msg+=
                     if (msg != null) {
                         channelGroup.write(msg);
                     }

@@ -7,9 +7,7 @@ package webcum;
 
 import com.github.sarxos.webcam.WebcamResolution;
 import java.awt.Dimension;
-import java.io.File;
 import java.io.FileReader;
-import java.io.PrintWriter;
 import java.net.URL;
 import java.util.Scanner;
 import javax.swing.SwingWorker;
