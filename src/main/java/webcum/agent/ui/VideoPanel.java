@@ -21,6 +21,10 @@ import net.coobird.thumbnailator.makers.ScaledThumbnailMaker;
 
 public class VideoPanel extends JPanel {
 
+    public void stop() {
+        updateImage(null);
+    }
+
     {
         //setLayout(new GridBagLayout());
         // GridBagConstraints gbc = new GridBagConstraints();

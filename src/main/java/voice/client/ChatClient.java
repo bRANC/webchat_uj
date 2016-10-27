@@ -162,60 +162,6 @@ public class ChatClient implements Runnable, ActionListener {
         }
     }
 
-    private void lstNickKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_lstNickKeyReleased
-        // TODO add your handling code here:
-        KeyWasReleased(evt);
-    }
-
-    private void txtOutputKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtOutputKeyReleased
-        // TODO add your handling code here:
-        KeyWasReleased(evt);
-    }
-
-    private void chkHandsFreeKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_chkHandsFreeKeyReleased
-        // TODO add your handling code here:
-        KeyWasReleased(evt);
-    }
-
-    private void btnTalkKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btnTalkKeyReleased
-        // TODO add your handling code here:
-        KeyWasReleased(evt);
-    }
-
-    private void txtInputKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtInputKeyReleased
-        // TODO add your handling code here:
-        KeyWasReleased(evt);
-    }
-
-    private void chkHandsFreeKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_chkHandsFreeKeyPressed
-        // TODO add your handling code here:
-        KeyWasPressed(evt.getKeyCode());
-    }
-
-    private void lstNickKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_lstNickKeyPressed
-        // TODO add your handling code here:
-        KeyWasPressed(evt.getKeyCode());
-    }
-
-    private void txtOutputKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtOutputKeyPressed
-        // TODO add your handling code here:
-        KeyWasPressed(evt.getKeyCode());
-    }
-
-    private void btnTalkKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btnTalkKeyPressed
-        // TODO add your handling code here:
-        KeyWasPressed(evt.getKeyCode());
-    }
-
-    private void txtInputKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtInputKeyPressed
-        // TODO add your handling code here:
-        KeyWasPressed(evt.getKeyCode());
-    }
-
-    private void formKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formKeyTyped
-        // TODO add your handling code here:
-    }
-
     void handsfree(boolean set) {
         HandsFree = set;
         if (!HandsFree && recording) {
@@ -236,9 +182,11 @@ public class ChatClient implements Runnable, ActionListener {
         recording = !recording;
     }
 
-    private void btnExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExitActionPerformed
-        // Add your handling code here:
+    public boolean is_talking() {
+        return recording;
+    }
 
+    public void close() {
         /**
          * Exits org.multichat.client.ChatClient Stops the recodrer from running
          * And calls its the recorders onExit() function to unload its thread
@@ -246,8 +194,11 @@ public class ChatClient implements Runnable, ActionListener {
         if (r != null) {
             r.onExit();
         }
+        try {
+            socket.close();
+        } catch (Exception e) {
+        }
         imRunning = false;
-        System.exit(0);
     }
 
     void priv_msg(int i) {

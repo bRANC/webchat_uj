@@ -92,8 +92,15 @@ public class StreamServerAgent implements IStreamServerAgent {
         channelGroup.add(channel);
     }
 
+    Boolean getcam = true;
+
     @Override
     public void stop() {
+        getcam = false;
+        try {
+            wait(100);
+        } catch (Exception e) {
+        }
         logger.info("server is stoping");
         channelGroup.close();
         timeWorker.shutdown();
@@ -165,8 +172,10 @@ public class StreamServerAgent implements IStreamServerAgent {
             public void run() {
 
                 //logger.info("image grabed ,count :{}",frameCount++);
-                BufferedImage bufferedImage = getcam();
-
+                BufferedImage bufferedImage = null;
+                if (getcam) {
+                    bufferedImage = getcam();
+                }
                 /**
                  * using this when the h264 encoder is added to the pipeline
                  *

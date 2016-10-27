@@ -53,6 +53,17 @@ public class kiiras extends javax.swing.JFrame {
         //VolatileImage <-- video memóriában is leképződő image   -Dsun.java2d.accthreshold=0
         setup_receiv();
         new Chatstartup().execute();
+        this.addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowClosing(java.awt.event.WindowEvent windowEvent) {
+                cc.close();
+                for (int i = 0; i < vph.size(); i++) {
+                    vph.get(i).stop();
+                }
+                serverAgent.stop();
+            }
+        }
+        );
     }
     Server server;
 
@@ -87,25 +98,6 @@ public class kiiras extends javax.swing.JFrame {
 
     }
 
-    void server_start() {
-        try {
-            server.sc.close();
-            server.close();
-        } catch (Exception e) {
-        }
-        server = new Server(6666);
-    }
-
-    void video_send() {
-        while (send) {
-            //BufferedImage im = cam.getcam();
-            for (int i = 0; i < client.size(); i++) {
-                if (!client.get(i).hiba) {
-                    client.get(i).kuld(cam.getcam());
-                }
-            }
-        }
-    }
 
     void varas(int ido
     ) {
@@ -181,7 +173,6 @@ public class kiiras extends javax.swing.JFrame {
         jMenu1 = new javax.swing.JMenu();
         jMenu2 = new javax.swing.JMenu();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new java.awt.GridBagLayout());
 
         jButton1.setText("Camera on");
@@ -336,12 +327,9 @@ StreamServerAgent serverAgent;
         return vissza;
     }
 
-
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        /*        int_cam.done();
-        server.close();
-        server = new Server(6666);*/
         cc.talk();
+        jButton2.setText("talk " + cc.is_talking());
     }//GEN-LAST:event_jButton2ActionPerformed
     class ip {
 
