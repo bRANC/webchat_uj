@@ -2,7 +2,6 @@ package voice.server;
 
 // org.multichat.server.ChatHandler.java
 //
-
 import voice.CommonSoundClass;
 import voice.MultiChatConstants;
 
@@ -11,8 +10,10 @@ import java.net.Socket;
 import java.util.Vector;
 
 import java.io.*;
+import static java.lang.Thread.sleep;
 
 public class ChatHandler extends Thread {
+
     static Vector handlers = new Vector(10); // vector that holds the thread
     private Socket socket;
     private InputStream in;
@@ -32,7 +33,7 @@ public class ChatHandler extends Thread {
     boolean keepGoing = false;
 
     //wordPlace wp = new wordPlace(
-            public ChatHandler() {
+    public ChatHandler() {
     }
 
     public ChatHandler(Socket socket) throws IOException {
@@ -48,6 +49,7 @@ public class ChatHandler extends Thread {
     boolean lastpacketrecieved = true;
 
     public class pingClass extends Thread {
+
         ChatHandler ptrtoThis = null;
 
         public pingClass(ChatHandler ptrtoThis) {
@@ -55,7 +57,7 @@ public class ChatHandler extends Thread {
         }
 
         public void run() {
-            while ( keepGoing ) {
+            while (keepGoing) {
                 ptrtoThis.cs.writebyte(("PT$" + MultiChatConstants.BREAKER).getBytes());
                 try {
                     synchronized (this) {
@@ -70,6 +72,7 @@ public class ChatHandler extends Thread {
 
     // TODO: add more code to this thread to stop the inner while loop or it will wait forever?
     public class ServerSendThread extends Thread {
+
         ChatHandler fr;
 
         public ServerSendThread(ChatHandler fr) {
@@ -122,7 +125,7 @@ public class ChatHandler extends Thread {
                             fr.s.stopit(); // stop the thread from sending any more data to me i'm already logged off
                         }
 
-                        if (! alreadyclosed) {
+                        if (!alreadyclosed) {
                             alreadyclosed = true;
                             in.close();
                             out.close();
@@ -155,6 +158,7 @@ public class ChatHandler extends Thread {
     }
 
     public class timeout extends Thread {
+
         ChatHandler fr;
         public boolean shuldclose = true;
 
@@ -183,6 +187,7 @@ public class ChatHandler extends Thread {
     }
 
     public class vectorandsize implements Serializable {
+
         public byte[] b;
         public int size;
 
@@ -195,9 +200,11 @@ public class ChatHandler extends Thread {
     Vector recievedByteVector = new Vector();
 
     /**
-     * This thread handles processing of received items that were in the received byte vector
+     * This thread handles processing of received items that were in the
+     * received byte vector
      */
     public class ReceivedQueueProcessorThread extends Thread {
+
         ChatHandler ptrtoThis = null;
 
         public ReceivedQueueProcessorThread(ChatHandler ptrtoThis) {
@@ -205,7 +212,7 @@ public class ChatHandler extends Thread {
         }
 
         public void run() {
-            while ( keepGoing ) {
+            while (keepGoing) {
                 if (recievedByteVector.size() > 0) {
                     vectorandsize vs = (vectorandsize) recievedByteVector.remove(0);
                     byte[] bytepassedObj = vs.b;
@@ -235,7 +242,7 @@ public class ChatHandler extends Thread {
                 }
 
                 byte[] b = new byte[sizeread];
-                for (int x = 0 ; x < sizeread; x++) {
+                for (int x = 0; x < sizeread; x++) {
                     b[x] = bytepassedObj[x];
                 }
 
@@ -286,7 +293,7 @@ public class ChatHandler extends Thread {
                             }
                         }
                     }
-                //stopped talking
+                    //stopped talking
                 } else if (sizeread > 2 && sizeread < 100 && passedObj.length() >= 2
                         && (passedObj.substring(0, 2).equals("NT") || passedObj.substring(0, 2).equals("#&"))) {
                     if (IAmTalking == true) {
@@ -300,11 +307,11 @@ public class ChatHandler extends Thread {
                         ImTalkingCounter = 0;//reset the talk counter so next time someone taks it could notify them that someone is talking
                         IAmTalking = false;
                     }
-                //notify other people that nobody is talking
+                    //notify other people that nobody is talking
                 } else if (sizeread >= 2 && sizeread < 100 && passedObj.length() >= 2 && (passedObj.substring(0, 2).equals("PR"))) {
                     //packet recieved send next one
                     lastpacketrecieved = true;
-                // Mute one of the users
+                    // Mute one of the users
                 } else if (sizeread > 2 && sizeread < 100 && passedObj.length() > 4 && passedObj.substring(0, 4).equals("MUTE")) {
                     if (IAmAdmin) {
                         for (int i = 0; i < handlers.size(); i++) {
@@ -331,7 +338,7 @@ public class ChatHandler extends Thread {
                             }
                         }
                     }
-                // UnMute one of the users
+                    // UnMute one of the users
                 } else if (sizeread > 2 && sizeread < 100 && passedObj.length() > 6 && passedObj.substring(0, 6).equals("UNMUTE")) {
                     if (IAmAdmin) {
                         for (int i = 0; i < handlers.size(); i++) {
@@ -346,7 +353,7 @@ public class ChatHandler extends Thread {
                             }
                         }
                     }
-                //text talking or low audio size (SW: Probably not low audi of starts with TXT?)
+                    //text talking or low audio size (SW: Probably not low audi of starts with TXT?)
                 } else if (sizeread > 2 && sizeread < 100 && passedObj.substring(0, 3).equals("TXT")) {
                     for (int i = 0; i < handlers.size(); i++) {
                         ChatHandler tmp = (ChatHandler) (handlers.elementAt(i));
@@ -356,7 +363,7 @@ public class ChatHandler extends Thread {
                             //tmp.out.flush();
                         }
                     }
-                // Audio
+                    // Audio
                 } else {
                     boolean someoneIsTalking = false;
                     String talkersNick = "";
@@ -377,7 +384,7 @@ public class ChatHandler extends Thread {
                                     if (handlers.size() > 2) {
                                         if (nick != "") {
                                             // stop talking, i'm using the mic also notifies the talker
-                                            tmp.cs.writebyte(("ST" + nick + MultiChatConstants.BREAKER).getBytes());
+                                            tmp.cs.writebyte(("PT" + nick + MultiChatConstants.BREAKER).getBytes());
                                             // tmp.out.write( ("ST" + nick).getBytes()  );
                                             //tmp.out.flush();
                                         }
@@ -403,20 +410,18 @@ public class ChatHandler extends Thread {
                                 //tmp.out.flush();
                             }
                         }
-                    } else {
-                        if (handlers.size() > 2) { // if there is more then two people in the room
-                            if (talkersNick != "") {
-                                // stop talking, someone is using the mic
-                                ptrtoThis.cs.writebyte(("ST" + talkersNick + MultiChatConstants.BREAKER).getBytes());
-                                //this.out.write( ("ST" + talkersNick ).getBytes() );
-                                //this.out.flush();
-                            }
-                        } else if (IAmMute) {
+                    } else if (handlers.size() > 2) { // if there is more then two people in the room
+                        if (talkersNick != "") {
                             // stop talking, someone is using the mic
-                            ptrtoThis.cs.writebyte(("ST|YourMute" + MultiChatConstants.BREAKER).getBytes());
-                            //this.out.write( ("ST|YourMute").getBytes() );
+                            ptrtoThis.cs.writebyte(("PT" + talkersNick + MultiChatConstants.BREAKER).getBytes());
+                            //this.out.write( ("ST" + talkersNick ).getBytes() );
                             //this.out.flush();
                         }
+                    } else if (IAmMute) {
+                        // stop talking, someone is using the mic
+                        ptrtoThis.cs.writebyte(("ST|YourMute" + MultiChatConstants.BREAKER).getBytes());
+                        //this.out.write( ("ST|YourMute").getBytes() );
+                        //this.out.flush();
                     }
                 }
             }
@@ -436,7 +441,8 @@ public class ChatHandler extends Thread {
             t.shuldclose = false;
 
             keepGoing = true;
-        } catch (IOException ignored) {}
+        } catch (IOException ignored) {
+        }
 
         synchronized (handlers) {
             handlers.addElement(this);
@@ -449,7 +455,7 @@ public class ChatHandler extends Thread {
             byte[] mybyte = new byte[1024 * 3];
 
             int j = 0;
-            while ( keepGoing ) {
+            while (keepGoing) {
                 byte[] bytepassedObj = new byte[MultiChatConstants.bytesize];
                 int sizeread = in.read(bytepassedObj, 0, MultiChatConstants.bytesize);
                 //recievedByteVector.addElement( ((Object)(new vectorandsize( bytepassedObj, sizeread ))) );
@@ -476,8 +482,7 @@ public class ChatHandler extends Thread {
         } catch (Exception exp) {
             //ioe.printStackTrace();.
             exp.printStackTrace();
-        }
-        finally {
+        } finally {
             try {
                 synchronized (handlers) {
                     // tell others that this user logged off
@@ -492,7 +497,7 @@ public class ChatHandler extends Thread {
                         this.s.stopit(); // stop the thread from sending any more data to me i'm already logged off
                     }
 
-                    if (! alreadyclosed) {
+                    if (!alreadyclosed) {
                         alreadyclosed = true;
                         in.close();
                         out.close();

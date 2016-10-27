@@ -4,39 +4,34 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-public class ChatServer extends Thread{
-    public static final int DEFAULT_PORT = 6969;
+import webcum.kiiras;
 
-    public static void main(String[] args) {
+public class ChatServer extends Thread {
+
+    public int port = 6969;
+    kiiras ki;
+
+    public ChatServer(int port) {
+        this.ki = ki;
         System.out.println("MultiUser Voice Chat server starting...");
-        int port = DEFAULT_PORT;
+        this.port = port;
         ServerSocket serverSocket = null;
         Socket socket = null;
         try {
-            if(args.length > 0)
-                port = Integer.parseInt(args[0]);
-        } catch(NumberFormatException nfe) {
-            System.err.println("Usage: java ChatServer [port]");
-            System.err.println("Where options include:");
-            System.err.println("\tport the port on which to listen.");
-            System.exit(0);
-        }
-        try {
             serverSocket = new ServerSocket(port);
             System.out.println("Listening on port " + port);
-            
-            while(true) {
+            while (true) {
                 socket = serverSocket.accept();
                 System.out.println("Connection receive from " + socket.getRemoteSocketAddress());
                 ChatHandler handler = new ChatHandler(socket);
                 handler.start();
             }
-        } catch(IOException ioe) {
+        } catch (IOException ioe) {
             ioe.printStackTrace();
         } finally {
             try {
                 serverSocket.close();
-            } catch(IOException ioe) {
+            } catch (IOException ioe) {
                 ioe.printStackTrace();
             }
         }

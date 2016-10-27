@@ -18,6 +18,7 @@ import java.util.Scanner;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JPanel;
+import javax.swing.JTextArea;
 import javax.swing.SwingWorker;
 import sx.blah.discord.api.ClientBuilder;
 import sx.blah.discord.api.IDiscordClient;
@@ -25,6 +26,9 @@ import uk.co.caprica.vlcj.binding.LibVlc;
 import uk.co.caprica.vlcj.component.EmbeddedMediaPlayerComponent;
 import uk.co.caprica.vlcj.discovery.NativeDiscovery;
 import uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer;
+import voice.ScreenSaver.ScreenSaver;
+import voice.client.ChatClient;
+import voice.server.ChatServer;
 import webcum.agent.StreamServerAgent;
 
 /**
@@ -43,11 +47,12 @@ public class kiiras extends javax.swing.JFrame {
     public kiiras() {
         System.setProperty("sun.java2d.opengl", "True");
         System.setProperty("Dsun.java2d.d3d", "True");
-        System.setProperty("Dsun.java2d.accthreshold","0");
+        System.setProperty("Dsun.java2d.accthreshold", "0");
         initComponents();
         // server_start();  
         //VolatileImage <-- video memóriában is leképződő image   -Dsun.java2d.accthreshold=0
         setup_receiv();
+        new Chatstartup().execute();
     }
     Server server;
 
@@ -111,43 +116,47 @@ public class kiiras extends javax.swing.JFrame {
         }
     }
 
-    class internal_cam extends SwingWorker<Void, Void> {
+    ChatClient cc = new ChatClient();
+
+    class Chatstartup extends SwingWorker<Void, Void> {
 
         @Override
         protected Void doInBackground() throws Exception {
-            int_cam_update = true;
-//            cam.start();
+            scan();
+            if (ip.size() > 0) {
+                for (int i = 0; i < ip.size(); i++) {
+                    if (!cc.isConnected()) {
+                        cc.connect(ip.get(i).ip, ip.get(i).port_txt + "");
+                    }
+                }
+            }
+            cc.connect("localhost", 6969 + "");
+            if (!cc.isConnected()) {
+                new Chat_and_voice_server_start().execute();
+                varas(200);
+                cc.connect("localhost", 6969 + "");
+            } else {
 
-            /* Platform.runLater(() -> {
-                WebView webView = new WebView();
-                jfxPanel.setScene(new Scene(webView));
-                //webView.getEngine().load(vlc.get(0).formatHttpStream("127.0.0.1", 5555));
-                webView.getEngine().load("http://youtube.com");
-            });*/
-            //vlc.get(0).play("127.0.0.1", 5555);
-//update();
+            }
+
+            cc.set_nickname("egy1");
             return null;
         }
 
         @Override
         protected void done() {
-            //cam.stop();
-            int_cam_update = false;
         }
+
     }
+    ChatServer cs;
 
-    class external_cam_send extends SwingWorker<Void, Void> {
+    class Chat_and_voice_server_start extends SwingWorker<Void, Void> {
 
         @Override
         protected Void doInBackground() throws Exception {
-            video_send();
+            cs = new ChatServer(6969);
             return null;
         }
-
-        @Override
-        protected void done() {
-        }
-
     }
 
     /**
@@ -186,7 +195,7 @@ public class kiiras extends javax.swing.JFrame {
         gridBagConstraints.gridy = 2;
         getContentPane().add(jButton1, gridBagConstraints);
 
-        jButton2.setText("stop");
+        jButton2.setText("talk");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton2ActionPerformed(evt);
@@ -208,7 +217,7 @@ public class kiiras extends javax.swing.JFrame {
         gridBagConstraints.gridy = 2;
         getContentPane().add(jButton3, gridBagConstraints);
 
-        jButton4.setText("StartServer");
+        jButton4.setText("Screen Saver");
         jButton4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton4ActionPerformed(evt);
@@ -223,6 +232,7 @@ public class kiiras extends javax.swing.JFrame {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
+        gridBagConstraints.gridwidth = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
@@ -232,6 +242,7 @@ public class kiiras extends javax.swing.JFrame {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridwidth = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
@@ -239,8 +250,9 @@ public class kiiras extends javax.swing.JFrame {
 
         panelcam1.setLayout(new java.awt.GridBagLayout());
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 3;
+        gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 0;
+        gridBagConstraints.gridwidth = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
@@ -248,8 +260,9 @@ public class kiiras extends javax.swing.JFrame {
 
         panelcam3.setLayout(new java.awt.GridBagLayout());
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 3;
+        gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridwidth = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
@@ -276,10 +289,8 @@ public class kiiras extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 StreamServerAgent serverAgent;
-    internal_cam int_cam = new internal_cam();
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         start_local_cam_server();            //VGA
-
     }//GEN-LAST:event_jButton1ActionPerformed
     void start_local_cam_server() {
         cam.webcam.setAutoOpenMode(true);
@@ -330,8 +341,25 @@ StreamServerAgent serverAgent;
         /*        int_cam.done();
         server.close();
         server = new Server(6666);*/
+        cc.talk();
     }//GEN-LAST:event_jButton2ActionPerformed
-    void connect_to_ips() {
+    class ip {
+
+        ip(String ip, int port_v, int port_txt, int port_a) {
+            this.ip = ip;
+            this.port_v = port_v;
+            this.port_txt = port_txt;
+            this.port_a = port_a;
+        }
+        String ip;
+        int port_v;
+        int port_a;
+        int port_txt;
+    }
+    ArrayList<ip> ip;
+
+    void scan() {
+        ip = new ArrayList();
         try {
             Scanner in = new Scanner(new FileReader("ip.txt"));
             int a = 1;
@@ -340,13 +368,7 @@ StreamServerAgent serverAgent;
                 if (!kecske.isEmpty()) {
                     System.out.println("txt tartalom: " + kecske);
                     try {
-                        if (a == 1) {
-                            vph.get(1).connect(kecske.split(":")[0], Integer.parseInt(kecske.split(":")[1]));
-                        } else if (a == 2) {
-                            vph.get(2).connect(kecske.split(":")[0], Integer.parseInt(kecske.split(":")[1]));
-                        } else if (a == 3) {
-                            vph.get(3).connect(kecske.split(":")[0], Integer.parseInt(kecske.split(":")[1]));
-                        }
+                        ip.add(new ip(kecske.split(":")[0], Integer.parseInt(kecske.split(":")[1]), Integer.parseInt(kecske.split(":")[2]), Integer.parseInt(kecske.split(":")[3])));
                     } catch (Exception e) {
                     }
                     a++;
@@ -358,8 +380,22 @@ StreamServerAgent serverAgent;
             System.out.println("not configured");
         }
     }
+
+    void connect_to_ips() {
+        try {
+            for (int i = 0; i < ip.size(); i++) {
+                vph.get(1).connect(ip.get(i).ip, ip.get(i).port_v);
+            }
+        } catch (Exception e) {
+
+        }
+    }
+
+    public void send_text(String text) {
+        cc.send_text(text);
+    }
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        connect_to_ips();
+        vph.get(3).connect("", 2);
     }//GEN-LAST:event_jButton3ActionPerformed
 
     void server_setup() {
@@ -381,56 +417,13 @@ StreamServerAgent serverAgent;
         }
     }
 
-    class discorder {
-
-        public IDiscordClient getClient(String token, boolean login) { // Returns an instance of the Discord client
-            ClientBuilder clientBuilder = new ClientBuilder(); // Creates the ClientBuilder instance
-            clientBuilder.withToken(token); // Adds the login info to the builder
-            if (login) {
-                try {
-                    return clientBuilder.login(); // Creates the client instance and logs the client in
-                } catch (Exception e) {
-                }
-            } else {
-                try {
-                    return clientBuilder.build(); // Creates the client instance but it doesn't log the client in yet, you would have to call client.login() yourself    
-                } catch (Exception e) {
-                }
-            }
-            return null;
-        }
-
-        public IDiscordClient getClient(String email, String pw, Boolean login) { // Returns an instance of the Discord client
-            ClientBuilder clientBuilder = new ClientBuilder(); // Creates the ClientBuilder instance
-            clientBuilder.withLogin(email, pw); // Adds the login info to the builder
-            if (login) {
-                try {
-                    return clientBuilder.login(); // Creates the client instance and logs the client in
-                } catch (Exception e) {
-                }
-            } else {
-                try {
-                    return clientBuilder.build(); // Creates the client instance but it doesn't log the client in yet, you would have to call client.login() yourself    
-                } catch (Exception e) {
-                }
-            }
-            return null;
-        }
-
-    }
-
+    ScreenSaver ss = new ScreenSaver(this);
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        //discord:start
-
-        //discord:end
-
-        /*        //setup
-        if (server.sisClosed()) {
-        server = new Server(6666);
-        }*/
-        // vlc_stream_player vlcsp = new vlc_stream_player();
+        ss.setVisible(true);
     }//GEN-LAST:event_jButton4ActionPerformed
-
+    public void set_text_ki(JTextArea txtOutput) {
+        cc.set_txtout(txtOutput);
+    }
     private void jMenu1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu1MouseClicked
         new webcam_settings(cam).setVisible(true);
     }//GEN-LAST:event_jMenu1MouseClicked
