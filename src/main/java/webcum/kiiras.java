@@ -144,10 +144,6 @@ public class kiiras extends javax.swing.JFrame {
 
         @Override
         protected void done() {
-            cc.close();
-            if (cas != null) {
-                cas.cancel(true);
-            }
         }
 
     }
@@ -160,6 +156,12 @@ public class kiiras extends javax.swing.JFrame {
             cs = new ChatServer(6969);
             return null;
         }
+
+        @Override
+        protected void done() {
+
+        }
+
     }
 
     /**
@@ -386,7 +388,8 @@ StreamServerAgent serverAgent;
             while (in.hasNext()) {
                 String kecske = in.nextLine();
                 if (!kecske.isEmpty()) {
-                    System.out.println("txt tartalom: " + kecske);
+                    System.out.println("id: " + a + " txt tartalom: " + kecske);
+
                     switch (a) {
                         case 1:
                             ki = kecske;
