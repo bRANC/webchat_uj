@@ -381,7 +381,7 @@ StreamServerAgent serverAgent;
     void local_things() {
         String ki = "", ki1 = "", ki2 = "";
         try {
-            Scanner in = new Scanner(new FileReader("dolog.txt"));
+            Scanner in = new Scanner(new FileReader("dologok.txt"));
             int a = 1;
             while (in.hasNext()) {
                 String kecske = in.nextLine();
