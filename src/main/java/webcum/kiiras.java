@@ -43,6 +43,7 @@ public class kiiras extends javax.swing.JFrame {
     camera cam = new camera();
     Boolean int_cam_update = true, send = false;
     ArrayList<send> client = new ArrayList<>();
+    Chatstartup Ct = new Chatstartup();
 
     public kiiras() {
         System.setProperty("sun.java2d.opengl", "True");
@@ -52,7 +53,8 @@ public class kiiras extends javax.swing.JFrame {
         // server_start();  
         //VolatileImage <-- video memóriában is leképződő image   -Dsun.java2d.accthreshold=0
         setup_receiv();
-        new Chatstartup().execute();
+        local_things();
+        Ct.execute();
         this.addWindowListener(new java.awt.event.WindowAdapter() {
             @Override
             public void windowClosing(java.awt.event.WindowEvent windowEvent) {
@@ -115,6 +117,8 @@ public class kiiras extends javax.swing.JFrame {
 
     class Chatstartup extends SwingWorker<Void, Void> {
 
+        Chat_and_voice_server_start cas;
+
         @Override
         protected Void doInBackground() throws Exception {
             scan();
@@ -127,19 +131,23 @@ public class kiiras extends javax.swing.JFrame {
             }
             cc.connect("localhost", port_szam(1) + "");
             if (!cc.isConnected()) {
-                new Chat_and_voice_server_start().execute();
+                cas = new Chat_and_voice_server_start();
+                cas.execute();
                 varas(200);
                 cc.connect("localhost", port_szam(1) + "");
             } else {
 
             }
-
-            cc.set_nickname("egy1");
+            cc.set_nickname(dolog.nev);
             return null;
         }
 
         @Override
         protected void done() {
+            cc.close();
+            if (cas != null) {
+                cas.cancel(true);
+            }
         }
 
     }
@@ -172,6 +180,7 @@ public class kiiras extends javax.swing.JFrame {
         panelcam2 = new javax.swing.JPanel();
         panelcam1 = new javax.swing.JPanel();
         panelcam3 = new javax.swing.JPanel();
+        jButton5 = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenu2 = new javax.swing.JMenu();
@@ -196,7 +205,7 @@ public class kiiras extends javax.swing.JFrame {
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 3;
+        gridBagConstraints.gridx = 4;
         gridBagConstraints.gridy = 2;
         getContentPane().add(jButton2, gridBagConstraints);
 
@@ -207,7 +216,7 @@ public class kiiras extends javax.swing.JFrame {
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 2;
         getContentPane().add(jButton3, gridBagConstraints);
 
@@ -218,7 +227,7 @@ public class kiiras extends javax.swing.JFrame {
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridx = 3;
         gridBagConstraints.gridy = 2;
         getContentPane().add(jButton4, gridBagConstraints);
 
@@ -226,7 +235,7 @@ public class kiiras extends javax.swing.JFrame {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
-        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.gridwidth = 3;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
@@ -236,7 +245,7 @@ public class kiiras extends javax.swing.JFrame {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
-        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.gridwidth = 3;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
@@ -244,7 +253,7 @@ public class kiiras extends javax.swing.JFrame {
 
         panelcam1.setLayout(new java.awt.GridBagLayout());
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridx = 3;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.gridwidth = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
@@ -254,13 +263,24 @@ public class kiiras extends javax.swing.JFrame {
 
         panelcam3.setLayout(new java.awt.GridBagLayout());
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridx = 3;
         gridBagConstraints.gridy = 1;
         gridBagConstraints.gridwidth = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
         getContentPane().add(panelcam3, gridBagConstraints);
+
+        jButton5.setText("reconnect");
+        jButton5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton5ActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 2;
+        getContentPane().add(jButton5, gridBagConstraints);
 
         jMenu1.setText("Camera Audio setup");
         jMenu1.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -335,15 +355,13 @@ StreamServerAgent serverAgent;
     }//GEN-LAST:event_jButton2ActionPerformed
     class ip {
 
-        ip(String ip, int port_v, int port_txt, int port_a) {
+        ip(String ip, int port_v, int port_txt) {
             this.ip = ip;
             this.port_v = port_v;
             this.port_txt = port_txt;
-            this.port_a = port_a;
         }
         String ip;
         int port_v;
-        int port_a;
         int port_txt;
     }
     ArrayList<ip> ip;
@@ -363,7 +381,7 @@ StreamServerAgent serverAgent;
     void local_things() {
         String ki = "", ki1 = "", ki2 = "";
         try {
-            Scanner in = new Scanner(new FileReader("ip.txt"));
+            Scanner in = new Scanner(new FileReader("dolog.txt"));
             int a = 1;
             while (in.hasNext()) {
                 String kecske = in.nextLine();
@@ -403,7 +421,7 @@ StreamServerAgent serverAgent;
                 if (!kecske.isEmpty()) {
                     System.out.println("txt tartalom: " + kecske);
                     try {
-                        ip.add(new ip(kecske.split(":")[0], Integer.parseInt(kecske.split(":")[1]), Integer.parseInt(kecske.split(":")[2]), Integer.parseInt(kecske.split(":")[3])));
+                        ip.add(new ip(kecske.split(":")[0], Integer.parseInt(kecske.split(":")[1]), Integer.parseInt(kecske.split(":")[2])));
                     } catch (Exception e) {
                     }
                     a++;
@@ -460,12 +478,19 @@ StreamServerAgent serverAgent;
         cc.set_txtout(txtOutput);
     }
     private void jMenu1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu1MouseClicked
-        new webcam_settings(cam,cc).setVisible(true);
+        new webcam_settings(cam, cc).setVisible(true);
     }//GEN-LAST:event_jMenu1MouseClicked
 
     private void jMenu2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu2MouseClicked
         new server_settings().setVisible(true);
     }//GEN-LAST:event_jMenu2MouseClicked
+
+    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+        Ct.done();
+        Ct.cancel(true);
+        Ct = new Chatstartup();
+        Ct.execute();
+    }//GEN-LAST:event_jButton5ActionPerformed
     /**
      * @param args the command line arguments
      */
@@ -506,6 +531,7 @@ StreamServerAgent serverAgent;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
+    private javax.swing.JButton jButton5;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
