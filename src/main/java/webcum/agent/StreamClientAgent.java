@@ -45,7 +45,7 @@ public class StreamClientAgent implements IStreamClientAgent {
         logger.info("going to connect to stream server :{}", streamServerAddress);
 
         clientBootstrap.setOption("connectTimeoutMillis", 10000);
-        
+
         logger.info("timeout :{}", clientBootstrap.getOption("connectTimeoutMillis"));
         //clientBootstrap.setOption("tcpNoDelay", true);
         //clientBootstrap.setOption("keepAlive", true);
@@ -54,8 +54,15 @@ public class StreamClientAgent implements IStreamClientAgent {
 
     @Override
     public void stop() {
-        clientChannel.close();
-        clientBootstrap.releaseExternalResources();
+        //trihard
+        try {
+            clientChannel.close();
+        } catch (Exception e) {
+        }
+        try {
+            clientBootstrap.releaseExternalResources();
+        } catch (Exception e) {
+        }
     }
 
     protected class StreamClientListenerIMPL implements StreamClientListener {

@@ -60,7 +60,11 @@ public class kiiras extends javax.swing.JFrame {
                 for (int i = 0; i < vph.size(); i++) {
                     vph.get(i).stop();
                 }
-                serverAgent.stop();
+                try {
+                    serverAgent.stop();
+                } catch (Exception e) {
+                }
+                System.exit(0);
             }
         }
         );
@@ -98,7 +102,6 @@ public class kiiras extends javax.swing.JFrame {
 
     }
 
-
     void varas(int ido
     ) {
         try {
@@ -122,11 +125,11 @@ public class kiiras extends javax.swing.JFrame {
                     }
                 }
             }
-            cc.connect("localhost", 6969 + "");
+            cc.connect("localhost", port_szam(1) + "");
             if (!cc.isConnected()) {
                 new Chat_and_voice_server_start().execute();
                 varas(200);
-                cc.connect("localhost", 6969 + "");
+                cc.connect("localhost", port_szam(1) + "");
             } else {
 
             }
@@ -259,7 +262,7 @@ public class kiiras extends javax.swing.JFrame {
         gridBagConstraints.weighty = 1.0;
         getContentPane().add(panelcam3, gridBagConstraints);
 
-        jMenu1.setText("Camera setup");
+        jMenu1.setText("Camera Audio setup");
         jMenu1.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jMenu1MouseClicked(evt);
@@ -267,7 +270,7 @@ public class kiiras extends javax.swing.JFrame {
         });
         jMenuBar1.add(jMenu1);
 
-        jMenu2.setText("Wall setup");
+        jMenu2.setText("Server setup");
         jMenu2.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jMenu2MouseClicked(evt);
@@ -296,21 +299,20 @@ StreamServerAgent serverAgent;
             cam.webcam.setViewSize(WebcamResolution.VGA.getSize());//be állítása VGA
             serverAgent = new StreamServerAgent(cam.webcam, WebcamResolution.VGA.getSize());
         }
-        serverAgent.start(new InetSocketAddress("0.0.0.0", port_szam()));
+        serverAgent.start(new InetSocketAddress("0.0.0.0", port_szam(0)));
         cam.stream(serverAgent);
-        vph.get(0).connect("localhost", port_szam());
+        vph.get(0).connect("localhost", port_szam(0));
 
     }
 
-    int port_szam() {
+    int port_szam(int hanyadik) {
         int vissza = 6666;
         try {
             Scanner in = new Scanner(new FileReader("port.txt"));
             int a = 1;
             while (in.hasNext()) {
-                String kecske = in.nextLine();
+                String kecske = in.nextLine().split(":")[hanyadik];
                 if (!kecske.isEmpty()) {
-                    System.out.println("(port)txt tartalom: " + kecske);
                     try {
                         vissza = Integer.parseInt(kecske);
                     } catch (Exception e) {
@@ -345,6 +347,51 @@ StreamServerAgent serverAgent;
         int port_txt;
     }
     ArrayList<ip> ip;
+
+    class dolgok {
+
+        public String nev, weathercamera, forecast;
+
+        dolgok(String nev, String weathercamera, String forecast) {
+            this.nev = nev;
+            this.weathercamera = weathercamera;
+            this.forecast = forecast;
+        }
+    }
+    dolgok dolog;
+
+    void local_things() {
+        String ki = "", ki1 = "", ki2 = "";
+        try {
+            Scanner in = new Scanner(new FileReader("ip.txt"));
+            int a = 1;
+            while (in.hasNext()) {
+                String kecske = in.nextLine();
+                if (!kecske.isEmpty()) {
+                    System.out.println("txt tartalom: " + kecske);
+                    switch (a) {
+                        case 1:
+                            ki = kecske;
+                            break;
+                        case 2:
+                            ki1 = kecske;
+                            break;
+                        case 3:
+                            ki2 = kecske;
+                            break;
+                        default:
+                            break;
+                    }
+                    a++;
+                }
+            }
+            dolog = new dolgok(ki, ki1, ki2);
+            in.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("not configured");
+        }
+    }
 
     void scan() {
         ip = new ArrayList();
