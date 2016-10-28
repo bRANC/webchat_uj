@@ -475,6 +475,10 @@ public class ChatClient implements Runnable, ActionListener {
         stopRecording();
     }
 
+    public ChatClient(Boolean alma) {
+
+    }
+
     public void windowOpened(java.awt.event.WindowEvent windowEvent) {
     }
 
@@ -524,6 +528,8 @@ public class ChatClient implements Runnable, ActionListener {
 
     public class ClientMessageHandlerThread extends Thread {
 
+        int sizereadpub = 0;
+
         synchronized public void run() {
             try {
                 while (true) {
@@ -531,7 +537,7 @@ public class ChatClient implements Runnable, ActionListener {
                         vectorandsize vs = (vectorandsize) recievedByteVector.remove(0);
                         byte[] bytepassedObj = vs.b;
                         int sizeread = vs.size;
-
+                        sizereadpub = sizeread;
                         // Command or text message determination
                         // Wouldn't this run into problems with large text messages?
                         String passedObj = "";
@@ -637,17 +643,18 @@ public class ChatClient implements Runnable, ActionListener {
             }
         }
 
-        private void updateDataStats(int sizeread) {
+        public String updateDataStats(int sizeread) {
             recievecounter++;
             currentsecondSound += sizeread;
             if (recievecounter % peacespersecond == 0) {
                 recievedMinval = Math.min(currentsecondSound, recievedMinval);
                 recievedMaxval = Math.max(currentsecondSound, recievedMaxval);
 
-                setStats("recieved: " + currentsecondSound + "| Max: " + recievedMaxval + " | Min: " + recievedMinval);
                 recievecounter = 0;
                 currentsecondSound = 0;
+                return ("recieved: " + currentsecondSound + "| Max: " + recievedMaxval + " | Min: " + recievedMinval);
             }
+            return "";
         }
     }
 
@@ -697,14 +704,6 @@ public class ChatClient implements Runnable, ActionListener {
             exp.printStackTrace();
         }
 
-    }
-
-    /**
-     * Update the status bar
-     */
-    public void setStats(String str) {
-
-//lblStatus.setText(str);
     }
 
     /**

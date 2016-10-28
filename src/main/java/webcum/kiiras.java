@@ -460,7 +460,7 @@ StreamServerAgent serverAgent;
         cc.set_txtout(txtOutput);
     }
     private void jMenu1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu1MouseClicked
-        new webcam_settings(cam).setVisible(true);
+        new webcam_settings(cam,cc).setVisible(true);
     }//GEN-LAST:event_jMenu1MouseClicked
 
     private void jMenu2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu2MouseClicked

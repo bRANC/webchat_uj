@@ -11,6 +11,7 @@ import java.awt.image.BufferedImage;
 import java.net.URL;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
+import voice.client.ChatClient;
 import webcum.agent.StreamServerAgent;
 
 /**
@@ -91,7 +92,7 @@ public class camera {
     }
 
     public void start() {
-        new webcam_settings(this).kamera_res_setup();
+        new webcam_settings(this,new ChatClient(true)).kamera_res_setup();
         webcam.open();
     }
 
