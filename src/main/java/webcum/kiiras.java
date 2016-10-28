@@ -440,7 +440,7 @@ StreamServerAgent serverAgent;
     void connect_to_ips() {
         try {
             for (int i = 0; i < ip.size(); i++) {
-                vph.get(1).connect(ip.get(i).ip, ip.get(i).port_v);
+                vph.get(i).connect(ip.get(i).ip, ip.get(i).port_v);
             }
         } catch (Exception e) {
 
@@ -451,7 +451,7 @@ StreamServerAgent serverAgent;
         cc.send_text(text);
     }
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        vph.get(3).connect("", 2);
+        connect_to_ips();
     }//GEN-LAST:event_jButton3ActionPerformed
 
     void server_setup() {

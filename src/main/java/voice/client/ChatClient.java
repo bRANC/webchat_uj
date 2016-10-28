@@ -284,17 +284,13 @@ public class ChatClient implements Runnable, ActionListener {
 
     public void set_nickname(String name) {
         if (nickEntered == false && !name.equals("")) {//set name
-            System.out.println("setting nickname");
             NickName = name;
             nickEntered = true;
             NickNameVector.addElement((Object) NickName);
-            System.out.println("setting nickname1");
             try {
-                System.out.println("setting nickname write");
                 out.write(("NN" + NickName + MultiChatConstants.BREAKER).getBytes());
                 out.flush();
                 canrecord = true; // cant record sound until you log in with a name.
-                System.out.println("set");
             } catch (java.net.UnknownHostException uhkx) {
                 System.out.println("unknown host");
             } catch (java.io.IOException iox) {
