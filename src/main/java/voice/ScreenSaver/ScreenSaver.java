@@ -5,6 +5,10 @@
  */
 package voice.ScreenSaver;
 
+import java.util.ArrayList;
+import javax.swing.JLabel;
+import javax.swing.SwingWorker;
+import voice.client.ChatClient;
 import webcum.kiiras;
 
 /**
@@ -21,9 +25,78 @@ public class ScreenSaver extends javax.swing.JFrame {
     public ScreenSaver(kiiras ki) {
         this.ki = ki;
         initComponents();
+        txtki.setEditable(false);
+        txtki.setFont(new java.awt.Font("Dialog", 0, 18));
         ki.set_text_ki(txtki);
+        betext.requestFocus();
+        new usercheck().execute();
+        this.addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowClosing(java.awt.event.WindowEvent windowEvent) {
+                windowEvent.getWindow().setVisible(false);
+                cc.set_status("connected");
+            }
+        }
+        );
     }
 
+    ChatClient cc;
+
+    void set_status(JLabel stat) {
+        if (stat.equals("scrennsaver")) {
+
+        }
+        if (stat.equals("connected")) {
+
+        }
+    }
+
+    //timer user check
+    class usercheck extends SwingWorker<Void, Void> {
+
+        @Override
+        protected Void doInBackground() throws Exception {
+            while (true) {
+                try {
+                    if (cc == null) {
+                        cc = ki.get_user();
+                    } else {
+                        for (int i = 0; i <= cc.SS.size(); i++) {
+                            switch (i) {
+                                case 0:
+                                    user1_name.setText(cc.SS.get(i).name);
+                                    user1_status.setText(cc.SS.get(i).status);
+                                    break;
+                                case 1:
+                                    user2_name.setText(cc.SS.get(i).name);
+                                    user2_status.setText(cc.SS.get(i).status);
+                                    break;
+                                case 2:
+                                    user3_name.setText(cc.SS.get(i).name);
+                                    user3_status.setText(cc.SS.get(i).status);
+                                    break;
+                                case 3:
+                                    user4_name.setText(cc.SS.get(i).name);
+                                    user4_status.setText(cc.SS.get(i).status);
+                                    break;
+                                default:
+                                    break;
+                            }
+                        }
+                    }
+                } catch (Exception e) {
+                }
+            }
+        }
+
+        @Override
+        protected void done() {
+            System.out.println("done usercheck");
+        }
+
+    }
+
+    //timer user check end
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -32,15 +105,50 @@ public class ScreenSaver extends javax.swing.JFrame {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
+        java.awt.GridBagConstraints gridBagConstraints;
 
         jScrollPane1 = new javax.swing.JScrollPane();
         txtki = new javax.swing.JTextArea();
         betext = new javax.swing.JTextField();
         sendtext = new javax.swing.JButton();
+        user1_name = new javax.swing.JLabel();
+        user1_status = new javax.swing.JLabel();
+        user2_name = new javax.swing.JLabel();
+        user2_status = new javax.swing.JLabel();
+        user3_name = new javax.swing.JLabel();
+        user3_status = new javax.swing.JLabel();
+        user4_name = new javax.swing.JLabel();
+        user4_status = new javax.swing.JLabel();
+
+        getContentPane().setLayout(new java.awt.GridBagLayout());
 
         txtki.setColumns(20);
         txtki.setRows(5);
         jScrollPane1.setViewportView(txtki);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridwidth = 10;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.ipadx = 191;
+        gridBagConstraints.ipady = 256;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.weighty = 1.0;
+        getContentPane().add(jScrollPane1, gridBagConstraints);
+
+        betext.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                betextKeyReleased(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.gridwidth = 9;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.ipadx = 230;
+        getContentPane().add(betext, gridBagConstraints);
 
         sendtext.setText("send");
         sendtext.addActionListener(new java.awt.event.ActionListener() {
@@ -48,41 +156,82 @@ public class ScreenSaver extends javax.swing.JFrame {
                 sendtextActionPerformed(evt);
             }
         });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 11;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        getContentPane().add(sendtext, gridBagConstraints);
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(0, 186, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jScrollPane1)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(betext, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(sendtext))))
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 279, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(betext, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(sendtext)))
-        );
+        user1_name.setText("user1: ");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 3;
+        gridBagConstraints.gridy = 0;
+        getContentPane().add(user1_name, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 4;
+        gridBagConstraints.gridy = 0;
+        getContentPane().add(user1_status, gridBagConstraints);
+
+        user2_name.setText("user2:");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 5;
+        gridBagConstraints.gridy = 0;
+        getContentPane().add(user2_name, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 6;
+        gridBagConstraints.gridy = 0;
+        getContentPane().add(user2_status, gridBagConstraints);
+
+        user3_name.setText("user3:");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 7;
+        gridBagConstraints.gridy = 0;
+        getContentPane().add(user3_name, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 8;
+        gridBagConstraints.gridy = 0;
+        getContentPane().add(user3_status, gridBagConstraints);
+
+        user4_name.setText("user4:");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 9;
+        gridBagConstraints.gridy = 0;
+        getContentPane().add(user4_name, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 10;
+        gridBagConstraints.gridy = 0;
+        getContentPane().add(user4_status, gridBagConstraints);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void sendtextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sendtextActionPerformed
-        ki.send_text(betext.getText());
+        send(betext.getText());
     }//GEN-LAST:event_sendtextActionPerformed
 
+    private void betextKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_betextKeyReleased
+        if (evt.getKeyCode() == 10) {
+            send(betext.getText());
+        }
+    }//GEN-LAST:event_betextKeyReleased
+
+    void send(String uzenet) {
+        if (!uzenet.trim().isEmpty()) {
+            ki.send_text(betext.getText());
+        }
+    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField betext;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JButton sendtext;
     private javax.swing.JTextArea txtki;
+    private javax.swing.JLabel user1_name;
+    private javax.swing.JLabel user1_status;
+    private javax.swing.JLabel user2_name;
+    private javax.swing.JLabel user2_status;
+    private javax.swing.JLabel user3_name;
+    private javax.swing.JLabel user3_status;
+    private javax.swing.JLabel user4_name;
+    private javax.swing.JLabel user4_status;
     // End of variables declaration//GEN-END:variables
 }

