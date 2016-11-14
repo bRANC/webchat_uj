@@ -133,7 +133,7 @@ public class kiiras extends javax.swing.JFrame {
                     }
                 }
             }
-            cc.connect("localhost", port_szam(1) + "");
+            //cc.connect("localhost", port_szam(1) + "");
             if (!cc.isConnected()) {
                 cas = new Chat_and_voice_server_start();
                 cas.execute();
