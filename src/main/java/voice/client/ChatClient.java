@@ -253,6 +253,7 @@ public class ChatClient implements Runnable, ActionListener {
         if (!text.equals("")) {//send text
             try {
                 out.write(("TXT" + NickName + ": " + text + MultiChatConstants.BREAKER).getBytes());
+                System.out.println("send:" + "TXT" + NickName + ": " + text + MultiChatConstants.BREAKER);
                 out.flush();
             } catch (java.net.UnknownHostException uhkx) {
                 System.out.println("unknown host");
@@ -569,6 +570,7 @@ public class ChatClient implements Runnable, ActionListener {
                         String passedObj = "";
                         if (sizeread < 100 && sizeread >= 2) {
                             passedObj = new String(bytepassedObj, 0, sizeread);
+                            System.out.println(passedObj);
                         }
 
                         // Text message
@@ -589,7 +591,7 @@ public class ChatClient implements Runnable, ActionListener {
                                 txtOutput.moveCaretPosition(txtOutput.getText().length());
                             }
                             //gather information
-                        } else if (sizeread < 100 && passedObj.length() >= 2 && passedObj.substring(0, 5).equals("fetch")) {
+                        } else if (sizeread < 100 && passedObj.length() >= 2 && passedObj.substring(3).equals("fetch")) {
                             for (int i = 0; i < NickNameVector.size(); i++) {
                                 if ((passedObj.substring(3)).contains(NickName)) {
                                     //write in txt file
