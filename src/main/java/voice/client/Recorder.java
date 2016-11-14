@@ -34,7 +34,7 @@ public class Recorder
         ByteArrayOutputStream outputFile = new ByteArrayOutputStream();
         AudioFormat audioFormat = null;
         // 8 kHz, 8 bit, mono
-        audioFormat = new AudioFormat(AudioFormat.Encoding.PCM_SIGNED, ClientShared.sampleRate, ClientShared.sampleSize, 1, 2, ClientShared.frameRate, false);
+        audioFormat = new AudioFormat(AudioFormat.Encoding.PCM_SIGNED, ClientShared.sampleRate, ClientShared.sampleSize, 1, 1, ClientShared.frameRate, false);
         // 44.1 kHz, 16 bit, stereo
 //        audioFormat = new AudioFormat( AudioFormat.Encoding.PCM_SIGNED, 44100.0f, 16, 1, 2, 44100.0f, false );
 //        audioFormat = new AudioFormat(AudioFormat.Encoding.PCM_SIGNED, 44100.0F, 16, 2, 4, 44100.0F, false);
