@@ -11,6 +11,8 @@ import javax.swing.SwingWorker;
 import voice.client.ChatClient;
 import webcum.kiiras;
 
+
+
 /**
  *
  * @author branc
@@ -193,10 +195,7 @@ public class ScreenSaver extends javax.swing.JFrame {
         getContentPane().add(user3_status, gridBagConstraints);
 
         user4_name.setText("user4:");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 9;
-        gridBagConstraints.gridy = 0;
-        getContentPane().add(user4_name, gridBagConstraints);
+        getContentPane().add(user4_name, new java.awt.GridBagConstraints());
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 10;
         gridBagConstraints.gridy = 0;
