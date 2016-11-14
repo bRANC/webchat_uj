@@ -70,7 +70,7 @@ public class ChatClient implements Runnable, ActionListener {
     double multiplyer = 3.0;
 
     //hands free chat variables
-    int spikesensitivity = 70; // how many noise spikes have to happen for it to think something was said
+    public int spikesensitivity = 70; // how many noise spikes have to happen for it to think something was said
     boolean HandsFree = false;
 
     // text chat varibles
@@ -924,7 +924,7 @@ public class ChatClient implements Runnable, ActionListener {
                     counterhit++;
                 }
             }
-
+            System.out.println(counterhit);
             if (counterhit > spikesensitivity || keypressed) {
                 totalcounter = 16;//record for 2 seconds of sound no matter what
                 setButtonTalkColor(Color.red);
