@@ -570,7 +570,7 @@ public class ChatClient implements Runnable, ActionListener {
                         String passedObj = "";
                         if (sizeread < 100 && sizeread >= 2) {
                             passedObj = new String(bytepassedObj, 0, sizeread);
-                            System.out.println(passedObj);
+                            //System.out.println(passedObj);
                         }
 
                         // Text message

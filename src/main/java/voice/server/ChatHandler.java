@@ -61,7 +61,7 @@ public class ChatHandler extends Thread {
                 ptrtoThis.cs.writebyte(("PT$" + MultiChatConstants.BREAKER).getBytes());
                 try {
                     synchronized (this) {
-                        wait(1000);
+                        wait(2000);
                     }
                 } catch (Exception mexp) {
                     mexp.printStackTrace();
