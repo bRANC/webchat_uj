@@ -139,11 +139,15 @@ public class ChatClient implements Runnable, ActionListener {
         }
     }
 
-    void handsfree(boolean set) {
+    public void handsfree(boolean set) {
         HandsFree = set;
         if (!HandsFree && recording) {
             setButtonTalkColor(Color.red);
         }
+    }
+
+    public boolean handsfree() {
+        return HandsFree;
     }
 
     public void talk() {

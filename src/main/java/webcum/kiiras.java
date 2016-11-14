@@ -44,7 +44,7 @@ public class kiiras extends javax.swing.JFrame {
     Boolean int_cam_update = true, send = false;
     ArrayList<send> client = new ArrayList<>();
     Chatstartup Ct = new Chatstartup();
-
+    
     public kiiras() {
         System.setProperty("sun.java2d.opengl", "True");
         System.setProperty("Dsun.java2d.d3d", "True");
@@ -72,10 +72,10 @@ public class kiiras extends javax.swing.JFrame {
         );
     }
     Server server;
-
+    
     ArrayList<videopanelhandler> vph = new ArrayList<>();
     ArrayList<JPanel> panelcam = new ArrayList<>();
-
+    
     void setup_receiv() {
         panelcam.add(panelcam0);
         panelcam.add(panelcam1);
@@ -99,11 +99,11 @@ public class kiiras extends javax.swing.JFrame {
             panelcam.get(i).add(vph.get(i).get_vp());
             layout.addLayoutComponent(vph.get(i).get_vp(), gbc);
         }
-
+        
         this.pack();
-
+        
     }
-
+    
     void varas(int ido
     ) {
         try {
@@ -112,17 +112,17 @@ public class kiiras extends javax.swing.JFrame {
             //System.out.println(e);
         }
     }
-
+    
     ChatClient cc = new ChatClient();
-
+    
     public ChatClient get_user() {
         return cc;
     }
-
+    
     class Chatstartup extends SwingWorker<Void, Void> {
-
+        
         Chat_and_voice_server_start cas;
-
+        
         @Override
         protected Void doInBackground() throws Exception {
             scan();
@@ -140,32 +140,32 @@ public class kiiras extends javax.swing.JFrame {
                 varas(200);
                 cc.connect("localhost", port_szam(1) + "");
             } else {
-
+                
             }
             cc.set_nickname(dolog.nev);
             return null;
         }
-
+        
         @Override
         protected void done() {
         }
-
+        
     }
     ChatServer cs;
-
+    
     class Chat_and_voice_server_start extends SwingWorker<Void, Void> {
-
+        
         @Override
         protected Void doInBackground() throws Exception {
             cs = new ChatServer(6969);
             return null;
         }
-
+        
         @Override
         protected void done() {
-
+            
         }
-
+        
     }
 
     /**
@@ -187,6 +187,7 @@ public class kiiras extends javax.swing.JFrame {
         panelcam1 = new javax.swing.JPanel();
         panelcam3 = new javax.swing.JPanel();
         jButton5 = new javax.swing.JButton();
+        hfree = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenu2 = new javax.swing.JMenu();
@@ -211,7 +212,7 @@ public class kiiras extends javax.swing.JFrame {
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 4;
+        gridBagConstraints.gridx = 5;
         gridBagConstraints.gridy = 2;
         getContentPane().add(jButton2, gridBagConstraints);
 
@@ -261,7 +262,7 @@ public class kiiras extends javax.swing.JFrame {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 3;
         gridBagConstraints.gridy = 0;
-        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.gridwidth = 3;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
@@ -271,7 +272,7 @@ public class kiiras extends javax.swing.JFrame {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 3;
         gridBagConstraints.gridy = 1;
-        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.gridwidth = 3;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
@@ -287,6 +288,17 @@ public class kiiras extends javax.swing.JFrame {
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 2;
         getContentPane().add(jButton5, gridBagConstraints);
+
+        hfree.setText("handsfree");
+        hfree.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                hfreeActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 4;
+        gridBagConstraints.gridy = 2;
+        getContentPane().add(hfree, gridBagConstraints);
 
         jMenu1.setText("Camera Audio setup");
         jMenu1.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -328,9 +340,9 @@ StreamServerAgent serverAgent;
         serverAgent.start(new InetSocketAddress("0.0.0.0", port_szam(0)));
         cam.stream(serverAgent);
         vph.get(0).connect("localhost", port_szam(0));
-
+        
     }
-
+    
     int port_szam(int hanyadik) {
         int vissza = 6666;
         try {
@@ -360,7 +372,7 @@ StreamServerAgent serverAgent;
         jButton2.setText("talk " + cc.is_talking());
     }//GEN-LAST:event_jButton2ActionPerformed
     class ip {
-
+        
         ip(String ip, int port_v, int port_txt) {
             this.ip = ip;
             this.port_v = port_v;
@@ -371,11 +383,11 @@ StreamServerAgent serverAgent;
         int port_txt;
     }
     ArrayList<ip> ip;
-
+    
     class dolgok {
-
+        
         public String nev, weathercamera, forecast;
-
+        
         dolgok(String nev, String weathercamera, String forecast) {
             this.nev = nev;
             this.weathercamera = weathercamera;
@@ -383,7 +395,7 @@ StreamServerAgent serverAgent;
         }
     }
     dolgok dolog;
-
+    
     void local_things() {
         String ki = "", ki1 = "", ki2 = "";
         try {
@@ -393,7 +405,7 @@ StreamServerAgent serverAgent;
                 String kecske = in.nextLine();
                 if (!kecske.isEmpty()) {
                     System.out.println("id: " + a + " txt tartalom: " + kecske);
-
+                    
                     switch (a) {
                         case 1:
                             ki = kecske;
@@ -417,7 +429,7 @@ StreamServerAgent serverAgent;
             System.out.println("not configured");
         }
     }
-
+    
     void scan() {
         ip = new ArrayList();
         try {
@@ -440,7 +452,7 @@ StreamServerAgent serverAgent;
             System.out.println("not configured");
         }
     }
-
+    
     void connect_to_ips() {
         try {
             for (int i = 0; i < ip.size(); i++) {
@@ -448,17 +460,17 @@ StreamServerAgent serverAgent;
                 vph.get(i + 1).connect(ip.get(i).ip, ip.get(i).port_v);
             }
         } catch (Exception e) {
-
+            
         }
     }
-
+    
     public void send_text(String text) {
         cc.send_text(text);
     }
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         connect_to_ips();
     }//GEN-LAST:event_jButton3ActionPerformed
-
+    
     void server_setup() {
         try {
             Scanner in = new Scanner(new FileReader("ip.txt"));
@@ -477,17 +489,17 @@ StreamServerAgent serverAgent;
             System.out.println("not configured");
         }
     }
-
+    
     ScreenSaver ss = new ScreenSaver(this);
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         screensaver();
     }//GEN-LAST:event_jButton4ActionPerformed
-
+    
     void screensaver() {
         cc.set_status("scrennsaver");
         ss.setVisible(true);
     }
-
+    
     public void set_text_ki(JTextArea txtOutput) {
         cc.set_txtout(txtOutput);
     }
@@ -504,7 +516,15 @@ StreamServerAgent serverAgent;
         Ct.cancel(true);
         Ct = new Chatstartup();
         Ct.execute();
+        cc.handsfree(true);
+        hfree.setText("handsfree " + cc.handsfree());
     }//GEN-LAST:event_jButton5ActionPerformed
+
+    private void hfreeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_hfreeActionPerformed
+        cc.handsfree(!cc.handsfree());
+        hfree.setText("handsfree " + cc.handsfree());
+        // TODO add your handling code here:
+    }//GEN-LAST:event_hfreeActionPerformed
     /**
      * @param args the command line arguments
      */
@@ -541,6 +561,7 @@ StreamServerAgent serverAgent;
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton hfree;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
@@ -557,27 +578,27 @@ StreamServerAgent serverAgent;
 }
 
 class PlayerPanel extends JPanel {
-
+    
     private File vlcInstallPath = new File("C:/Program Files/VideoLAN/VLC");
     private EmbeddedMediaPlayer player;
-
+    
     public PlayerPanel() {
         boolean found = new NativeDiscovery().discover();
         System.out.println(found);
         System.out.println(LibVlc.INSTANCE.libvlc_get_version());
-
+        
         EmbeddedMediaPlayerComponent videoCanvas = new EmbeddedMediaPlayerComponent();
         this.setLayout(new BorderLayout());
         this.add(videoCanvas, BorderLayout.CENTER);
         this.player = videoCanvas.getMediaPlayer();
     }
-
+    
     public void play(String media, int port) {
         player.prepareMedia(formatHttpStream(media, port));
         player.parseMedia();
         player.play();
     }
-
+    
     public String formatHttpStream(String serverAddress, int serverPort) {
         StringBuilder sb = new StringBuilder(60);
         sb.append(":sout=#duplicate{dst=std{access=http,mux=ts,");
