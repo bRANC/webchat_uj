@@ -11,7 +11,7 @@ public class ClientShared {
     public static final float sampleRate = 44100.0F;
     public static final float frameRate = 44100.0F;
 
-    public static final int sampleSize = 16;
+    public static final int sampleSize = 8;
 
     public ClientShared() {
 
