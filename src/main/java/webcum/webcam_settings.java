@@ -124,8 +124,8 @@ public class webcam_settings extends javax.swing.JFrame {
     
     void get_audio_things() {
         jcomp.setText(cc.getCompression() + "");
-        jcompo.setText(cc.getCompressto()+"");
-        
+        jcompo.setText(cc.getCompressto() + "");
+        spikesense.setText(cc.spikesensitivity + "");
         jProgressBar1.setValue(cc.cs.level);
 //micvolume.setValue(WIDTH);
     }
@@ -174,6 +174,8 @@ public class webcam_settings extends javax.swing.JFrame {
         jLabel16 = new javax.swing.JLabel();
         jcompo = new javax.swing.JTextField();
         jLabel17 = new javax.swing.JLabel();
+        jLabel18 = new javax.swing.JLabel();
+        spikesense = new javax.swing.JTextField();
         jPanel4 = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
         jLabel11 = new javax.swing.JLabel();
@@ -539,6 +541,33 @@ public class webcam_settings extends javax.swing.JFrame {
         gridBagConstraints.weighty = 1.0;
         jPanel3.add(jLabel17, gridBagConstraints);
 
+        jLabel18.setText("SpikeSense");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 3;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.weighty = 3.0;
+        jPanel3.add(jLabel18, gridBagConstraints);
+
+        spikesense.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                spikesenseActionPerformed(evt);
+            }
+        });
+        spikesense.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                spikesenseKeyReleased(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 3;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.weighty = 3.0;
+        jPanel3.add(spikesense, gridBagConstraints);
+
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 3;
@@ -660,7 +689,7 @@ public class webcam_settings extends javax.swing.JFrame {
 
     private void jcompKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jcompKeyReleased
         try {
-            cc.spikesensitivity = Integer.getInteger(jcomp.getText());
+            //cc.spikesensitivity = Integer.getInteger(jcomp.getText());
         } catch (Exception e) {
         }
 
@@ -668,6 +697,7 @@ public class webcam_settings extends javax.swing.JFrame {
 
     private void micvolumeStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_micvolumeStateChanged
         cc.cs.amplification = ((double) (micvolume.getValue())) / 100.0;
+        jLabel15.setText("mic volume: " + cc.cs.amplification);
     }//GEN-LAST:event_micvolumeStateChanged
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
@@ -682,6 +712,17 @@ public class webcam_settings extends javax.swing.JFrame {
         System.out.println("set: " + Cm.webcam.getWebcams().get(jComboBox1.getSelectedIndex()).getName());
         Cm.set_camera(Cm.webcam.getWebcams().get(jComboBox1.getSelectedIndex()));
     }//GEN-LAST:event_jComboBox1PopupMenuWillBecomeInvisible
+
+    private void spikesenseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_spikesenseActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_spikesenseActionPerformed
+
+    private void spikesenseKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_spikesenseKeyReleased
+        try {
+            cc.spikesensitivity = Integer.getInteger(spikesense.getText());
+        } catch (Exception e) {
+        }
+    }//GEN-LAST:event_spikesenseKeyReleased
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -702,6 +743,7 @@ public class webcam_settings extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel17;
+    private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -727,5 +769,6 @@ public class webcam_settings extends javax.swing.JFrame {
     private javax.swing.JLabel jnev;
     private javax.swing.JLabel jonlinecam;
     private javax.swing.JSlider micvolume;
+    private javax.swing.JTextField spikesense;
     // End of variables declaration//GEN-END:variables
 }
