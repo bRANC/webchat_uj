@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.SwingWorker;
@@ -70,6 +71,7 @@ public class kiiras extends javax.swing.JFrame {
             }
         }
         );
+        fullscreen();
     }
     Server server;
 
@@ -367,6 +369,14 @@ StreamServerAgent serverAgent;
         return vissza;
     }
 
+    public void fullscreen() {
+        this.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        //    this.setUndecorated(true);
+    }
+
+    public void hide() {
+        this.setVisible(false);
+    }
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         cc.handsfree(true);
         hfree.setText("handsfree " + cc.handsfree());
