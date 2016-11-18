@@ -26,7 +26,7 @@ public class webcam_settings extends javax.swing.JFrame {
      */
     camera Cm;
     ChatClient cc = new ChatClient(true);
-    
+
     public webcam_settings(camera be, ChatClient cc) {
         initComponents();
         Cm = be;
@@ -34,9 +34,10 @@ public class webcam_settings extends javax.swing.JFrame {
         this.cc = cc;
         readdolgok();
         new get_cam().execute();
+        spikesense.setText(cc.spikesensitivity + "");
     }
     boolean flip = true;
-    
+
     void readdolgok() {
         try {
             Scanner in = new Scanner(new FileReader("dolgok.txt"));
@@ -47,9 +48,9 @@ public class webcam_settings extends javax.swing.JFrame {
                     if (a == 1) {
                         jname.setText(kecske.trim());
                     } else if (a == 2) {
-                        
+
                     } else if (a == 3) {
-                        
+
                     }
                     a++;
                 }
@@ -60,7 +61,7 @@ public class webcam_settings extends javax.swing.JFrame {
             System.out.println("not configured");
         }
     }
-    
+
     void flip_flop_cam_horiz_read() {
         try {
             Scanner in = new Scanner(new FileReader("camera_horiz.txt"));
@@ -79,7 +80,7 @@ public class webcam_settings extends javax.swing.JFrame {
             System.out.println("not configured");
         }
     }
-    
+
     public void kamera_res_setup() {
         if (Cm.webcam.getName().contains("HD") || Cm.webcam.getName().contains("EasyCamera")) {
             Cm.webcam.setCustomViewSizes(new Dimension[]{WebcamResolution.HD720.getSize()});//új felbontás regisztrálása
@@ -88,9 +89,9 @@ public class webcam_settings extends javax.swing.JFrame {
             Cm.webcam.setViewSize(WebcamResolution.VGA.getSize());//be állítása VGA
         }
     }
-    
+
     class get_cam extends SwingWorker<Void, Void> {
-        
+
         @Override
         protected Void doInBackground() throws Exception {
             while (true) {
@@ -98,19 +99,19 @@ public class webcam_settings extends javax.swing.JFrame {
                 get_kamera_things();
             }
         }
-        
+
         @Override
         protected void done() {
-            
+
         }
     }
-    
+
     void get_kamera() {
         for (int i = 0; i < Cm.webcam.getWebcams().size(); i++) {
             jComboBox1.addItem(Cm.webcam.getWebcams().get(i).getName());
         }
     }
-    
+
     void get_kamera_things() {
         if (Cm.webcam.isOpen()) {
             jonlinecam.setText("online");
@@ -121,11 +122,11 @@ public class webcam_settings extends javax.swing.JFrame {
             jonlinecam.setText("offline");
         }
     }
-    
+
     void get_audio_things() {
         jcomp.setText(cc.getCompression() + "");
         jcompo.setText(cc.getCompressto() + "");
-        spikesense.setText(cc.spikesensitivity + "");
+
         jProgressBar1.setValue(cc.cs.level);
 //micvolume.setValue(WIDTH);
     }
@@ -673,7 +674,7 @@ public class webcam_settings extends javax.swing.JFrame {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        
+
     }
     private void jRadioButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton1ActionPerformed
         Cm.camera_feed(false);

@@ -924,8 +924,9 @@ public class ChatClient implements Runnable, ActionListener {
                     counterhit++;
                 }
             }
-            System.out.println(counterhit);
+
             if (counterhit > spikesensitivity || keypressed) {
+                System.out.println(counterhit);
                 totalcounter = 16;//record for 2 seconds of sound no matter what
                 setButtonTalkColor(Color.red);
                 //  btnTalk.setText("Stop Talk " + counterhit);
