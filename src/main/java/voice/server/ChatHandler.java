@@ -242,13 +242,11 @@ public class ChatHandler extends Thread {
                 }
 
                 byte[] b = new byte[sizeread];
-                for (int x = 0; x < sizeread; x++) {
-                    b[x] = bytepassedObj[x];
-                }
+                System.arraycopy(bytepassedObj, 0, b, 0, sizeread);
 
                 // Nickname added
                 if ((sizeread > 2 && sizeread < 100 && passedObj.length() >= 2
-                        && passedObj.substring(0, 2).equals("NN")) && ptrtoThis.nick == "") {
+                        && passedObj.substring(0, 2).equals("NN")) && ptrtoThis.nick.equals("")) {
                     for (int i = 0; i < handlers.size(); i++) {
                         // if someone is trying to log in with a nick that is already used reject their log in
                         ChatHandler tmp = (ChatHandler) (handlers.elementAt(i)); // this can be used for password authentication as well.

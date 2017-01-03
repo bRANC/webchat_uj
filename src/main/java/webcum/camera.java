@@ -92,7 +92,7 @@ public class camera {
     }
 
     public void start() {
-        new webcam_settings(this,new ChatClient(true)).kamera_res_setup();
+        new internal_settings(this,new ChatClient(true)).kamera_res_setup();
         webcam.open();
     }
 

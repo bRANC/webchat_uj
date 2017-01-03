@@ -10,8 +10,6 @@ import java.io.FileReader;
 import java.io.PrintWriter;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
-import java.net.ServerSocket;
-import java.net.Socket;
 import java.net.SocketException;
 import java.util.Collections;
 import java.util.Enumeration;
@@ -123,6 +121,7 @@ public class server_settings extends javax.swing.JFrame {
     private void initComponents() {
         java.awt.GridBagConstraints gridBagConstraints;
 
+        jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jcam1 = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
@@ -152,6 +151,8 @@ public class server_settings extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         getContentPane().setLayout(new java.awt.GridBagLayout());
 
+        jPanel1.setLayout(new java.awt.GridBagLayout());
+
         jLabel1.setText("wall1 ip:");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -159,7 +160,7 @@ public class server_settings extends javax.swing.JFrame {
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
-        getContentPane().add(jLabel1, gridBagConstraints);
+        jPanel1.add(jLabel1, gridBagConstraints);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 1;
@@ -167,7 +168,7 @@ public class server_settings extends javax.swing.JFrame {
         gridBagConstraints.ipadx = 95;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
-        getContentPane().add(jcam1, gridBagConstraints);
+        jPanel1.add(jcam1, gridBagConstraints);
 
         jLabel2.setText("wall2 ip:");
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -176,7 +177,7 @@ public class server_settings extends javax.swing.JFrame {
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
-        getContentPane().add(jLabel2, gridBagConstraints);
+        jPanel1.add(jLabel2, gridBagConstraints);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 3;
@@ -184,7 +185,7 @@ public class server_settings extends javax.swing.JFrame {
         gridBagConstraints.ipadx = 95;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
-        getContentPane().add(jcam2, gridBagConstraints);
+        jPanel1.add(jcam2, gridBagConstraints);
 
         jLabel3.setText("wall3 ip:");
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -193,7 +194,7 @@ public class server_settings extends javax.swing.JFrame {
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
-        getContentPane().add(jLabel3, gridBagConstraints);
+        jPanel1.add(jLabel3, gridBagConstraints);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 5;
@@ -201,7 +202,7 @@ public class server_settings extends javax.swing.JFrame {
         gridBagConstraints.ipadx = 95;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
-        getContentPane().add(jcam3, gridBagConstraints);
+        jPanel1.add(jcam3, gridBagConstraints);
 
         jButton1.setText("Save and exit");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -216,7 +217,7 @@ public class server_settings extends javax.swing.JFrame {
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
-        getContentPane().add(jButton1, gridBagConstraints);
+        jPanel1.add(jButton1, gridBagConstraints);
 
         jButton2.setText("cancel");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
@@ -230,7 +231,7 @@ public class server_settings extends javax.swing.JFrame {
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
-        getContentPane().add(jButton2, gridBagConstraints);
+        jPanel1.add(jButton2, gridBagConstraints);
 
         jip.setEditable(false);
         jip.setColumns(20);
@@ -247,7 +248,7 @@ public class server_settings extends javax.swing.JFrame {
         gridBagConstraints.ipady = 128;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
-        getContentPane().add(jScrollPane1, gridBagConstraints);
+        jPanel1.add(jScrollPane1, gridBagConstraints);
 
         jLabel4.setText(":");
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -256,7 +257,7 @@ public class server_settings extends javax.swing.JFrame {
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
-        getContentPane().add(jLabel4, gridBagConstraints);
+        jPanel1.add(jLabel4, gridBagConstraints);
 
         jLabel5.setText(":");
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -265,7 +266,7 @@ public class server_settings extends javax.swing.JFrame {
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
-        getContentPane().add(jLabel5, gridBagConstraints);
+        jPanel1.add(jLabel5, gridBagConstraints);
 
         jLabel6.setText(":");
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -274,7 +275,7 @@ public class server_settings extends javax.swing.JFrame {
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
-        getContentPane().add(jLabel6, gridBagConstraints);
+        jPanel1.add(jLabel6, gridBagConstraints);
 
         jcport1.setText("6666");
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -284,7 +285,7 @@ public class server_settings extends javax.swing.JFrame {
         gridBagConstraints.ipadx = 44;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
-        getContentPane().add(jcport1, gridBagConstraints);
+        jPanel1.add(jcport1, gridBagConstraints);
 
         jcport2.setText("6666");
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -294,7 +295,7 @@ public class server_settings extends javax.swing.JFrame {
         gridBagConstraints.ipadx = 44;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
-        getContentPane().add(jcport2, gridBagConstraints);
+        jPanel1.add(jcport2, gridBagConstraints);
 
         jcport3.setText("6666");
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -304,7 +305,7 @@ public class server_settings extends javax.swing.JFrame {
         gridBagConstraints.ipadx = 44;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
-        getContentPane().add(jcport3, gridBagConstraints);
+        jPanel1.add(jcport3, gridBagConstraints);
 
         jLabel7.setText("Camera server port:");
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -313,7 +314,7 @@ public class server_settings extends javax.swing.JFrame {
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
-        getContentPane().add(jLabel7, gridBagConstraints);
+        jPanel1.add(jLabel7, gridBagConstraints);
 
         jcportfiled.setText("6666");
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -323,7 +324,7 @@ public class server_settings extends javax.swing.JFrame {
         gridBagConstraints.ipadx = 88;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
-        getContentPane().add(jcportfiled, gridBagConstraints);
+        jPanel1.add(jcportfiled, gridBagConstraints);
 
         jLabel8.setText("camera");
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -332,7 +333,7 @@ public class server_settings extends javax.swing.JFrame {
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
-        getContentPane().add(jLabel8, gridBagConstraints);
+        jPanel1.add(jLabel8, gridBagConstraints);
 
         jLabel9.setText("voice and chat");
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -341,7 +342,7 @@ public class server_settings extends javax.swing.JFrame {
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
-        getContentPane().add(jLabel9, gridBagConstraints);
+        jPanel1.add(jLabel9, gridBagConstraints);
 
         jvcport1.setText("6969");
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -350,7 +351,7 @@ public class server_settings extends javax.swing.JFrame {
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
-        getContentPane().add(jvcport1, gridBagConstraints);
+        jPanel1.add(jvcport1, gridBagConstraints);
 
         jvcport2.setText("6969");
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -359,7 +360,7 @@ public class server_settings extends javax.swing.JFrame {
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
-        getContentPane().add(jvcport2, gridBagConstraints);
+        jPanel1.add(jvcport2, gridBagConstraints);
 
         jvcport3.setText("6969");
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -368,24 +369,30 @@ public class server_settings extends javax.swing.JFrame {
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
-        getContentPane().add(jvcport3, gridBagConstraints);
+        jPanel1.add(jvcport3, gridBagConstraints);
 
         jLabel10.setText("Voice and chat port");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 5;
         gridBagConstraints.gridy = 1;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        getContentPane().add(jLabel10, gridBagConstraints);
+        jPanel1.add(jLabel10, gridBagConstraints);
 
         jvcportfiled.setText("6969");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 6;
         gridBagConstraints.gridy = 1;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        getContentPane().add(jvcportfiled, gridBagConstraints);
+        jPanel1.add(jvcportfiled, gridBagConstraints);
+
+        getContentPane().add(jPanel1, new java.awt.GridBagConstraints());
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        this.dispose();
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         try (PrintWriter iro = new PrintWriter(new File("ip.txt"))) {
@@ -415,10 +422,6 @@ public class server_settings extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        this.dispose();
-    }//GEN-LAST:event_jButton2ActionPerformed
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
@@ -433,6 +436,7 @@ public class server_settings extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextField jcam1;
     private javax.swing.JTextField jcam2;
