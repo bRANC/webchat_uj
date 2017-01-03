@@ -296,7 +296,6 @@ public class ChatHandler extends Thread {
                         && (passedObj.substring(0, 2).equals("NT") || passedObj.substring(0, 2).equals("#&"))) {
                     if (IAmTalking == true) {
                         for (int i = 0; i < handlers.size(); i++) {
-                            ;
                             ChatHandler tmp = (ChatHandler) (handlers.elementAt(i));
                             tmp.cs.writebyte(("NT" + ptrtoThis.nick + MultiChatConstants.BREAKER).getBytes());
                             //tmp.out.write( ("NT" + this.nick).getBytes() );
@@ -313,7 +312,6 @@ public class ChatHandler extends Thread {
                 } else if (sizeread > 2 && sizeread < 100 && passedObj.length() > 4 && passedObj.substring(0, 4).equals("MUTE")) {
                     if (IAmAdmin) {
                         for (int i = 0; i < handlers.size(); i++) {
-                            ;
                             ChatHandler tmp = (ChatHandler) (handlers.elementAt(i));
                             if (tmp.nick.equals(passedObj.substring(4, passedObj.length() - 5))) {
                                 //send the user a message that he is mute
