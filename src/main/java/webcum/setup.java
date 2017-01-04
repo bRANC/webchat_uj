@@ -54,6 +54,7 @@ public class setup extends javax.swing.JFrame {
         } catch (Exception e) {
         }
         text_be();
+        readdolgok();
     }
 
     String getadapter() {
@@ -766,6 +767,7 @@ public class setup extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton8ActionPerformed
 
     private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
+        kiir();
         new kiiras().setVisible(true);
         this.dispose();
     }//GEN-LAST:event_jButton7ActionPerformed
