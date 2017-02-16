@@ -27,40 +27,45 @@ public class Recorder
     boolean onlyonce = false;
 
     public Recorder(CommonSoundClass csPtr) {
+
         this.cs = csPtr;
+        try {
 
-        boolean gotrecordingline = true;
+            boolean gotrecordingline = true;
 
-        ByteArrayOutputStream outputFile = new ByteArrayOutputStream();
-        AudioFormat audioFormat = null;
-        // 8 kHz, 8 bit, mono
-        audioFormat = new AudioFormat(AudioFormat.Encoding.PCM_SIGNED, ClientShared.sampleRate, ClientShared.sampleSize, 1, 1, ClientShared.frameRate, false);
-        // 44.1 kHz, 16 bit, stereo
+            ByteArrayOutputStream outputFile = new ByteArrayOutputStream();
+            AudioFormat audioFormat = null;
+            // 8 kHz, 8 bit, mono
+            audioFormat = new AudioFormat(AudioFormat.Encoding.PCM_SIGNED, ClientShared.sampleRate, ClientShared.sampleSize, 1, 1, ClientShared.frameRate, false);
+            // 44.1 kHz, 16 bit, stereo
 //        audioFormat = new AudioFormat( AudioFormat.Encoding.PCM_SIGNED, 44100.0f, 16, 1, 2, 44100.0f, false );
 //        audioFormat = new AudioFormat(AudioFormat.Encoding.PCM_SIGNED, 44100.0F, 16, 2, 4, 44100.0F, false);
 
-        // Get Line (microphone) Information
-        DataLine.Info info = new DataLine.Info(TargetDataLine.class, audioFormat);
-        TargetDataLine targetDataLine = null;
+            // Get Line (microphone) Information
+            DataLine.Info info = new DataLine.Info(TargetDataLine.class, audioFormat);
+            TargetDataLine targetDataLine = null;
 
-        try {
-            // Connect to line
-            targetDataLine = (TargetDataLine) AudioSystem.getLine(info);
-            targetDataLine.open(audioFormat);
-        } catch (LineUnavailableException e) {
-            System.err.println("Error: Unable to get a recording line");
-            gotrecordingline = false;
-            //e.printStackTrace();
-            //System.exit(1);
-        }
+            try {
+                // Connect to line
+                targetDataLine = (TargetDataLine) AudioSystem.getLine(info);
+                targetDataLine.open(audioFormat);
+            } catch (LineUnavailableException e) {
+                System.err.println("Error: Unable to get a recording line");
+                gotrecordingline = false;
+                //e.printStackTrace();
+                //System.exit(1);
+            }
 
-        if (gotrecordingline) {
-            AudioFileFormat.Type targetType = AudioFileFormat.Type.AU;
+            if (gotrecordingline) {
+                AudioFileFormat.Type targetType = AudioFileFormat.Type.AU;
 //	        Recorder recorder = null;
-            RecorderInit(targetDataLine, targetType);
-            m_bRecording = true;
-            m_bQuitting = false;
-            this.start();
+                RecorderInit(targetDataLine, targetType);
+                m_bRecording = true;
+                m_bQuitting = false;
+                this.start();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 

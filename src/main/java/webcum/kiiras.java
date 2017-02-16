@@ -189,7 +189,6 @@ public class kiiras extends javax.swing.JFrame {
         panelcam1 = new javax.swing.JPanel();
         panelcam3 = new javax.swing.JPanel();
         hfree = new javax.swing.JButton();
-        jButton6 = new javax.swing.JButton();
 
         setBackground(new java.awt.Color(0, 0, 0));
         getContentPane().setLayout(new java.awt.GridBagLayout());
@@ -243,8 +242,9 @@ public class kiiras extends javax.swing.JFrame {
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 3;
+        gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 2;
+        gridBagConstraints.gridwidth = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
@@ -303,20 +303,6 @@ public class kiiras extends javax.swing.JFrame {
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
         getContentPane().add(hfree, gridBagConstraints);
-
-        jButton6.setText("audio setup");
-        jButton6.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton6ActionPerformed(evt);
-            }
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 2;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
-        getContentPane().add(jButton6, gridBagConstraints);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -518,10 +504,6 @@ StreamServerAgent serverAgent;
         hfree.setText("handsfree " + cc.handsfree());
         // TODO add your handling code here:
     }//GEN-LAST:event_hfreeActionPerformed
-
-    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
-new server_settings().setVisible(true);
-    }//GEN-LAST:event_jButton6ActionPerformed
     
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -530,7 +512,6 @@ new server_settings().setVisible(true);
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton6;
     private javax.swing.JPanel panelcam0;
     private javax.swing.JPanel panelcam1;
     private javax.swing.JPanel panelcam2;
