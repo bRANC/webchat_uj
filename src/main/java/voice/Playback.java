@@ -59,7 +59,8 @@ public class Playback implements Runnable {
         synchronized (soundLock) {
             // place the new sound on the queue
             incoming.put(raw);
-
+            
+            //System.out.println("sound incoming");
             // tell the thread that there's a new sound
             soundLock.notifyAll();
         }
