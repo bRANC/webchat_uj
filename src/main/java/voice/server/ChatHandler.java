@@ -211,6 +211,7 @@ public class ChatHandler extends Thread {
             this.ptrtoThis = ptrtoThis;
         }
 
+        @Override
         public void run() {
             while (keepGoing) {
                 if (recievedByteVector.size() > 0) {
@@ -338,7 +339,6 @@ public class ChatHandler extends Thread {
                 } else if (sizeread > 2 && sizeread < 100 && passedObj.length() > 6 && passedObj.substring(0, 6).equals("UNMUTE")) {
                     if (IAmAdmin) {
                         for (int i = 0; i < handlers.size(); i++) {
-                            ;
                             ChatHandler tmp = (ChatHandler) (handlers.elementAt(i));
                             if (tmp.nick.equals(passedObj.substring(6, passedObj.length() - 5))) {
                                 //send the user a message that he is no longer mute
