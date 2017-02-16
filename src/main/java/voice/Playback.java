@@ -65,6 +65,9 @@ public class Playback implements Runnable {
         }
     }
 
+    int figyelo = 0;
+    int szamlalo = 0;
+
     // Background streaming thread
     public void run() {
         // The currently playing sound
@@ -96,12 +99,28 @@ public class Playback implements Runnable {
                         } catch (InterruptedException ie) {
                         }
                     }
+                    //System.out.println("waitdolgok i guess: " + sdl.getFramePosition());
+                    if (figyelo > sdl.getFramePosition()) {// buffer ürités ha nem jön be adat
+                        szamlalo++;
+                        if (szamlalo >= 4) {
+                            szamlalo=0;
+                            sdl.flush();
+                            System.out.println("audio flush");
+                        }
+                        //System.out.println("figy: "+figyelo);
+                    } else {
+                        figyelo = sdl.getFramePosition();
+                        //System.out.println(figyelo + "waitdolgok i guess: " + sdl.getFramePosition());
+                    }
                 }
                 cursor = 0;
                 int bytesLeft = currentRaw.length - cursor;
 
                 do {
                     if (sdl.available() > 0) {
+
+                        //System.out.println("vissza: " + (currentRaw.length - cursor));
+                        //System.out.println("playback: " + sdl.isActive());
                         int r = Math.min(sdl.available(), currentRaw.length - cursor);
                         sdl.write(currentRaw, cursor, r);
                         if (r == -1) {
@@ -114,8 +133,8 @@ public class Playback implements Runnable {
                         } catch (InterruptedException ie) {
                         }
                     }
-
                 } while (currentRaw.length - cursor > 0);
+                //sdl.flush();
             }
         }
     }

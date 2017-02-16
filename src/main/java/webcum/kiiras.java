@@ -189,6 +189,7 @@ public class kiiras extends javax.swing.JFrame {
         panelcam1 = new javax.swing.JPanel();
         panelcam3 = new javax.swing.JPanel();
         hfree = new javax.swing.JButton();
+        spacing = new javax.swing.JButton();
 
         setBackground(new java.awt.Color(0, 0, 0));
         getContentPane().setLayout(new java.awt.GridBagLayout());
@@ -242,9 +243,8 @@ public class kiiras extends javax.swing.JFrame {
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridx = 3;
         gridBagConstraints.gridy = 2;
-        gridBagConstraints.gridwidth = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
@@ -303,6 +303,14 @@ public class kiiras extends javax.swing.JFrame {
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
         getContentPane().add(hfree, gridBagConstraints);
+
+        spacing.setBorder(null);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(5, 10, 5, 10);
+        getContentPane().add(spacing, gridBagConstraints);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -516,6 +524,7 @@ StreamServerAgent serverAgent;
     private javax.swing.JPanel panelcam1;
     private javax.swing.JPanel panelcam2;
     private javax.swing.JPanel panelcam3;
+    private javax.swing.JButton spacing;
     // End of variables declaration//GEN-END:variables
 }
 
