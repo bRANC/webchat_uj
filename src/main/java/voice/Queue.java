@@ -67,7 +67,7 @@ public class Queue {
                 //System.out.println("buffer is " + vec.size() );
                 if (vec.size() == 0) {
                     prebuffer = true; // we have reached the last element in the stack we shuld buffer more data before playing
-                    System.out.println("prebuffer = true");
+                    //System.out.println("prebuffer = true");
                 }
 
                 // Return the object
