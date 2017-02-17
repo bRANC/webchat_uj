@@ -16,6 +16,7 @@ import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.SocketException;
 import java.net.URL;
+import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Enumeration;
@@ -28,6 +29,7 @@ import org.fourthline.cling.UpnpServiceImpl;
 import org.fourthline.cling.support.igd.PortMappingListener;
 import org.fourthline.cling.support.model.PortMapping;
 import voice.client.ChatClient;
+import webcum.sqlite.sqlite;
 
 /**
  *
@@ -38,6 +40,8 @@ public class setup extends javax.swing.JFrame {
     camera Cm;
     ChatClient cc = new ChatClient(true);
     boolean flip = true;
+
+    sqlite inn = new sqlite("twin.db");
 
     /**
      * Creates new form setup
@@ -53,8 +57,72 @@ public class setup extends javax.swing.JFrame {
             System.out.println(getadapter());
         } catch (Exception e) {
         }
-        text_be();
-        readdolgok();
+
+        //text_be();
+        //readdolgok();
+        readsql();
+    }
+
+    public void readsql() {
+        try {
+            ResultSet rs = inn.le("selec * from nation;");
+            while (rs.next()) {
+                switch (rs.getInt("id")) {
+                    case 0:
+                        upnpbool.setSelected(rs.getBoolean("upnp"));
+                        jname.setText(rs.getString("name"));
+                        jcportfiled.setText(rs.getString("jcport"));
+                        jvcportfiled.setText(rs.getString("jvcport"));
+                        jtryhard.setText(rs.getString("tryhard"));
+                        break;
+                    case 1:
+                        jcam1.setText(rs.getString("ip"));
+                        jcport1.setText(rs.getString("jcport"));
+                        jvcport1.setText(rs.getString("jvcport"));
+                        break;
+                    case 2:
+                        jcam2.setText(rs.getString("ip"));
+                        jcport2.setText(rs.getString("jcport"));
+                        jvcport2.setText(rs.getString("jvcport"));
+                        break;
+                    case 3:
+                        jcam3.setText(rs.getString("ip"));
+                        jcport3.setText(rs.getString("jcport"));
+                        jvcport3.setText(rs.getString("jvcport"));
+                        break;
+                    default:
+                        break;
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    String gateway() {
+        String chain = "";
+        String gatway = "";
+        String publicip = "";
+        //http://icanhazip.com/
+
+        try {//http://icanhazip.com/
+            URL whatismyip = new URL("http://checkip.amazonaws.com");
+            BufferedReader in = new BufferedReader(new InputStreamReader(
+                    whatismyip.openStream()));
+            gatway = in.readLine(); //you get the IP as a String
+        } catch (Exception e) {
+        }
+        try {//http://icanhazip.com/
+            URL whatismyip = new URL("http://icanhazip.com/");
+            BufferedReader in = new BufferedReader(new InputStreamReader(
+                    whatismyip.openStream()));
+            publicip = in.readLine(); //you get the IP as a String
+        } catch (Exception e) {
+        }
+        if (publicip.equals(gatway)) {
+            chain += "\nGateway IP: " + gatway;
+        }
+        return chain;
     }
 
     String getadapter() {
@@ -67,7 +135,8 @@ public class setup extends javax.swing.JFrame {
             }
         } catch (Exception e) {
         }
-        try {
+        chain += gateway();
+        try {//http://icanhazip.com/
             URL whatismyip = new URL("http://checkip.amazonaws.com");
             BufferedReader in = new BufferedReader(new InputStreamReader(
                     whatismyip.openStream()));
@@ -96,78 +165,6 @@ public class setup extends javax.swing.JFrame {
         return localip;
     }
 
-    public void text_be() {
-        try {
-            Scanner in = new Scanner(new FileReader("ip.txt"));
-            int a = 1;
-            while (in.hasNext()) {
-                String kecske = in.nextLine();
-                if (!kecske.isEmpty()) {
-                    System.out.println("txt tartalom: " + kecske);
-                    if (a == 1) {
-                        jcam1.setText(kecske.split(":")[0]);
-                        jcport1.setText(kecske.split(":")[1]);
-                        jvcport1.setText(kecske.split(":")[2]);
-                    } else if (a == 2) {
-                        jcam2.setText(kecske.split(":")[0]);
-                        jcport2.setText(kecske.split(":")[1]);
-                        jvcport2.setText(kecske.split(":")[2]);
-                    } else if (a == 3) {
-                        jcam3.setText(kecske.split(":")[0]);
-                        jcport3.setText(kecske.split(":")[1]);
-                        jvcport3.setText(kecske.split(":")[2]);
-                    }
-                    a++;
-                }
-            }
-            in.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-            System.out.println("not configured");
-        }
-        try {
-            Scanner in = new Scanner(new FileReader("port.txt"));
-            int a = 1;
-            while (in.hasNext()) {
-                String kecske = in.nextLine();
-                if (!kecske.isEmpty()) {
-                    System.out.println("txt tartalom: " + kecske);
-                    jcportfiled.setText(kecske.split(":")[0]);
-                    jvcportfiled.setText(kecske.split(":")[1]);
-                    a++;
-                }
-            }
-            in.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-            System.out.println("not configured");
-        }
-    }
-
-    void readdolgok() {
-        try {
-            Scanner in = new Scanner(new FileReader("dolgok.txt"));
-            int a = 1;
-            while (in.hasNext()) {
-                String kecske = in.nextLine();
-                if (!kecske.isEmpty()) {
-                    if (a == 1) {
-                        jname.setText(kecske.trim());
-                    } else if (a == 2) {
-
-                    } else if (a == 3) {
-
-                    }
-                    a++;
-                }
-            }
-            in.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-            System.out.println("not configured");
-        }
-    }
-
     void flip_flop_cam_horiz_read() {
         try {
             Scanner in = new Scanner(new FileReader("camera_horiz.txt"));
@@ -188,61 +185,64 @@ public class setup extends javax.swing.JFrame {
     }
 
     public void kiir() {
-        server_setup_ir();
-        cam_feed_ir();
-        name_ir();
+        //server_setup_ir();
+        //cam_feed_ir();
+        //name_ir();
+        sqlitefel();
         this.dispose();
     }
 
-    public void server_setup_ir() {
-        try (PrintWriter iro = new PrintWriter(new File("ip.txt"))) {
-            if (!jcam1.getText().trim().isEmpty()) {
-                iro.println(jcam1.getText().trim() + ":" + jcport1.getText().trim() + ":" + jvcport1.getText().trim());
+    public void sqlitefel() {//id,nation,name,ip,jcport,jvcport,upnp,weathercam,weatherforecast
+        for (int i = 0; i <= 4; i++) {
+            switch (i) {
+                case 0:
+                    try {
+                        inn.fel("update nation set"
+                                + " name ='" + jname.getText() + "',"
+                                + "jcport ='" + jcportfiled.getText() + "',"
+                                + "jvcport='" + jvcportfiled.getText() + "',"
+                                + "tryhard=" + jtryhard.getText() + ","
+                                + "upnp='" + upnpbool.isSelected() + "'"
+                                + " where ID = " + i + ";");
+                    } catch (Exception e) {
+                    }
+                    break;
+                case 1:
+                    //rs.getString("ip"),rs.getString("jcport"),rs.getString("jvcport")
+                    try {
+                        inn.fel("update nation set"
+                                + "ip ='" + jcam1.getText() + "',"
+                                + "jcport ='" + jcport1.getText() + "',"
+                                + "jvcport='" + jvcport1.getText() + "'"
+                                + " where ID = " + i + ";");
+                    } catch (Exception e) {
+                    }
+                    break;
+                case 2:
+                    try {
+                        inn.fel("update nation set"
+                                + "ip ='" + jcam2.getText() + "',"
+                                + "jcport ='" + jcport2.getText() + "',"
+                                + "jvcport='" + jvcport2.getText() + "'"
+                                + " where ID = " + i + ";");
+                    } catch (Exception e) {
+                    }
+                    break;
+                case 3:
+                    try {
+                        inn.fel("update nation set"
+                                + "ip ='" + jcam3.getText() + "',"
+                                + "jcport ='" + jcport3.getText() + "',"
+                                + "jvcport='" + jvcport3.getText() + "'"
+                                + " where ID = " + i + ";");
+                    } catch (Exception e) {
+                    }
+                    break;
+                default:
+                    break;
             }
-            if (!jcam2.getText().trim().isEmpty()) {
-                iro.println(jcam2.getText().trim() + ":" + jcport2.getText().trim() + ":" + jvcport2.getText().trim());
-            }
-            if (!jcam3.getText().trim().isEmpty()) {
-                iro.println(jcam3.getText().trim() + ":" + jcport3.getText().trim() + ":" + jvcport3.getText().trim());
-            }
-            iro.flush();
-            iro.close();
-        } catch (Exception e) {
-            e.printStackTrace();
         }
-        try (PrintWriter iro = new PrintWriter(new File("port.txt"))) {
-            if (!jcportfiled.getText().trim().isEmpty()) {
-                iro.println(jcportfiled.getText().trim() + ":" + jvcportfiled.getText().trim());
-            }
-            iro.flush();
-            iro.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
 
-    public void cam_feed_ir() {
-        String ip = ipip.getText().trim();
-        if (ip.isEmpty()) {
-            System.out.println("valami hiba van");
-        } else {
-            try {
-                Cm.camera_feed(new URL(ip));
-            } catch (Exception e) {
-            }
-        }
-    }
-
-    void name_ir() {
-        try (PrintWriter iro = new PrintWriter(new File("dolgok.txt"))) {
-            if (!jname.getText().trim().isEmpty()) {
-                iro.println(jname.getText().trim() + "\n");
-            }
-            iro.flush();
-            iro.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 
     private UpnpService u; //when upnp is enabled, this points to the upnp service
@@ -312,7 +312,9 @@ public class setup extends javax.swing.JFrame {
         jLabel10 = new javax.swing.JLabel();
         jvcportfiled = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
-        jCheckBox1 = new javax.swing.JCheckBox();
+        upnpbool = new javax.swing.JCheckBox();
+        jLabel14 = new javax.swing.JLabel();
+        jtryhard = new javax.swing.JTextField();
         jPanel2 = new javax.swing.JPanel();
         jRadioButton1 = new javax.swing.JRadioButton();
         jRadioButton2 = new javax.swing.JRadioButton();
@@ -339,51 +341,57 @@ public class setup extends javax.swing.JFrame {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.VERTICAL;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
         jPanel1.add(jLabel1, gridBagConstraints);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 1;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.ipadx = 95;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
         jPanel1.add(jcam1, gridBagConstraints);
 
         jLabel2.setText("wall2 ip:");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 3;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.VERTICAL;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
         jPanel1.add(jLabel2, gridBagConstraints);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 3;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.ipadx = 95;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
         jPanel1.add(jcam2, gridBagConstraints);
 
         jLabel3.setText("wall3 ip:");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 5;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.VERTICAL;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
         jPanel1.add(jLabel3, gridBagConstraints);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 5;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.ipadx = 95;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
         jPanel1.add(jcam3, gridBagConstraints);
 
         jip.setEditable(false);
@@ -401,145 +409,149 @@ public class setup extends javax.swing.JFrame {
         gridBagConstraints.ipady = 128;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
         jPanel1.add(jScrollPane1, gridBagConstraints);
 
         jLabel4.setText(":");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 1;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(5, 0, 5, 0);
         jPanel1.add(jLabel4, gridBagConstraints);
 
         jLabel5.setText(":");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 3;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(5, 0, 5, 0);
         jPanel1.add(jLabel5, gridBagConstraints);
 
         jLabel6.setText(":");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 5;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(5, 0, 5, 0);
         jPanel1.add(jLabel6, gridBagConstraints);
 
         jcport1.setText("6666");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 3;
         gridBagConstraints.gridy = 1;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.ipadx = 44;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
         jPanel1.add(jcport1, gridBagConstraints);
 
         jcport2.setText("6666");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 3;
         gridBagConstraints.gridy = 3;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.ipadx = 44;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
         jPanel1.add(jcport2, gridBagConstraints);
 
         jcport3.setText("6666");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 3;
         gridBagConstraints.gridy = 5;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.ipadx = 44;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
         jPanel1.add(jcport3, gridBagConstraints);
 
         jLabel7.setText("Camera server port:");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 5;
         gridBagConstraints.gridy = 0;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.VERTICAL;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
         jPanel1.add(jLabel7, gridBagConstraints);
 
         jcportfiled.setText("6666");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 6;
         gridBagConstraints.gridy = 0;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.ipadx = 88;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
         jPanel1.add(jcportfiled, gridBagConstraints);
 
         jLabel8.setText("camera");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 3;
         gridBagConstraints.gridy = 0;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.VERTICAL;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
         jPanel1.add(jLabel8, gridBagConstraints);
 
         jLabel9.setText("voice and chat");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 4;
         gridBagConstraints.gridy = 0;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.VERTICAL;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(0, 0, 0, 10);
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 10);
         jPanel1.add(jLabel9, gridBagConstraints);
 
         jvcport1.setText("6969");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 4;
         gridBagConstraints.gridy = 1;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(0, 0, 0, 10);
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 10);
         jPanel1.add(jvcport1, gridBagConstraints);
 
         jvcport2.setText("6969");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 4;
         gridBagConstraints.gridy = 3;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(0, 0, 0, 10);
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 10);
         jPanel1.add(jvcport2, gridBagConstraints);
 
         jvcport3.setText("6969");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 4;
         gridBagConstraints.gridy = 5;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(0, 0, 0, 10);
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 10);
         jPanel1.add(jvcport3, gridBagConstraints);
 
         jLabel10.setText("Voice and chat port");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 5;
         gridBagConstraints.gridy = 1;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.VERTICAL;
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
         jPanel1.add(jLabel10, gridBagConstraints);
 
         jvcportfiled.setText("6969");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 6;
         gridBagConstraints.gridy = 1;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
         jPanel1.add(jvcportfiled, gridBagConstraints);
 
         jButton1.setText("Test UPnP");
@@ -551,13 +563,35 @@ public class setup extends javax.swing.JFrame {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 6;
         gridBagConstraints.gridy = 3;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
         jPanel1.add(jButton1, gridBagConstraints);
 
-        jCheckBox1.setText("UPnP");
+        upnpbool.setText("UPnP");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 5;
         gridBagConstraints.gridy = 3;
-        jPanel1.add(jCheckBox1, gridBagConstraints);
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
+        jPanel1.add(upnpbool, gridBagConstraints);
+
+        jLabel14.setText("Try Hard: ");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 5;
+        gridBagConstraints.gridy = 5;
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
+        jPanel1.add(jLabel14, gridBagConstraints);
+
+        jtryhard.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jtryhardKeyPressed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 6;
+        gridBagConstraints.gridy = 5;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
+        jPanel1.add(jtryhard, gridBagConstraints);
 
         jTabbedPane1.addTab("ServerSetup", jPanel1);
 
@@ -776,6 +810,22 @@ public class setup extends javax.swing.JFrame {
         test_upnp();
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    private void jtryhardKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jtryhardKeyPressed
+        char c = evt.getKeyChar();
+        System.out.println(evt.getKeyCode());//8,127
+        if (Character.isDigit(c) || evt.getKeyCode() == 8 || evt.getKeyCode() == 127) {
+
+// OK
+            //System.out.println("digit");
+        } else {
+            System.out.println("consume");
+            // Ignore this character
+            evt.consume();
+            //  jtryhard.setText(jtryhard.getText().substring(i, jtryhard.getText().length() - 1));
+        }
+
+    }//GEN-LAST:event_jtryhardKeyPressed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup buttonGroup1;
@@ -783,12 +833,12 @@ public class setup extends javax.swing.JFrame {
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton7;
     private javax.swing.JButton jButton8;
-    private javax.swing.JCheckBox jCheckBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
+    private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel25;
     private javax.swing.JLabel jLabel26;
@@ -818,9 +868,11 @@ public class setup extends javax.swing.JFrame {
     private javax.swing.JTextField jcportfiled;
     private javax.swing.JTextArea jip;
     private javax.swing.JTextField jname;
+    private javax.swing.JTextField jtryhard;
     private javax.swing.JTextField jvcport1;
     private javax.swing.JTextField jvcport2;
     private javax.swing.JTextField jvcport3;
     private javax.swing.JTextField jvcportfiled;
+    private javax.swing.JCheckBox upnpbool;
     // End of variables declaration//GEN-END:variables
 }
