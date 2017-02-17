@@ -120,7 +120,9 @@ public class setup extends javax.swing.JFrame {
         } catch (Exception e) {
         }
         if (publicip.equals(gatway)) {
-            chain += "\nGateway IP: " + gatway;
+            if (!jip.getText().contains(gatway)) {
+                chain += "\nGateway IP: " + gatway;
+            }
         }
         return chain;
     }
