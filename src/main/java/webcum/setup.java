@@ -121,6 +121,7 @@ public class setup extends javax.swing.JFrame {
         }
         if (publicip.equals(gatway)) {
             if (!jip.getText().contains(gatway)) {
+                local_ips.add(gatway);
                 chain += "\nGateway IP: " + gatway;
             }
         }
