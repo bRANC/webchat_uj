@@ -13,6 +13,7 @@ import java.awt.GridBagLayout;
 import java.io.File;
 import java.io.FileReader;
 import java.net.InetSocketAddress;
+import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.Scanner;
 import javax.swing.ImageIcon;
@@ -31,6 +32,7 @@ import voice.ScreenSaver.ScreenSaver;
 import voice.client.ChatClient;
 import voice.server.ChatServer;
 import webcum.agent.StreamServerAgent;
+import webcum.sqlite.sqlite;
 
 /**
  *
@@ -54,7 +56,7 @@ public class kiiras extends javax.swing.JFrame {
         // server_start();  
         //VolatileImage <-- video memóriában is leképződő image   -Dsun.java2d.accthreshold=0
         setup_receiv();
-        local_things();
+//        local_things();
         Ct.execute();
         this.addWindowListener(new java.awt.event.WindowAdapter() {
             @Override
@@ -120,6 +122,7 @@ public class kiiras extends javax.swing.JFrame {
     public ChatClient get_user() {
         return cc;
     }
+    int tryhard = 0;
 
     class Chatstartup extends SwingWorker<Void, Void> {
 
@@ -128,10 +131,18 @@ public class kiiras extends javax.swing.JFrame {
         @Override
         protected Void doInBackground() throws Exception {
             scan();
+            if (tryhard == 0) {
+                cas = new Chat_and_voice_server_start();
+                cas.execute();
+                varas(200);
+                cc.connect("localhost", ip.get(0).port_jvc + "");
+            }
             if (ip.size() > 0) {
-                for (int i = 0; i < ip.size(); i++) {
-                    if (!cc.isConnected()) {
-                        cc.connect(ip.get(i).ip, ip.get(i).port_txt + "");
+                for (int j = 0; j < tryhard; j++) {
+                    for (int i = 0; i < ip.size(); i++) {
+                        if (!cc.isConnected()) {
+                            cc.connect(ip.get(i).ip, ip.get(i).port_jvc + "");
+                        }
                     }
                 }
             }
@@ -140,11 +151,11 @@ public class kiiras extends javax.swing.JFrame {
                 cas = new Chat_and_voice_server_start();
                 cas.execute();
                 varas(200);
-                cc.connect("localhost", port_szam(1) + "");
+                cc.connect("localhost", ip.get(0).port_jvc + "");
             } else {
 
             }
-            cc.set_nickname(dolog.nev);
+            cc.set_nickname(ip.get(0).name);
             return null;
         }
 
@@ -159,7 +170,7 @@ public class kiiras extends javax.swing.JFrame {
 
         @Override
         protected Void doInBackground() throws Exception {
-            cs = new ChatServer(6969);
+            cs = new ChatServer(ip.get(0).port_jvc);
             return null;
         }
 
@@ -318,6 +329,7 @@ StreamServerAgent serverAgent;
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         start_local_cam_server();            //VGA
     }//GEN-LAST:event_jButton1ActionPerformed
+
     void start_local_cam_server() {
         cam.webcam.setAutoOpenMode(true);
         Dimension dimension = new Dimension(320, 240);
@@ -331,34 +343,9 @@ StreamServerAgent serverAgent;
             cam.webcam.setViewSize(WebcamResolution.QVGA.getSize());//be állítása VGA
             serverAgent = new StreamServerAgent(cam.webcam, WebcamResolution.QVGA.getSize());
         }
-        serverAgent.start(new InetSocketAddress("0.0.0.0", port_szam(0)));
+        serverAgent.start(new InetSocketAddress("0.0.0.0", ip.get(0).port_jv));
         cam.stream(serverAgent);
-        vph.get(0).connect("localhost", port_szam(0));
-
-    }
-
-    int port_szam(int hanyadik) {
-        int vissza = 6666;
-        try {
-            Scanner in = new Scanner(new FileReader("port.txt"));
-            int a = 1;
-            while (in.hasNext()) {
-                String kecske = in.nextLine().split(":")[hanyadik];
-                if (!kecske.isEmpty()) {
-                    try {
-                        vissza = Integer.parseInt(kecske);
-                    } catch (Exception e) {
-                        System.out.println("nem szám a port.txt");
-                    }
-                    a++;
-                }
-            }
-            in.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-            System.out.println("not configured");
-        }
-        return vissza;
+        vph.get(0).connect("localhost", ip.get(0).port_jv);
     }
 
     public void fullscreen() {
@@ -379,12 +366,14 @@ StreamServerAgent serverAgent;
 
         ip(String ip, int port_v, int port_txt) {
             this.ip = ip;
-            this.port_v = port_v;
-            this.port_txt = port_txt;
+            this.port_jv = port_v;
+            this.port_jvc = port_txt;
         }
+        String name = "";
+        boolean upnp = false;
         String ip;
-        int port_v;
-        int port_txt;
+        int port_jv;
+        int port_jvc;
     }
     ArrayList<ip> ip;
 
@@ -400,38 +389,51 @@ StreamServerAgent serverAgent;
     }
     dolgok dolog;
 
-    void local_things() {
-        String ki = "", ki1 = "", ki2 = "";
-        try {
-            Scanner in = new Scanner(new FileReader("dolgok.txt"));
-            int a = 1;
-            while (in.hasNext()) {
-                String kecske = in.nextLine();
-                if (!kecske.isEmpty()) {
-                    System.out.println("id: " + a + " txt tartalom: " + kecske);
+    sqlite inn = new sqlite("twin.db");
 
-                    switch (a) {
-                        case 1:
-                            ki = kecske;
-                            break;
-                        case 2:
-                            ki1 = kecske;
-                            break;
-                        case 3:
-                            ki2 = kecske;
-                            break;
-                        default:
-                            break;
-                    }
-                    a++;
+    void sqlscan() {
+        try {
+            ResultSet rs = inn.le("selec * from nation;");
+            while (rs.next()) {
+                switch (rs.getInt("id")) {
+                    case 0:
+                        //upnpbool.setSelected(rs.getBoolean("upnp"));
+                        //jname.setText(rs.getString("name"));
+                        //jcportfiled.setText(rs.getString("jcport"));
+                        //jvcportfiled.setText(rs.getString("jvcport"));
+                        //jtryhard.setText(rs.getString("tryhard"));
+                        ip.add(new ip(rs.getString("ip"), Integer.parseInt(rs.getString("jcport")), Integer.parseInt(rs.getString("jvcport"))));
+                        ip.get(ip.size()).name = rs.getString("name");
+                        ip.get(ip.size()).upnp = rs.getBoolean("upnp");
+                        tryhard = rs.getInt("tryhard");
+                        break;
+                    case 1:
+                        ip.add(new ip(rs.getString("ip"), Integer.parseInt(rs.getString("jcport")), Integer.parseInt(rs.getString("jvcport"))));
+//                        jcam1.setText(rs.getString("ip"));
+//                        jcport1.setText(rs.getString("jcport"));
+//                        jvcport1.setText(rs.getString("jvcport"));
+                        break;
+                    case 2:
+                        ip.add(new ip(rs.getString("ip"), Integer.parseInt(rs.getString("jcport")), Integer.parseInt(rs.getString("jvcport"))));
+//                        jcam2.setText(rs.getString("ip"));
+//                        jcport2.setText(rs.getString("jcport"));
+//                        jvcport2.setText(rs.getString("jvcport"));
+                        break;
+                    case 3:
+                        ip.add(new ip(rs.getString("ip"), Integer.parseInt(rs.getString("jcport")), Integer.parseInt(rs.getString("jvcport"))));
+//                        jcam3.setText(rs.getString("ip"));
+//                        jcport3.setText(rs.getString("jcport"));
+//                        jvcport3.setText(rs.getString("jvcport"));
+                        break;
+                    default:
+                        break;
                 }
             }
-            dolog = new dolgok(ki, ki1, ki2);
-            in.close();
         } catch (Exception e) {
+            System.out.print("sqlscan: ");
             e.printStackTrace();
-            System.out.println("not configured");
         }
+
     }
 
     void scan() {
@@ -458,13 +460,15 @@ StreamServerAgent serverAgent;
     }
 
     void connect_to_ips() {
-        try {
-            for (int i = 0; i < ip.size(); i++) {
-                System.out.println(ip.get(i).ip + " i:" + i);
-                vph.get(i + 1).connect(ip.get(i).ip, ip.get(i).port_v);
-            }
-        } catch (Exception e) {
+        for (int i = 0; i < ip.size(); i++) {
+            try {
 
+                System.out.println(ip.get(i).ip + " i:" + i);
+                vph.get(i + 1).connect(ip.get(i).ip, ip.get(i).port_jv);
+
+            } catch (Exception e) {
+                System.out.println("cti: " + e.toString());
+            }
         }
     }
 
@@ -512,7 +516,7 @@ StreamServerAgent serverAgent;
         hfree.setText("handsfree " + cc.handsfree());
         // TODO add your handling code here:
     }//GEN-LAST:event_hfreeActionPerformed
-    
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton hfree;
