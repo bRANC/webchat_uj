@@ -139,7 +139,7 @@ public class kiiras extends javax.swing.JFrame {
             } else {
                 if (ip.size() > 0) {
                     for (int j = 0; j < tryhard; j++) {
-                        for (int i = 0; i < ip.size(); i++) {
+                        for (int i = 1; i < ip.size(); i++) {
                             if (!cc.isConnected()) {
                                 cc.connect(ip.get(i).ip, ip.get(i).port_jvc + "");
                             }
