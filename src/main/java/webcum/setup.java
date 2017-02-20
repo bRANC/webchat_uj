@@ -69,26 +69,68 @@ public class setup extends javax.swing.JFrame {
             while (rs.next()) {
                 switch (rs.getInt("id")) {
                     case 0:
-                        upnpbool.setSelected(rs.getBoolean("upnp"));
-                        jname.setText(rs.getString("name"));
-                        jcportfiled.setText(rs.getString("jcport"));
-                        jvcportfiled.setText(rs.getString("jvcport"));
-                        jtryhard.setText(rs.getString("tryhard"));
+                        try {
+                            upnpbool.setSelected(rs.getBoolean("upnp"));
+                        } catch (Exception e) {
+                        }
+                        try {
+                            jname.setText(rs.getString("name"));
+                        } catch (Exception e) {
+                        }
+                        try {
+                            jcportfiled.setText(rs.getString("jcport"));
+                        } catch (Exception e) {
+                        }
+                        try {
+                            jvcportfiled.setText(rs.getString("jvcport"));
+                        } catch (Exception e) {
+                        }
+                        try {
+                            jtryhard.setText(rs.getString("tryhard"));
+                        } catch (Exception e) {
+                        }
                         break;
                     case 1:
-                        jcam1.setText(rs.getString("ip"));
-                        jcport1.setText(rs.getString("jcport"));
-                        jvcport1.setText(rs.getString("jvcport"));
+                        try {
+                            jcam1.setText(rs.getString("ip"));
+                        } catch (Exception e) {
+                        }
+                        try {
+                            jcport1.setText(rs.getString("jcport"));
+                        } catch (Exception e) {
+                        }
+                        try {
+                            jvcport1.setText(rs.getString("jvcport"));
+                        } catch (Exception e) {
+                        }
                         break;
                     case 2:
-                        jcam2.setText(rs.getString("ip"));
-                        jcport2.setText(rs.getString("jcport"));
-                        jvcport2.setText(rs.getString("jvcport"));
+                        try {
+                            jcam2.setText(rs.getString("ip"));
+                        } catch (Exception e) {
+                        }
+                        try {
+                            jcport2.setText(rs.getString("jcport"));
+                        } catch (Exception e) {
+                        }
+                        try {
+                            jvcport2.setText(rs.getString("jvcport"));
+                        } catch (Exception e) {
+                        }
                         break;
                     case 3:
-                        jcam3.setText(rs.getString("ip"));
-                        jcport3.setText(rs.getString("jcport"));
-                        jvcport3.setText(rs.getString("jvcport"));
+                        try {
+                            jcam3.setText(rs.getString("ip"));
+                        } catch (Exception e) {
+                        }
+                        try {
+                            jcport3.setText(rs.getString("jcport"));
+                        } catch (Exception e) {
+                        }
+                        try {
+                            jvcport3.setText(rs.getString("jvcport"));
+                        } catch (Exception e) {
+                        }
                         break;
                     default:
                         break;
