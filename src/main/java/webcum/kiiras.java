@@ -130,7 +130,7 @@ public class kiiras extends javax.swing.JFrame {
 
         @Override
         protected Void doInBackground() throws Exception {
-            scan();
+            sqlscan();
             if (tryhard == 0) {
                 cas = new Chat_and_voice_server_start();
                 cas.execute();
@@ -393,35 +393,45 @@ StreamServerAgent serverAgent;
     sqlite inn = new sqlite("twin.db3");
 
     void sqlscan() {
+        ip = new ArrayList();
         try {
             ResultSet rs = inn.le("select * from nation;");
             while (rs.next()) {
                 switch (rs.getInt("id")) {
-                    case 0:
+                    case 1:
                         //upnpbool.setSelected(rs.getBoolean("upnp"));
                         //jname.setText(rs.getString("name"));
                         //jcportfiled.setText(rs.getString("jcport"));
                         //jvcportfiled.setText(rs.getString("jvcport"));
                         //jtryhard.setText(rs.getString("tryhard"));
                         ip.add(new ip(rs.getString("ip"), Integer.parseInt(rs.getString("jcport")), Integer.parseInt(rs.getString("jvcport"))));
-                        ip.get(ip.size()).name = rs.getString("name");
-                        ip.get(ip.size()).upnp = rs.getBoolean("upnp");
+                        ip.get(ip.size()-1).name = rs.getString("name");
+                        ip.get(ip.size()-1).upnp = rs.getBoolean("upnp");
                         tryhard = rs.getInt("tryhard");
                         break;
-                    case 1:
-                        ip.add(new ip(rs.getString("ip"), Integer.parseInt(rs.getString("jcport")), Integer.parseInt(rs.getString("jvcport"))));
+                    case 2:
+                        try {
+                            ip.add(new ip(rs.getString("ip"), Integer.parseInt(rs.getString("jcport")), Integer.parseInt(rs.getString("jvcport"))));
+                        } catch (Exception e) {
+                        }
 //                        jcam1.setText(rs.getString("ip"));
 //                        jcport1.setText(rs.getString("jcport"));
 //                        jvcport1.setText(rs.getString("jvcport"));
                         break;
-                    case 2:
-                        ip.add(new ip(rs.getString("ip"), Integer.parseInt(rs.getString("jcport")), Integer.parseInt(rs.getString("jvcport"))));
+                    case 3:
+                        try {
+                            ip.add(new ip(rs.getString("ip"), Integer.parseInt(rs.getString("jcport")), Integer.parseInt(rs.getString("jvcport"))));
+                        } catch (Exception e) {
+                        }
 //                        jcam2.setText(rs.getString("ip"));
 //                        jcport2.setText(rs.getString("jcport"));
 //                        jvcport2.setText(rs.getString("jvcport"));
                         break;
-                    case 3:
-                        ip.add(new ip(rs.getString("ip"), Integer.parseInt(rs.getString("jcport")), Integer.parseInt(rs.getString("jvcport"))));
+                    case 4:
+                        try {
+                            ip.add(new ip(rs.getString("ip"), Integer.parseInt(rs.getString("jcport")), Integer.parseInt(rs.getString("jvcport"))));
+                        } catch (Exception e) {
+                        }
 //                        jcam3.setText(rs.getString("ip"));
 //                        jcport3.setText(rs.getString("jcport"));
 //                        jvcport3.setText(rs.getString("jvcport"));

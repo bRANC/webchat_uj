@@ -68,7 +68,7 @@ public class setup extends javax.swing.JFrame {
             ResultSet rs = inn.le("select * from nation;");
             while (rs.next()) {
                 switch (rs.getInt("id")) {
-                    case 0:
+                    case 1:
                         try {
                             upnpbool.setSelected(rs.getBoolean("upnp"));
                         } catch (Exception e) {
@@ -90,7 +90,7 @@ public class setup extends javax.swing.JFrame {
                         } catch (Exception e) {
                         }
                         break;
-                    case 1:
+                    case 2:
                         try {
                             jcam1.setText(rs.getString("ip"));
                         } catch (Exception e) {
@@ -104,7 +104,7 @@ public class setup extends javax.swing.JFrame {
                         } catch (Exception e) {
                         }
                         break;
-                    case 2:
+                    case 3:
                         try {
                             jcam2.setText(rs.getString("ip"));
                         } catch (Exception e) {
@@ -118,7 +118,7 @@ public class setup extends javax.swing.JFrame {
                         } catch (Exception e) {
                         }
                         break;
-                    case 3:
+                    case 4:
                         try {
                             jcam3.setText(rs.getString("ip"));
                         } catch (Exception e) {
@@ -630,6 +630,7 @@ public class setup extends javax.swing.JFrame {
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
         jPanel1.add(jLabel14, gridBagConstraints);
 
+        jtryhard.setText("2");
         jtryhard.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 jtryhardKeyPressed(evt);
