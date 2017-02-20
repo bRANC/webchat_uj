@@ -204,7 +204,7 @@ public class setup extends javax.swing.JFrame {
             switch (i) {
                 case 0:
                     try {
-                        inn.fel("update nation set"
+                        inn.fel("update nation set "
                                 + " name ='" + jname.getText() + "',"
                                 + "jcport ='" + jcportfiled.getText() + "',"
                                 + "jvcport='" + jvcportfiled.getText() + "',"
@@ -217,7 +217,7 @@ public class setup extends javax.swing.JFrame {
                 case 1:
                     //rs.getString("ip"),rs.getString("jcport"),rs.getString("jvcport")
                     try {
-                        inn.fel("update nation set"
+                        inn.fel("update nation set "
                                 + "ip ='" + jcam1.getText() + "',"
                                 + "jcport ='" + jcport1.getText() + "',"
                                 + "jvcport='" + jvcport1.getText() + "'"
@@ -227,7 +227,7 @@ public class setup extends javax.swing.JFrame {
                     break;
                 case 2:
                     try {
-                        inn.fel("update nation set"
+                        inn.fel("update nation set "
                                 + "ip ='" + jcam2.getText() + "',"
                                 + "jcport ='" + jcport2.getText() + "',"
                                 + "jvcport='" + jvcport2.getText() + "'"
@@ -237,7 +237,7 @@ public class setup extends javax.swing.JFrame {
                     break;
                 case 3:
                     try {
-                        inn.fel("update nation set"
+                        inn.fel("update nation set "
                                 + "ip ='" + jcam3.getText() + "',"
                                 + "jcport ='" + jcport3.getText() + "',"
                                 + "jvcport='" + jvcport3.getText() + "'"
