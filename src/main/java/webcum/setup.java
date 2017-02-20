@@ -41,7 +41,7 @@ public class setup extends javax.swing.JFrame {
     ChatClient cc = new ChatClient(true);
     boolean flip = true;
 
-    sqlite inn = new sqlite("twin.db");
+    sqlite inn = new sqlite("twin.db3");
 
     /**
      * Creates new form setup

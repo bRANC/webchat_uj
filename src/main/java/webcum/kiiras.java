@@ -390,7 +390,7 @@ StreamServerAgent serverAgent;
     }
     dolgok dolog;
 
-    sqlite inn = new sqlite("twin.db");
+    sqlite inn = new sqlite("twin.db3");
 
     void sqlscan() {
         try {
