@@ -99,7 +99,7 @@ public class setup extends javax.swing.JFrame {
         }
     }
 
-    String gateway() {
+    String outterip() {
         String chain = "";
         String gatway = "";
         String publicip = "";
@@ -113,18 +113,22 @@ public class setup extends javax.swing.JFrame {
         } catch (Exception e) {
         }
         try {//http://icanhazip.com/
-            URL whatismyip = new URL("http://icanhazip.com/");
-            BufferedReader in = new BufferedReader(new InputStreamReader(
-                    whatismyip.openStream()));
-            publicip = in.readLine(); //you get the IP as a String
+            URL whatismyip1 = new URL("http://icanhazip.com/");
+            BufferedReader in1 = new BufferedReader(new InputStreamReader(
+                    whatismyip1.openStream()));
+            publicip = in1.readLine(); //you get the IP as a String
+
         } catch (Exception e) {
         }
-        if (publicip.equals(gatway)) {
-            if (!jip.getText().contains(gatway)) {
-                local_ips.add(gatway);
-                chain += "\nGateway IP: " + gatway;
-            }
+        System.out.println("public: " + publicip + "  gatway: " + gatway);
+        if (!publicip.equals(gatway)) {
+            //if (!jip.getText().contains(gatway)) {
+            local_ips.add(gatway);
+            chain += "\nGateway IP: " + gatway;
+            //}
+            //System.out.println("gatway");
         }
+        chain += "\nDefault public IP: " + publicip;
         return chain;
     }
 
@@ -138,15 +142,15 @@ public class setup extends javax.swing.JFrame {
             }
         } catch (Exception e) {
         }
-        chain += gateway();
-        try {//http://icanhazip.com/
-            URL whatismyip = new URL("http://checkip.amazonaws.com");
-            BufferedReader in = new BufferedReader(new InputStreamReader(
-                    whatismyip.openStream()));
-            String ip = in.readLine(); //you get the IP as a String
-            chain += "\nDefault public IP: " + ip;
-        } catch (Exception e) {
-        }
+        chain += outterip();
+//        try {//http://icanhazip.com/
+//            URL whatismyip = new URL("http://checkip.amazonaws.com");
+//            BufferedReader in = new BufferedReader(new InputStreamReader(
+//                    whatismyip.openStream()));
+//            String ip = in.readLine(); //you get the IP as a String
+//            chain += "\nDefault public IP: " + ip;
+//        } catch (Exception e) {
+//        }
         return chain;
     }
     ArrayList<String> local_ips = new ArrayList<>();

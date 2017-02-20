@@ -136,24 +136,25 @@ public class kiiras extends javax.swing.JFrame {
                 cas.execute();
                 varas(200);
                 cc.connect("localhost", ip.get(0).port_jvc + "");
-            }
-            if (ip.size() > 0) {
-                for (int j = 0; j < tryhard; j++) {
-                    for (int i = 0; i < ip.size(); i++) {
-                        if (!cc.isConnected()) {
-                            cc.connect(ip.get(i).ip, ip.get(i).port_jvc + "");
+            } else {
+                if (ip.size() > 0) {
+                    for (int j = 0; j < tryhard; j++) {
+                        for (int i = 0; i < ip.size(); i++) {
+                            if (!cc.isConnected()) {
+                                cc.connect(ip.get(i).ip, ip.get(i).port_jvc + "");
+                            }
                         }
                     }
                 }
-            }
-            //cc.connect("localhost", port_szam(1) + "");
-            if (!cc.isConnected()) {
-                cas = new Chat_and_voice_server_start();
-                cas.execute();
-                varas(200);
-                cc.connect("localhost", ip.get(0).port_jvc + "");
-            } else {
+                //cc.connect("localhost", port_szam(1) + "");
+                if (!cc.isConnected()) {
+                    cas = new Chat_and_voice_server_start();
+                    cas.execute();
+                    varas(200);
+                    cc.connect("localhost", ip.get(0).port_jvc + "");
+                } else {
 
+                }
             }
             cc.set_nickname(ip.get(0).name);
             return null;
