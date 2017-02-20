@@ -394,7 +394,7 @@ StreamServerAgent serverAgent;
 
     void sqlscan() {
         try {
-            ResultSet rs = inn.le("selec * from nation;");
+            ResultSet rs = inn.le("select * from nation;");
             while (rs.next()) {
                 switch (rs.getInt("id")) {
                     case 0:
