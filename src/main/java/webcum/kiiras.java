@@ -335,7 +335,7 @@ StreamServerAgent serverAgent;
     }
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         cc.handsfree(true);
-        hfree.setText("handsfree " + cc.handsfree());
+//        hfree.setText("handsfree " + cc.handsfree());
         cc.talk();
         jButton2.setText("talk " + cc.is_talking());
     }//GEN-LAST:event_jButton2ActionPerformed
