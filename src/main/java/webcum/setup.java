@@ -242,9 +242,9 @@ public class setup extends javax.swing.JFrame {
     }
 
     public void sqlitefel() {//id,nation,name,ip,jcport,jvcport,upnp,weathercam,weatherforecast
-        for (int i = 0; i <= 4; i++) {
+        for (int i = 1; i <= 4; i++) {
             switch (i) {
-                case 0:
+                case 1:
                     try {
                         inn.fel("update nation set "
                                 + " name ='" + jname.getText() + "',"
@@ -256,7 +256,7 @@ public class setup extends javax.swing.JFrame {
                     } catch (Exception e) {
                     }
                     break;
-                case 1:
+                case 2:
                     //rs.getString("ip"),rs.getString("jcport"),rs.getString("jvcport")
                     try {
                         inn.fel("update nation set "
@@ -267,7 +267,7 @@ public class setup extends javax.swing.JFrame {
                     } catch (Exception e) {
                     }
                     break;
-                case 2:
+                case 3:
                     try {
                         inn.fel("update nation set "
                                 + "ip ='" + jcam2.getText() + "',"
@@ -277,7 +277,7 @@ public class setup extends javax.swing.JFrame {
                     } catch (Exception e) {
                     }
                     break;
-                case 3:
+                case 4:
                     try {
                         inn.fel("update nation set "
                                 + "ip ='" + jcam3.getText() + "',"
