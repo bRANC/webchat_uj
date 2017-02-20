@@ -78,6 +78,7 @@ public class kiiras extends javax.swing.JFrame {
     Server server;
 
     ArrayList<videopanelhandler> vph = new ArrayList<>();
+    ArrayList<local> lch = new ArrayList<>();
     ArrayList<JPanel> panelcam = new ArrayList<>();
 
     void setup_receiv() {
@@ -330,6 +331,48 @@ StreamServerAgent serverAgent;
         vph.get(0).connect("localhost", ip.get(0).port_jv);
     }
 
+    public void remove_cam(ArrayList<Integer> be) {
+        for (int i = 0; i < be.size(); i++) {
+            //panelcam.get(be.get(i)).remove(this);
+            GridBagLayout layout = (GridBagLayout) panelcam.get(be.get(i)).getLayout();
+            layout.removeLayoutComponent(vph.get(be.get(i)).get_vp());
+
+        }
+        this.pack();
+        fullscreen();
+    }
+
+    class connect_agent extends SwingWorker<Void, Void> {
+
+        @Override
+        protected Void doInBackground() throws Exception {
+            while (true) {
+                boolean van = false;
+                ArrayList<Integer> for_delet = new ArrayList<>();
+                System.out.println("serveragentd dc size: " + serverAgent.dc_ips.size());
+                for (int i = 0; i < serverAgent.dc_ips.size(); i++) {
+                    for (int j = 0; j < ip.size(); j++) {
+                        if (ip.get(j).ip.contains(serverAgent.dc_ips.get(i))) {
+                            for_delet.add(j);
+                            System.out.println("add: " + j);
+                        }
+                    }
+                }
+                if (!for_delet.isEmpty()) {
+                    System.out.println(" delete ");
+                    remove_cam(for_delet);
+                }
+                serverAgent.dc_ips.clear();
+                varas(300);
+            }
+        }
+
+        @Override
+        protected void done() {
+        }
+
+    }
+
     public void fullscreen() {
         this.setExtendedState(JFrame.MAXIMIZED_BOTH);
         //    this.setUndecorated(true);
@@ -475,8 +518,11 @@ StreamServerAgent serverAgent;
     public void send_text(String text) {
         cc.send_text(text);
     }
+    connect_agent con;
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         connect_to_ips();
+        con = new connect_agent();
+        con.execute();
     }//GEN-LAST:event_jButton3ActionPerformed
 
     void server_setup() {

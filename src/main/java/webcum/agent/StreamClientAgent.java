@@ -67,20 +67,29 @@ public class StreamClientAgent implements IStreamClientAgent {
 
     protected class StreamClientListenerIMPL implements StreamClientListener {
 
+        public boolean isconnect = false;
+
+        public boolean isconn() {
+            return isconnect;
+        }
+
         @Override
         public void onConnected(Channel channel) {
             //	logger.info("stream connected to server at :{}",channel);
             clientChannel = channel;
+            isconnect = true;
         }
 
         @Override
         public void onDisconnected(Channel channel) {
             //	logger.info("stream disconnected to server at :{}",channel);
+            isconnect = false;
         }
 
         @Override
         public void onException(Channel channel, Throwable t) {
             //	logger.debug("exception at :{},exception :{}",channel,t);
+            isconnect = false;
         }
 
     }

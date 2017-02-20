@@ -30,6 +30,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.PrintWriter;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Scanner;
 import javax.imageio.ImageIO;
 
@@ -84,6 +85,8 @@ public class StreamServerAgent implements IStreamServerAgent {
     public void setFPS(int fPS) {
         FPS = fPS;
     }
+    //StreamServerListenerIMPL.
+    public ArrayList<String> dc_ips = new ArrayList<>();
 
     @Override
     public void start(SocketAddress streamAddress) {
@@ -142,6 +145,7 @@ public class StreamServerAgent implements IStreamServerAgent {
                 isStreaming = false;
             }
             logger.info("Client disconnected :{}", channel.getRemoteAddress());
+            dc_ips.add(channel.getRemoteAddress().toString());
         }
 
         @Override
