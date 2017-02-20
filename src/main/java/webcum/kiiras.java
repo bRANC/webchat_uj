@@ -89,6 +89,11 @@ public class kiiras extends javax.swing.JFrame {
             vph.add(new videopanelhandler());
         }
 
+        //videoPannel.setPreferredSize(dimension);
+        //Dimension dm = new Dimension(600, 600);
+    }
+
+    public void add_cam(int i) {
         //gridbaglayout beállítások
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.anchor = GridBagConstraints.CENTER;
@@ -96,16 +101,15 @@ public class kiiras extends javax.swing.JFrame {
         gbc.weightx = gbc.weighty = 1.0;
         //automata méretezés madafaka
 
-        //videoPannel.setPreferredSize(dimension);
-        //Dimension dm = new Dimension(600, 600);
-        for (int i = 0; i < vph.size(); i++) {
-            GridBagLayout layout = (GridBagLayout) panelcam.get(i).getLayout();
-            panelcam.get(i).add(vph.get(i).get_vp());
-            layout.addLayoutComponent(vph.get(i).get_vp(), gbc);
-        }
-
+        GridBagLayout layout = (GridBagLayout) panelcam.get(i).getLayout();
+        panelcam.get(i).add(vph.get(i).get_vp());
+        layout.addLayoutComponent(vph.get(i).get_vp(), gbc);
         this.pack();
+        fullscreen();
+    }
 
+    public void remove_notc() {
+        //   notc[0];//4
     }
 
     void varas(int ido
@@ -322,6 +326,7 @@ StreamServerAgent serverAgent;
         }
         serverAgent.start(new InetSocketAddress("0.0.0.0", ip.get(0).port_jv));
         cam.stream(serverAgent);
+        add_cam(0);
         vph.get(0).connect("localhost", ip.get(0).port_jv);
     }
 
@@ -446,19 +451,25 @@ StreamServerAgent serverAgent;
         }
     }
 
+    int[] notc = new int[5];
+
     void connect_to_ips() {
         System.out.println("size: " + ip.size());
         for (int i = 1; i < ip.size(); i++) {
             try {
-
                 if (!ip.get(i).ip.trim().isEmpty()) {
                     System.out.println(ip.get(i).ip + " i:" + i);
                     vph.get(i).connect(ip.get(i).ip, ip.get(i).port_jv);
+                    add_cam(i);
+                    notc[i] = 1;
+                } else {
+                    notc[i] = 2;
                 }
             } catch (Exception e) {
                 System.out.println("cti: " + e.toString());
             }
         }
+
     }
 
     public void send_text(String text) {
