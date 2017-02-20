@@ -200,8 +200,6 @@ public class kiiras extends javax.swing.JFrame {
         panelcam2 = new javax.swing.JPanel();
         panelcam1 = new javax.swing.JPanel();
         panelcam3 = new javax.swing.JPanel();
-        hfree = new javax.swing.JButton();
-        spacing = new javax.swing.JButton();
 
         setBackground(new java.awt.Color(0, 0, 0));
         getContentPane().setLayout(new java.awt.GridBagLayout());
@@ -227,7 +225,7 @@ public class kiiras extends javax.swing.JFrame {
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 5;
+        gridBagConstraints.gridx = 3;
         gridBagConstraints.gridy = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
@@ -255,7 +253,7 @@ public class kiiras extends javax.swing.JFrame {
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 3;
+        gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
@@ -266,7 +264,7 @@ public class kiiras extends javax.swing.JFrame {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
-        gridBagConstraints.gridwidth = 3;
+        gridBagConstraints.gridwidth = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
@@ -276,7 +274,7 @@ public class kiiras extends javax.swing.JFrame {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
-        gridBagConstraints.gridwidth = 3;
+        gridBagConstraints.gridwidth = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
@@ -284,9 +282,9 @@ public class kiiras extends javax.swing.JFrame {
 
         panelcam1.setLayout(new java.awt.GridBagLayout());
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 3;
+        gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 0;
-        gridBagConstraints.gridwidth = 3;
+        gridBagConstraints.gridwidth = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
@@ -294,35 +292,13 @@ public class kiiras extends javax.swing.JFrame {
 
         panelcam3.setLayout(new java.awt.GridBagLayout());
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 3;
+        gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 1;
-        gridBagConstraints.gridwidth = 3;
+        gridBagConstraints.gridwidth = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
         getContentPane().add(panelcam3, gridBagConstraints);
-
-        hfree.setText("handsfree");
-        hfree.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                hfreeActionPerformed(evt);
-            }
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 4;
-        gridBagConstraints.gridy = 2;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
-        getContentPane().add(hfree, gridBagConstraints);
-
-        spacing.setBorder(null);
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 2;
-        gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(5, 10, 5, 10);
-        getContentPane().add(spacing, gridBagConstraints);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -405,8 +381,8 @@ StreamServerAgent serverAgent;
                         //jvcportfiled.setText(rs.getString("jvcport"));
                         //jtryhard.setText(rs.getString("tryhard"));
                         ip.add(new ip(rs.getString("ip"), Integer.parseInt(rs.getString("jcport")), Integer.parseInt(rs.getString("jvcport"))));
-                        ip.get(ip.size()-1).name = rs.getString("name");
-                        ip.get(ip.size()-1).upnp = rs.getBoolean("upnp");
+                        ip.get(ip.size() - 1).name = rs.getString("name");
+                        ip.get(ip.size() - 1).upnp = rs.getBoolean("upnp");
                         tryhard = rs.getInt("tryhard");
                         break;
                     case 2:
@@ -471,12 +447,14 @@ StreamServerAgent serverAgent;
     }
 
     void connect_to_ips() {
-        for (int i = 0; i < ip.size(); i++) {
+        System.out.println("size: " + ip.size());
+        for (int i = 1; i < ip.size(); i++) {
             try {
 
-                System.out.println(ip.get(i).ip + " i:" + i);
-                vph.get(i).connect(ip.get(i).ip, ip.get(i).port_jv);
-
+                if (!ip.get(i).ip.trim().isEmpty()) {
+                    System.out.println(ip.get(i).ip + " i:" + i);
+                    vph.get(i).connect(ip.get(i).ip, ip.get(i).port_jv);
+                }
             } catch (Exception e) {
                 System.out.println("cti: " + e.toString());
             }
@@ -522,15 +500,8 @@ StreamServerAgent serverAgent;
     public void set_text_ki(JTextArea txtOutput) {
         cc.set_txtout(txtOutput);
     }
-    private void hfreeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_hfreeActionPerformed
-        cc.handsfree(!cc.handsfree());
-        hfree.setText("handsfree " + cc.handsfree());
-        // TODO add your handling code here:
-    }//GEN-LAST:event_hfreeActionPerformed
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton hfree;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
@@ -539,7 +510,6 @@ StreamServerAgent serverAgent;
     private javax.swing.JPanel panelcam1;
     private javax.swing.JPanel panelcam2;
     private javax.swing.JPanel panelcam3;
-    private javax.swing.JButton spacing;
     // End of variables declaration//GEN-END:variables
 }
 
