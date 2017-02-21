@@ -10,9 +10,12 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.io.InputStreamReader;
 import java.net.InetSocketAddress;
+import java.net.URL;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -173,6 +176,7 @@ public class kiiras extends javax.swing.JFrame {
                 }
             }
             cc.set_nickname(ip.get(0).name);
+            cc.send_text("ip|" + outterip());
             return null;
         }
 
@@ -181,6 +185,19 @@ public class kiiras extends javax.swing.JFrame {
         }
 
     }
+
+    String outterip() {
+        String publicip = "";
+        try {//http://icanhazip.com/
+            URL whatismyip1 = new URL("http://icanhazip.com/");
+            BufferedReader in1 = new BufferedReader(new InputStreamReader(
+                    whatismyip1.openStream()));
+            publicip = in1.readLine(); //you get the IP as a String
+        } catch (Exception e) {
+        }
+        return publicip;
+    }
+
     ChatServer cs;
 
     class Chat_and_voice_server_start extends SwingWorker<Void, Void> {

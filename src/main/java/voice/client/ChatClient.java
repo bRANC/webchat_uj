@@ -29,6 +29,7 @@ public class ChatClient implements Runnable, ActionListener {
         public String name;
         public String status;
         public String camera = "";
+        public String ip = "";
     }
 
     private ClientShared clientShared;
@@ -658,6 +659,8 @@ public class ChatClient implements Runnable, ActionListener {
                             for (int i = 0; i < SS.size(); i++) {
                                 if (SS.get(i).name.equals(passedObj.substring(2).split("|")[0])) {
                                     if (passedObj.split("|")[1].contains("camera")) {
+                                        SS.get(i).camera = passedObj.split("|")[2];
+                                    } else if (passedObj.split("|")[1].contains("ip")) {
                                         SS.get(i).camera = passedObj.split("|")[2];
                                     }
                                     SS.get(i).status = passedObj.split("|")[1];
