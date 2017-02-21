@@ -19,18 +19,10 @@ import java.net.URL;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.Scanner;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.SwingWorker;
-import sx.blah.discord.api.ClientBuilder;
-import sx.blah.discord.api.IDiscordClient;
-import uk.co.caprica.vlcj.binding.LibVlc;
-import uk.co.caprica.vlcj.component.EmbeddedMediaPlayerComponent;
-import uk.co.caprica.vlcj.discovery.NativeDiscovery;
-import uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer;
 import voice.ScreenSaver.ScreenSaver;
 import voice.client.ChatClient;
 import voice.server.ChatServer;
@@ -700,38 +692,4 @@ StreamServerAgent serverAgent;
     private javax.swing.JPanel panelcam2;
     private javax.swing.JPanel panelcam3;
     // End of variables declaration//GEN-END:variables
-}
-
-class PlayerPanel extends JPanel {
-
-    private File vlcInstallPath = new File("C:/Program Files/VideoLAN/VLC");
-    private EmbeddedMediaPlayer player;
-
-    public PlayerPanel() {
-        boolean found = new NativeDiscovery().discover();
-        System.out.println(found);
-        System.out.println(LibVlc.INSTANCE.libvlc_get_version());
-
-        EmbeddedMediaPlayerComponent videoCanvas = new EmbeddedMediaPlayerComponent();
-        this.setLayout(new BorderLayout());
-        this.add(videoCanvas, BorderLayout.CENTER);
-        this.player = videoCanvas.getMediaPlayer();
-    }
-
-    public void play(String media, int port) {
-        player.prepareMedia(formatHttpStream(media, port));
-        player.parseMedia();
-        player.play();
-    }
-
-    public String formatHttpStream(String serverAddress, int serverPort) {
-        StringBuilder sb = new StringBuilder(60);
-        sb.append(":sout=#duplicate{dst=std{access=http,mux=ts,");
-        sb.append("dst=");
-        sb.append(serverAddress);
-        sb.append(':');
-        sb.append(serverPort);
-        sb.append("}}");
-        return sb.toString();
-    }
 }
