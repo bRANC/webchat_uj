@@ -91,11 +91,21 @@ public class StreamServerAgent implements IStreamServerAgent {
     @Override
     public void start(SocketAddress streamAddress) {
         logger.info("Server started :{}", streamAddress);
-        Channel channel = serverBootstrap.bind(streamAddress);
-        channelGroup.add(channel);
+        //Channel channel = serverBootstrap.bind(streamAddress);
+        channelGroup.add(serverBootstrap.bind(streamAddress));
     }
 
     Boolean getcam = true;
+
+    public void vait() {
+        getcam = false;
+        try {
+            wait(100);
+        } catch (Exception e) {
+        }
+        logger.info("server is stoping");
+        channelGroup.close();
+    }
 
     @Override
     public void stop() {

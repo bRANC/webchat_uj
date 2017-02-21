@@ -372,34 +372,40 @@ StreamServerAgent serverAgent;
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         start_local_cam_server();            //VGA
     }//GEN-LAST:event_jButton1ActionPerformed
+    boolean cam_bool = true;
 
     void start_local_cam_server() {
-        cam.webcam.setAutoOpenMode(true);
-        Dimension dimension = new Dimension(320, 240);
-        cam.webcam.setViewSize(dimension);
-        cam.webcam.setCustomViewSizes(new Dimension[]{WebcamResolution.VGA.getSize(), WebcamResolution.QVGA.getSize(), WebcamResolution.HD720.getSize()});//új felbontás regisztrálása
-        if (cam.webcam.getName().contains("HD") || cam.webcam.getName().contains("EasyCamera")) {
-            //Cm.webcam.setViewSize(WebcamResolution.HD720.getSize());//be állítása HD
-            cam.webcam.setViewSize(WebcamResolution.QVGA.getSize());//be állítása VGA
-            serverAgent = new StreamServerAgent(cam.webcam, WebcamResolution.QVGA.getSize());
-        } else if (cam.webcam.getName().contains("VGA") || cam.webcam.getName().contains("")) {
-            cam.webcam.setViewSize(WebcamResolution.QVGA.getSize());//be állítása VGA
-            serverAgent = new StreamServerAgent(cam.webcam, WebcamResolution.QVGA.getSize());
+        if (serverAgent == null) {
+            cam.webcam.setAutoOpenMode(true);
+            Dimension dimension = new Dimension(320, 240);
+            cam.webcam.setViewSize(dimension);
+            cam.webcam.setCustomViewSizes(new Dimension[]{WebcamResolution.VGA.getSize(), WebcamResolution.QVGA.getSize(), WebcamResolution.HD720.getSize()});//új felbontás regisztrálása
+            if (cam.webcam.getName().contains("HD") || cam.webcam.getName().contains("EasyCamera")) {
+                //Cm.webcam.setViewSize(WebcamResolution.HD720.getSize());//be állítása HD
+                cam.webcam.setViewSize(WebcamResolution.QVGA.getSize());//be állítása VGA
+                serverAgent = new StreamServerAgent(cam.webcam, WebcamResolution.QVGA.getSize());
+            } else if (cam.webcam.getName().contains("VGA") || cam.webcam.getName().contains("")) {
+                cam.webcam.setViewSize(WebcamResolution.QVGA.getSize());//be állítása VGA
+                serverAgent = new StreamServerAgent(cam.webcam, WebcamResolution.QVGA.getSize());
+            }
         }
-        serverAgent.start(new InetSocketAddress("0.0.0.0", ip.get(0).port_jv));
-        cam.stream(serverAgent);
-        vph.get(0).connect("localhost", ip.get(0).port_jv);
-    }
-
-    public void remove_cam(ArrayList<Integer> be) {
-        for (int i = 0; i < be.size(); i++) {
-            //panelcam.get(be.get(i)).remove(this);
-            GridBagLayout layout = (GridBagLayout) panelcam.get(be.get(i)).getLayout();
-            layout.removeLayoutComponent(vph.get(be.get(i)).get_vp());
-
+        if (cam_bool) {
+            set_cam(0);
+            serverAgent.start(new InetSocketAddress("0.0.0.0", ip.get(0).port_jv));
+            cam.stream(serverAgent);
+            vph.get(0).connect("localhost", ip.get(0).port_jv);
+            jButton1.setText("Camera off");
+            cam_bool = false;
+            cc.set_status("camera|on");
+        } else {
+            serverAgent.vait();
+            for (int i = 0; i < vph.size(); i++) {
+                set_weat(i);
+            }
+            jButton1.setText("Camera on");
+            cam_bool = true;
+            cc.set_status("camera|off");
         }
-        this.pack();
-        fullscreen();
     }
 
     class connect_agent extends SwingWorker<Void, Void> {
@@ -420,7 +426,7 @@ StreamServerAgent serverAgent;
                 }
                 if (!for_delet.isEmpty()) {
                     System.out.println(" delete ");
-                    remove_cam(for_delet);
+
                 }
                 serverAgent.dc_ips.clear();
                 varas(300);
@@ -533,8 +539,7 @@ StreamServerAgent serverAgent;
 
     void scan() {
         ip = new ArrayList();
-        try {
-            Scanner in = new Scanner(new FileReader("ip.txt"));
+        try (Scanner in = new Scanner(new FileReader("ip.txt"))) {
             int a = 1;
             while (in.hasNext()) {
                 String kecske = in.nextLine();
@@ -547,7 +552,7 @@ StreamServerAgent serverAgent;
                     a++;
                 }
             }
-            in.close();
+
         } catch (Exception e) {
             e.printStackTrace();
             System.out.println("not configured");
@@ -571,7 +576,6 @@ StreamServerAgent serverAgent;
                 System.out.println("cti: " + e.toString());
             }
         }
-
     }
 
     public void send_text(String text) {
