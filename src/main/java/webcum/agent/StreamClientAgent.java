@@ -52,6 +52,13 @@ public class StreamClientAgent implements IStreamClientAgent {
         clientBootstrap.connect(streamServerAddress);
     }
 
+    public void dc() {
+        try {
+            clientChannel.close();
+        } catch (Exception e) {
+        }
+    }
+
     @Override
     public void stop() {
         //trihard

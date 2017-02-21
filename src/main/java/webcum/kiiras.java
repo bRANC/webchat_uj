@@ -86,31 +86,42 @@ public class kiiras extends javax.swing.JFrame {
         panelcam.add(panelcam1);
         panelcam.add(panelcam2);
         panelcam.add(panelcam3);
+
+        lch.add(new local());
+        lch.add(new local());
+        lch.add(new local());
+        lch.add(new local());
+
         for (int i = 0; i < 4; i++) {
             vph.add(new videopanelhandler());
+            //vph.get(i).start();
         }
-
-        //videoPannel.setPreferredSize(dimension);
-        //Dimension dm = new Dimension(600, 600);
-    }
-
-    public void add_cam(int i) {
-        //gridbaglayout beállítások
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.anchor = GridBagConstraints.CENTER;
         gbc.fill = GridBagConstraints.BOTH;
-        gbc.weightx = gbc.weighty = 1.0;
+        gbc.weightx = gbc.weighty = 100.0;
+        gbc.gridx = 0;
+        gbc.gridy = 0;
         //automata méretezés madafaka
+        for (int i = 0; i < panelcam.size(); i++) {
+            GridBagLayout layout = (GridBagLayout) panelcam.get(i).getLayout();
+            panelcam.get(i).add(vph.get(i).get_vp());
+            layout.addLayoutComponent(vph.get(i).get_vp(), gbc);
 
-        GridBagLayout layout = (GridBagLayout) panelcam.get(i).getLayout();
-        panelcam.get(i).add(vph.get(i).get_vp());
-        layout.addLayoutComponent(vph.get(i).get_vp(), gbc);
+        }
+        //gbc.weightx = gbc.weighty = 1.0;
+        //gbc.gridx = 1;
+        gbc.fill = GridBagConstraints.NONE;
+        for (int i = 0; i < lch.size(); i++) {
+            GridBagLayout layout = (GridBagLayout) panelcam.get(i).getLayout();
+            //layout.
+            panelcam.get(i).add(lch.get(i));
+            layout.addLayoutComponent(lch.get(i), gbc);
+        }
         this.pack();
         fullscreen();
-    }
-
-    public void remove_notc() {
-        //   notc[0];//4
+        //videoPannel.setPreferredSize(dimension);
+        //Dimension dm = new Dimension(600, 600);
     }
 
     void varas(int ido
@@ -205,6 +216,10 @@ public class kiiras extends javax.swing.JFrame {
         panelcam2 = new javax.swing.JPanel();
         panelcam1 = new javax.swing.JPanel();
         panelcam3 = new javax.swing.JPanel();
+        jButton5 = new javax.swing.JButton();
+        jButton6 = new javax.swing.JButton();
+        jButton7 = new javax.swing.JButton();
+        jButton8 = new javax.swing.JButton();
 
         setBackground(new java.awt.Color(0, 0, 0));
         getContentPane().setLayout(new java.awt.GridBagLayout());
@@ -305,6 +320,52 @@ public class kiiras extends javax.swing.JFrame {
         gridBagConstraints.weighty = 1.0;
         getContentPane().add(panelcam3, gridBagConstraints);
 
+        jButton5.setText("jButton5");
+        jButton5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton5ActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 3;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
+        getContentPane().add(jButton5, gridBagConstraints);
+
+        jButton6.setText("jButton6");
+        jButton6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton6ActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 3;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
+        getContentPane().add(jButton6, gridBagConstraints);
+
+        jButton7.setText("jButton7");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 3;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
+        getContentPane().add(jButton7, gridBagConstraints);
+
+        jButton8.setText("jButton8");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 3;
+        gridBagConstraints.gridy = 3;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
+        getContentPane().add(jButton8, gridBagConstraints);
+
         pack();
     }// </editor-fold>//GEN-END:initComponents
 StreamServerAgent serverAgent;
@@ -327,7 +388,6 @@ StreamServerAgent serverAgent;
         }
         serverAgent.start(new InetSocketAddress("0.0.0.0", ip.get(0).port_jv));
         cam.stream(serverAgent);
-        add_cam(0);
         vph.get(0).connect("localhost", ip.get(0).port_jv);
     }
 
@@ -503,7 +563,6 @@ StreamServerAgent serverAgent;
                 if (!ip.get(i).ip.trim().isEmpty()) {
                     System.out.println(ip.get(i).ip + " i:" + i);
                     vph.get(i).connect(ip.get(i).ip, ip.get(i).port_jv);
-                    add_cam(i);
                     notc[i] = 1;
                 } else {
                     notc[i] = 2;
@@ -549,6 +608,54 @@ StreamServerAgent serverAgent;
         screensaver();
     }//GEN-LAST:event_jButton4ActionPerformed
 
+    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+        int i = 0;
+        set_weat(i);
+    }//GEN-LAST:event_jButton5ActionPerformed
+
+    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
+        int i = 0;
+        set_cam(i);
+    }//GEN-LAST:event_jButton6ActionPerformed
+
+    public void set_cam(int i) {
+        GridBagConstraints gbc;
+        GridBagLayout layout = (GridBagLayout) panelcam.get(i).getLayout();
+        gbc = layout.getConstraints(lch.get(i));
+        gbc.fill = GridBagConstraints.NONE;
+        gbc.gridx = 0;
+        layout.setConstraints(lch.get(i), gbc);
+        gbc = layout.getConstraints(vph.get(i).get_vp());
+        gbc.gridx = 0;
+        gbc.fill = GridBagConstraints.BOTH;
+        //panelcam.get(i).add(vph.get(i).get_vp());
+        layout.setConstraints(vph.get(i).get_vp(), gbc);
+        //layout.get
+        this.pack();
+        fullscreen();
+        vph.get(i).connect();
+    }
+
+    public void set_weat(int i) {
+        vph.get(i).dc();
+        vph.get(i).clear();
+        //
+        GridBagConstraints gbc;
+        GridBagLayout layout = (GridBagLayout) panelcam.get(i).getLayout();
+        gbc = layout.getConstraints(lch.get(i));
+        gbc.fill = GridBagConstraints.BOTH;
+        gbc.gridx = 0;
+        layout.setConstraints(lch.get(i), gbc);
+        //panelcam.get(i).remove(vph.get(i).get_vp());
+        gbc = layout.getConstraints(vph.get(i).get_vp());
+        gbc.gridx = 0;
+        gbc.fill = GridBagConstraints.NONE;
+        layout.setConstraints(vph.get(i).get_vp(), gbc);
+        //layout.get
+        this.pack();
+        fullscreen();
+    }
+
     void screensaver() {
         cc.set_status("scrennsaver");
         ss.setVisible(true);
@@ -563,6 +670,10 @@ StreamServerAgent serverAgent;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
+    private javax.swing.JButton jButton5;
+    private javax.swing.JButton jButton6;
+    private javax.swing.JButton jButton7;
+    private javax.swing.JButton jButton8;
     private javax.swing.JPanel panelcam0;
     private javax.swing.JPanel panelcam1;
     private javax.swing.JPanel panelcam2;

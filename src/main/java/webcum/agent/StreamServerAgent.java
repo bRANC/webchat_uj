@@ -141,7 +141,7 @@ public class StreamServerAgent implements IStreamServerAgent {
             if (size == 1) {
                 //cancel the task
                 imageGrabTaskFuture.cancel(false);
-                webcam.close();
+                //webcam.close();
                 isStreaming = false;
             }
             logger.info("Client disconnected :{}", channel.getRemoteAddress());
@@ -157,7 +157,7 @@ public class StreamServerAgent implements IStreamServerAgent {
             if (size == 1) {
                 //cancel the task
                 imageGrabTaskFuture.cancel(false);
-                webcam.close();
+                //webcam.close();
                 isStreaming = false;
 
             }
