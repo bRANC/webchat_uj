@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-import webcum.kiiras;
+import felulet.kiiras;
 
 public class ChatServer extends Thread {
 
