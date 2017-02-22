@@ -25,7 +25,7 @@ import org.fourthline.cling.UpnpServiceImpl;
 import org.fourthline.cling.support.igd.PortMappingListener;
 import org.fourthline.cling.support.model.PortMapping;
 import base.client.ChatClient;
-import felulet.sqlite.sqlite;
+import sqlite.sqlite;
 
 /**
  *
@@ -186,6 +186,7 @@ public class setup extends javax.swing.JFrame {
         int a = 0;
         String localip = "Adapter name: " + netint.getDisplayName() + "\n";
         Enumeration<InetAddress> inetAddresses = netint.getInetAddresses();
+        //netint.get
         for (InetAddress inetAddress : Collections.list(inetAddresses)) {
             if (inetAddress.toString().contains(".") && !inetAddress.isLoopbackAddress()) {
                 a++;

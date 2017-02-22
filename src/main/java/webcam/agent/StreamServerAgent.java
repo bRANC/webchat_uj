@@ -24,8 +24,6 @@ import webcam.handler.StreamServerListener;
 
 import com.github.sarxos.webcam.Webcam;
 import java.awt.Graphics2D;
-import java.awt.GraphicsConfiguration;
-import java.awt.GraphicsEnvironment;
 import java.io.File;
 import java.io.FileReader;
 import java.io.PrintWriter;
@@ -36,7 +34,7 @@ import javax.imageio.ImageIO;
 
 public class StreamServerAgent implements IStreamServerAgent {
 
-    protected final static Logger logger = LoggerFactory.getLogger(StreamServer.class);
+    protected final static Logger logger = LoggerFactory.getLogger(StreamServerAgent.class);
     protected final Webcam webcam;
     protected final Dimension dimension;
     protected final ChannelGroup channelGroup = new DefaultChannelGroup();

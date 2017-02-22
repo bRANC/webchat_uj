@@ -27,7 +27,7 @@ import felulet.screensaver.ScreenSaver;
 import base.client.ChatClient;
 import base.server.ChatServer;
 import webcam.agent.StreamServerAgent;
-import felulet.sqlite.sqlite;
+import sqlite.sqlite;
 
 /**
  *
@@ -68,6 +68,7 @@ public class kiiras extends javax.swing.JFrame {
         }
         );
         fullscreen();
+        cam.stop_camera_listener();
     }
 
     ArrayList<videopanelhandler> vph = new ArrayList<>();
@@ -594,7 +595,6 @@ StreamServerAgent serverAgent;
         con = new connect_agent();
         con.execute();
     }//GEN-LAST:event_jButton3ActionPerformed
-
 
     ScreenSaver ss = new ScreenSaver(this);
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed

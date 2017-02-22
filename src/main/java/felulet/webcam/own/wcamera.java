@@ -24,13 +24,17 @@ public class wcamera {
     public Webcam webcam = Webcam.getDefault();
 
     public wcamera() {
-        //  for (int i = 0; i < webcam.getWebcamListenersCount(); i++) {
-        //      webcam.removeWebcamListener(webcam.getWebcamListeners()[i]);
-        //  }
+
         //flip_flop_cam_horiz_read();
     }
     Boolean ip = false;
     URL ip_addres;
+
+    public void stop_camera_listener() {
+        for (int i = 0; i < webcam.getWebcamListenersCount(); i++) {
+            webcam.removeWebcamListener(webcam.getWebcamListeners()[i]);
+        }
+    }
 
     public void set_camera(Webcam wb) {
         if (!webcam.getName().equals(wb.getName())) {
