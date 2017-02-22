@@ -1,5 +1,5 @@
 // $Id: Queue.java,v 1.1 2001/05/04 21:22:05 mito Exp $
-package voice;
+package base.helper;
 
 import java.util.*;
 import sun.util.calendar.CalendarUtils;

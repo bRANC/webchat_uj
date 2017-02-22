@@ -1,9 +1,9 @@
-package voice.server;
+package base.server;
 
 // org.multichat.server.ChatHandler.java
 //
-import voice.CommonSoundClass;
-import voice.MultiChatConstants;
+import base.helper.CommonSoundClass;
+import base.helper.MultiChatConstants;
 
 import java.io.IOException;
 import java.net.Socket;

@@ -1,8 +1,8 @@
-package voice.client;
+package base.client;
 
-import voice.CommonSoundClass;
-import voice.Playback;
-import voice.MultiChatConstants;
+import base.helper.CommonSoundClass;
+import base.helper.Playback;
+import base.helper.MultiChatConstants;
 
 import java.awt.*;
 import java.awt.event.*;

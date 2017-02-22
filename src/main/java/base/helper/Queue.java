@@ -1,4 +1,4 @@
-package voice;
+package base.helper;
 
 // $Id: Queue.java,v 1.1 2001/05/04 21:22:05 mito Exp $
 import java.util.*;

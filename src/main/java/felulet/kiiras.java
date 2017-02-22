@@ -23,9 +23,9 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.SwingWorker;
-import voice.ScreenSaver.ScreenSaver;
-import voice.client.ChatClient;
-import voice.server.ChatServer;
+import felulet.screensaver.ScreenSaver;
+import base.client.ChatClient;
+import base.server.ChatServer;
 import webcam.agent.StreamServerAgent;
 import felulet.sqlite.sqlite;
 

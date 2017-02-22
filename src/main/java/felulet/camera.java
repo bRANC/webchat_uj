@@ -11,7 +11,7 @@ import java.awt.image.BufferedImage;
 import java.net.URL;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
-import voice.client.ChatClient;
+import base.client.ChatClient;
 import webcam.agent.StreamServerAgent;
 
 /**

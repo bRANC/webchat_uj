@@ -3,14 +3,14 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package voice.ScreenSaver;
+package felulet.screensaver;
 
 import java.util.ArrayList;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JRootPane;
 import javax.swing.SwingWorker;
-import voice.client.ChatClient;
+import base.client.ChatClient;
 import felulet.kiiras;
 
 /**

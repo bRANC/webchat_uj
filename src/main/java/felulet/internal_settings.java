@@ -13,7 +13,7 @@ import java.io.PrintWriter;
 import java.net.URL;
 import java.util.Scanner;
 import javax.swing.SwingWorker;
-import voice.client.ChatClient;
+import base.client.ChatClient;
 
 /**
  *

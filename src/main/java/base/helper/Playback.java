@@ -1,7 +1,7 @@
-package voice;
+package base.helper;
 
 // $Id: org.multichat.Playback.java,v 1.5 2001/05/04 21:13:09 mito Exp $
-import voice.client.ClientShared;
+import base.client.ClientShared;
 
 import javax.sound.sampled.*;
 

@@ -27,7 +27,7 @@ import org.fourthline.cling.UpnpService;
 import org.fourthline.cling.UpnpServiceImpl;
 import org.fourthline.cling.support.igd.PortMappingListener;
 import org.fourthline.cling.support.model.PortMapping;
-import voice.client.ChatClient;
+import base.client.ChatClient;
 import felulet.sqlite.sqlite;
 
 /**

@@ -1,6 +1,6 @@
-package voice.client;
+package base.client;
 
-import voice.CommonSoundClass;
+import base.helper.CommonSoundClass;
 
 import java.io.ByteArrayOutputStream;
 

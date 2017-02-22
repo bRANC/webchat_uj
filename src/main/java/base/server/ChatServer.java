@@ -1,4 +1,4 @@
-package voice.server;
+package base.server;
 
 import java.io.IOException;
 import java.net.ServerSocket;

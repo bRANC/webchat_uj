@@ -1,6 +1,6 @@
-package voice.client;
+package base.client;
 
-import voice.MultiChatConstants;
+import base.helper.MultiChatConstants;
 
 // TODO: This isn't pretty but tried to share the applet and stand-alone code
 public class ClientShared {
