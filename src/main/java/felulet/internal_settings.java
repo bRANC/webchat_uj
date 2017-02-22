@@ -5,6 +5,7 @@
  */
 package felulet;
 
+import felulet.webcam.own.wcamera;
 import com.github.sarxos.webcam.WebcamResolution;
 import java.awt.Dimension;
 import java.io.File;
@@ -24,10 +25,10 @@ public class internal_settings extends javax.swing.JFrame {
     /**
      * Creates new form webcam_settings
      */
-    camera Cm;
+    wcamera Cm;
     ChatClient cc = new ChatClient(true);
 
-    public internal_settings(camera be, ChatClient cc) {
+    public internal_settings(wcamera be, ChatClient cc) {
         initComponents();
         Cm = be;
         get_kamera();

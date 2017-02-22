@@ -5,13 +5,13 @@
  */
 package felulet;
 
+import felulet.webcam.own.videopanelhandler;
+import felulet.webcam.own.wcamera;
 import com.github.sarxos.webcam.WebcamResolution;
-import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileReader;
 import java.io.InputStreamReader;
 import java.net.InetSocketAddress;
@@ -38,9 +38,8 @@ public class kiiras extends javax.swing.JFrame {
     /**
      * Creates new form kiiras
      */
-    camera cam = new camera();
+    wcamera cam = new wcamera();
     Boolean int_cam_update = true, send = false;
-    ArrayList<send> client = new ArrayList<>();
     Chatstartup Ct = new Chatstartup();
 
     public kiiras() {
@@ -70,7 +69,6 @@ public class kiiras extends javax.swing.JFrame {
         );
         fullscreen();
     }
-    Server server;
 
     ArrayList<videopanelhandler> vph = new ArrayList<>();
     ArrayList<local> lch = new ArrayList<>();
@@ -597,24 +595,6 @@ StreamServerAgent serverAgent;
         con.execute();
     }//GEN-LAST:event_jButton3ActionPerformed
 
-    void server_setup() {
-        try {
-            Scanner in = new Scanner(new FileReader("ip.txt"));
-            while (in.hasNext()) {
-                String kecske = in.nextLine();
-                if (!kecske.isEmpty()) {
-                    send k = new send();
-                    k.setup(kecske.split(":")[0], Integer.parseInt(kecske.split(":")[1]));
-                    client.add(k);
-                }
-            }
-            System.out.println(client.size());
-            //client[2].setup(3, "127.0.0.1", 6666);
-        } catch (Exception e) {
-            e.printStackTrace();
-            System.out.println("not configured");
-        }
-    }
 
     ScreenSaver ss = new ScreenSaver(this);
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed

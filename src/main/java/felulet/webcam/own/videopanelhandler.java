@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package felulet;
+package felulet.webcam.own;
 
 import com.github.sarxos.webcam.WebcamResolution;
 import java.awt.image.BufferedImage;
@@ -27,7 +27,7 @@ public class videopanelhandler {
         clientAgent = new StreamClientAgent(new StreamFrameListenerIMPL(), WebcamResolution.VGA.getSize());
     }
 
-    VideoPanel get_vp() {
+    public VideoPanel get_vp() {
         return videopanel;
     }
 
@@ -48,21 +48,21 @@ public class videopanelhandler {
     String ip = "";
     int port = 0;
 
-    void connect(String ip, int port) {
+    public void connect(String ip, int port) {
         this.ip = ip;
         this.port = port;
         videopanel.megy();
         clientAgent.connect(new InetSocketAddress(ip, port));
     }
 
-    void connect() {
+    public void connect() {
         if (!ip.isEmpty()) {
             videopanel.megy();
             clientAgent.connect(new InetSocketAddress(ip, port));
         }
     }
 
-    void dc() {
+    public void dc() {
         clientAgent.dc();
     }
 

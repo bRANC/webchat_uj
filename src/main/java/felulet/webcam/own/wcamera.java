@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package felulet;
+package felulet.webcam.own;
 
 import com.github.sarxos.webcam.Webcam;
 import java.awt.Graphics2D;
@@ -12,17 +12,18 @@ import java.net.URL;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import base.client.ChatClient;
+import felulet.internal_settings;
 import webcam.agent.StreamServerAgent;
 
 /**
  *
  * @author branc
  */
-public class camera {
+public class wcamera {
 
-    Webcam webcam = Webcam.getDefault();
+    public Webcam webcam = Webcam.getDefault();
 
-    public camera() {
+    public wcamera() {
         //  for (int i = 0; i < webcam.getWebcamListenersCount(); i++) {
         //      webcam.removeWebcamListener(webcam.getWebcamListeners()[i]);
         //  }
@@ -58,7 +59,7 @@ public class camera {
         serverAgent = sa;
     }
 
-    void flip_flop_cam_horiz_write() {
+    public void flip_flop_cam_horiz_write() {
         serverAgent.flip_flop_cam_horiz_write();
     }
     boolean flip = true;
@@ -92,7 +93,7 @@ public class camera {
     }
 
     public void start() {
-        new internal_settings(this,new ChatClient(true)).kamera_res_setup();
+        new internal_settings(this, new ChatClient(true)).kamera_res_setup();
         webcam.open();
     }
 

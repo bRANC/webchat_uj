@@ -5,13 +5,10 @@
  */
 package felulet;
 
-import com.github.sarxos.webcam.WebcamResolution;
-import java.awt.Dimension;
+import felulet.webcam.own.wcamera;
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileReader;
 import java.io.InputStreamReader;
-import java.io.PrintWriter;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.SocketException;
@@ -36,7 +33,7 @@ import felulet.sqlite.sqlite;
  */
 public class setup extends javax.swing.JFrame {
 
-    camera Cm;
+    wcamera Cm;
     ChatClient cc = new ChatClient(true);
     boolean flip = true;
 
@@ -56,9 +53,6 @@ public class setup extends javax.swing.JFrame {
             System.out.println(getadapter());
         } catch (Exception e) {
         }
-
-        //text_be();
-        //readdolgok();
         readsql();
     }
 
@@ -158,7 +152,7 @@ public class setup extends javax.swing.JFrame {
             BufferedReader in1 = new BufferedReader(new InputStreamReader(
                     whatismyip1.openStream()));
             publicip = in1.readLine(); //you get the IP as a String
-
+            local_ips.add(publicip);
         } catch (Exception e) {
         }
         System.out.println("public: " + publicip + "  gatway: " + gatway);
@@ -184,14 +178,6 @@ public class setup extends javax.swing.JFrame {
         } catch (Exception e) {
         }
         chain += outterip();
-//        try {//http://icanhazip.com/
-//            URL whatismyip = new URL("http://checkip.amazonaws.com");
-//            BufferedReader in = new BufferedReader(new InputStreamReader(
-//                    whatismyip.openStream()));
-//            String ip = in.readLine(); //you get the IP as a String
-//            chain += "\nDefault public IP: " + ip;
-//        } catch (Exception e) {
-//        }
         return chain;
     }
     ArrayList<String> local_ips = new ArrayList<>();
@@ -233,9 +219,6 @@ public class setup extends javax.swing.JFrame {
     }
 
     public void kiir() {
-        //server_setup_ir();
-        //cam_feed_ir();
-        //name_ir();
         sqlitefel();
         this.dispose();
     }
