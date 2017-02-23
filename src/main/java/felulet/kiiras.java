@@ -118,8 +118,7 @@ public class kiiras extends javax.swing.JFrame {
         //Dimension dm = new Dimension(600, 600);
     }
 
-    void varas(int ido
-    ) {
+    void varas(int ido) {
         try {
             Thread.sleep(ido);
         } catch (Exception e) {
@@ -224,10 +223,6 @@ public class kiiras extends javax.swing.JFrame {
         panelcam2 = new javax.swing.JPanel();
         panelcam1 = new javax.swing.JPanel();
         panelcam3 = new javax.swing.JPanel();
-        jButton5 = new javax.swing.JButton();
-        jButton6 = new javax.swing.JButton();
-        jButton7 = new javax.swing.JButton();
-        jButton8 = new javax.swing.JButton();
 
         setBackground(new java.awt.Color(0, 0, 0));
         getContentPane().setLayout(new java.awt.GridBagLayout());
@@ -327,52 +322,6 @@ public class kiiras extends javax.swing.JFrame {
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
         getContentPane().add(panelcam3, gridBagConstraints);
-
-        jButton5.setText("jButton5");
-        jButton5.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton5ActionPerformed(evt);
-            }
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 3;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
-        getContentPane().add(jButton5, gridBagConstraints);
-
-        jButton6.setText("jButton6");
-        jButton6.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton6ActionPerformed(evt);
-            }
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 3;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
-        getContentPane().add(jButton6, gridBagConstraints);
-
-        jButton7.setText("jButton7");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 3;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
-        getContentPane().add(jButton7, gridBagConstraints);
-
-        jButton8.setText("jButton8");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 3;
-        gridBagConstraints.gridy = 3;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
-        getContentPane().add(jButton8, gridBagConstraints);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -601,16 +550,6 @@ StreamServerAgent serverAgent;
         screensaver();
     }//GEN-LAST:event_jButton4ActionPerformed
 
-    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
-        int i = 0;
-        set_weat(i);
-    }//GEN-LAST:event_jButton5ActionPerformed
-
-    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
-        int i = 0;
-        set_cam(i);
-    }//GEN-LAST:event_jButton6ActionPerformed
-
     public void set_cam(int i) {
         GridBagConstraints gbc;
         GridBagLayout layout = (GridBagLayout) panelcam.get(i).getLayout();
@@ -663,10 +602,6 @@ StreamServerAgent serverAgent;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton5;
-    private javax.swing.JButton jButton6;
-    private javax.swing.JButton jButton7;
-    private javax.swing.JButton jButton8;
     private javax.swing.JPanel panelcam0;
     private javax.swing.JPanel panelcam1;
     private javax.swing.JPanel panelcam2;
