@@ -337,14 +337,8 @@ StreamServerAgent serverAgent;
             Dimension dimension = new Dimension(320, 240);
             cam.webcam.setViewSize(dimension);
             cam.webcam.setCustomViewSizes(new Dimension[]{WebcamResolution.VGA.getSize(), WebcamResolution.QVGA.getSize(), WebcamResolution.HD720.getSize()});//új felbontás regisztrálása
-            if (cam.webcam.getName().contains("HD") || cam.webcam.getName().contains("EasyCamera")) {
-                //Cm.webcam.setViewSize(WebcamResolution.HD720.getSize());//be állítása HD
-                cam.webcam.setViewSize(WebcamResolution.QVGA.getSize());//be állítása VGA
-                serverAgent = new StreamServerAgent(cam.webcam, WebcamResolution.QVGA.getSize());
-            } else if (cam.webcam.getName().contains("VGA") || cam.webcam.getName().contains("")) {
-                cam.webcam.setViewSize(WebcamResolution.QVGA.getSize());//be állítása VGA
-                serverAgent = new StreamServerAgent(cam.webcam, WebcamResolution.QVGA.getSize());
-            }
+            cam.webcam.setViewSize(WebcamResolution.QVGA.getSize());//be állítása VGA
+            serverAgent = new StreamServerAgent(cam.webcam, WebcamResolution.QVGA.getSize());
         }
         if (cam_bool) {
             set_cam(0);
