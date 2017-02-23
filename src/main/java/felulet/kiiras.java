@@ -334,8 +334,6 @@ StreamServerAgent serverAgent;
     void start_local_cam_server() {
         if (serverAgent == null) {
             cam.webcam.setAutoOpenMode(true);
-            Dimension dimension = new Dimension(320, 240);
-            cam.webcam.setViewSize(dimension);
             cam.webcam.setCustomViewSizes(new Dimension[]{WebcamResolution.VGA.getSize(), WebcamResolution.QVGA.getSize(), WebcamResolution.HD720.getSize()});//új felbontás regisztrálása
             cam.webcam.setViewSize(WebcamResolution.QVGA.getSize());//be állítása VGA
             serverAgent = new StreamServerAgent(cam.webcam, WebcamResolution.QVGA.getSize());
