@@ -166,7 +166,7 @@ public class kiiras extends javax.swing.JFrame {
                 }
             }
             cc.set_nickname(ip.get(0).name);
-            cc.send_text("ip|" + outterip());
+            cc.set_status("ip|" + outterip());
             return null;
         }
 
