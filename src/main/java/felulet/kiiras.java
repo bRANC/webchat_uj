@@ -510,8 +510,6 @@ StreamServerAgent serverAgent;
         }
     }
 
-    int[] notc = new int[5];
-
     void connect_to_ips() {
         System.out.println("size: " + ip.size());
         for (int i = 1; i < ip.size(); i++) {
@@ -519,9 +517,7 @@ StreamServerAgent serverAgent;
                 if (!ip.get(i).ip.trim().isEmpty()) {
                     System.out.println(ip.get(i).ip + " i:" + i);
                     vph.get(i).connect(ip.get(i).ip, ip.get(i).port_jv);
-                    notc[i] = 1;
-                } else {
-                    notc[i] = 2;
+
                 }
             } catch (Exception e) {
                 System.out.println("cti: " + e.toString());
@@ -535,6 +531,10 @@ StreamServerAgent serverAgent;
     connect_agent con;
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         connect_to_ips();
+        try {
+            con.cancel(true);
+        } catch (Exception e) {
+        }
         con = new connect_agent();
         con.execute();
     }//GEN-LAST:event_jButton3ActionPerformed

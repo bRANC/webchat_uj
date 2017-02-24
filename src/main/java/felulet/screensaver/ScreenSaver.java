@@ -24,7 +24,7 @@ public class ScreenSaver extends javax.swing.JFrame {
      */
     kiiras ki;
     public boolean becsuk = false;
-
+    
     public ScreenSaver(kiiras ki) {
         this.ki = ki;
         fullscreen();
@@ -34,20 +34,19 @@ public class ScreenSaver extends javax.swing.JFrame {
         ki.set_text_ki(txtki);
         betext.requestFocus();
         new usercheck().execute();
-        new hide().execute();
     }
-
+    
     ChatClient cc;
-
+    
     void set_status(JLabel stat) {
         if (stat.equals("scrennsaver")) {
-
+            
         }
         if (stat.equals("connected")) {
-
+            
         }
     }
-
+    
     public void fullscreen() {
 //        ez tűnteti el az ablakot
         JFrame frame = this;
@@ -57,28 +56,10 @@ public class ScreenSaver extends javax.swing.JFrame {
         this.setExtendedState(JFrame.MAXIMIZED_BOTH);
         //   this.setUndecorated(true);
     }
-
-    class hide extends SwingWorker<Void, Void> {
-
-        @Override
-        protected Void doInBackground() throws Exception {
-            while (true) {
-                if (becsuk) {
-                    becsuk = false;
-                    hide();
-                }
-            }
-        }
-
-        @Override
-        protected void done() {
-        }
-
-    }
-
+    
     //timer user check
     class usercheck extends SwingWorker<Void, Void> {
-
+        
         @Override
         protected Void doInBackground() throws Exception {
             while (true) {
@@ -111,14 +92,22 @@ public class ScreenSaver extends javax.swing.JFrame {
                     }
                 } catch (Exception e) {
                 }
+                varas(500);
             }
         }
-
+        
         @Override
         protected void done() {
             System.out.println("done usercheck");
         }
-
+        
+    }
+    
+    void varas(int ido) {
+        try {
+            Thread.sleep(ido);
+        } catch (Exception e) {
+        }
     }
 
     //timer user check end
@@ -271,7 +260,7 @@ public class ScreenSaver extends javax.swing.JFrame {
     private void hideActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_hideActionPerformed
         this.setVisible(false);
     }//GEN-LAST:event_hideActionPerformed
-
+    
     void send(String uzenet) {
         if (!uzenet.trim().isEmpty()) {
             ki.send_text(betext.getText());
