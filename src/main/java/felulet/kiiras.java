@@ -339,17 +339,19 @@ StreamServerAgent serverAgent;
             serverAgent = new StreamServerAgent(cam.webcam, WebcamResolution.QVGA.getSize());
         }
         if (cam_bool) {
-            set_cam(0);
-            serverAgent.start(new InetSocketAddress("0.0.0.0", ip.get(0).port_jv));
-            cam.stream(serverAgent);
-            vph.get(0).connect("localhost", ip.get(0).port_jv);
+            conn(0);
+            if (cam.serverAgent == null) {
+                serverAgent.start(new InetSocketAddress("0.0.0.0", ip.get(0).port_jv));
+                cam.stream(serverAgent);
+                vph.get(0).connect("localhost", ip.get(0).port_jv);
+            }
             jButton1.setText("Camera off");
             cam_bool = false;
             cc.set_status("camera|on");
         } else {
-            serverAgent.vait();
+            //serverAgent.vait();
             for (int i = 0; i < vph.size(); i++) {
-                set_weat(i);
+                dc(i);
             }
             jButton1.setText("Camera on");
             cam_bool = true;
@@ -558,6 +560,15 @@ StreamServerAgent serverAgent;
         this.pack();
         fullscreen();
         vph.get(i).connect();
+    }
+
+    public void conn(int i) {
+        vph.get(i).connect();
+    }
+
+    public void dc(int i) {
+        vph.get(i).dc();
+        vph.get(i).clear();
     }
 
     public void set_weat(int i) {

@@ -44,9 +44,9 @@ public class StreamClientAgent implements IStreamClientAgent {
     public void connect(SocketAddress streamServerAddress) {
         logger.info("going to connect to stream server :{}", streamServerAddress);
 
-        clientBootstrap.setOption("connectTimeoutMillis", 10000);
+        //clientBootstrap.setOption("connectTimeoutMillis", 10000);
 
-        logger.info("timeout :{}", clientBootstrap.getOption("connectTimeoutMillis"));
+        //logger.info("timeout :{}", clientBootstrap.getOption("connectTimeoutMillis"));
         //clientBootstrap.setOption("tcpNoDelay", true);
         //clientBootstrap.setOption("keepAlive", true);
         clientBootstrap.connect(streamServerAddress);
@@ -54,7 +54,7 @@ public class StreamClientAgent implements IStreamClientAgent {
 
     public void dc() {
         try {
-            clientChannel.close();
+            //clientChannel.close();
         } catch (Exception e) {
         }
     }

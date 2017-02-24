@@ -63,7 +63,9 @@ public class videopanelhandler {
     }
 
     public void dc() {
-        clientAgent.dc();
+        videopanel.stop();
+
+        //clientAgent.dc();
     }
 
     class StreamFrameListenerIMPL implements StreamFrameListener {

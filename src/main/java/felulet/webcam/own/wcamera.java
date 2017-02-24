@@ -57,7 +57,7 @@ public class wcamera {
     }
 
     BufferedImage last;
-    StreamServerAgent serverAgent;
+    public StreamServerAgent serverAgent;
 
     public void stream(StreamServerAgent sa) {
         serverAgent = sa;
