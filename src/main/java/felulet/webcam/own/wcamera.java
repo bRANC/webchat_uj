@@ -31,8 +31,11 @@ public class wcamera {
     URL ip_addres;
 
     public void stop_camera_listener() {
-        for (int i = 0; i < webcam.getWebcamListenersCount(); i++) {
-            webcam.removeWebcamListener(webcam.getWebcamListeners()[i]);
+        try {
+            for (int i = 0; i < webcam.getWebcamListenersCount(); i++) {
+                webcam.removeWebcamListener(webcam.getWebcamListeners()[i]);
+            }
+        } catch (Exception e) {
         }
     }
 
