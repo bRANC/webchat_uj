@@ -366,7 +366,9 @@ StreamServerAgent serverAgent;
             while (true) {
                 boolean van = false;
                 ArrayList<Integer> for_delet = new ArrayList<>();
-                System.out.println("serveragentd dc size: " + serverAgent.dc_ips.size());
+                if (serverAgent.dc_ips.size() != 0) {
+                    System.out.println("serveragentd dc size: " + serverAgent.dc_ips.size());
+                }
                 for (int i = 0; i < serverAgent.dc_ips.size(); i++) {
                     for (int j = 0; j < ip.size(); j++) {
                         if (ip.get(j).ip.contains(serverAgent.dc_ips.get(i))) {
