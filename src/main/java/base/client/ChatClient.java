@@ -324,15 +324,15 @@ public class ChatClient implements Runnable, ActionListener {
     public void set_status(String status) {
         if (status.contains("camera|")) {
             own_ip = status.substring("camera|".length());
-            //System.out.println(own_cam + "  " + status);
+            System.out.println(own_cam + "  " + status);
         }
         if (status.contains("ip|")) {
             own_ip = status.substring("ip|".length());
-            //System.out.println(own_ip + "  " + status);
+            System.out.println(own_ip + "  " + status);
         }
         if (status.contains("address|")) {
             own_address = status.substring("address|".length());
-            //System.out.println(own_address + "  " + status);
+            System.out.println(own_address + "  " + status);
         }
         this.status = status;
         new setstat().execute();
