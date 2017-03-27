@@ -41,6 +41,7 @@ public class ChatClient implements Runnable, ActionListener {
         public String status;
         public String camera = "";
         public String ip = "";
+        public String innerip = "";
         public String addres = "";
     }
 
@@ -703,8 +704,11 @@ public class ChatClient implements Runnable, ActionListener {
                                         SS.get(i).camera = passedObj.split("|")[2];
                                         SS.get(i).should_check_camera = true;
                                         should_write_sql = true;
+                                    } else if (passedObj.split("|")[1].contains("innerip")) {
+                                        SS.get(i).innerip = passedObj.split("|")[2];
+                                        should_write_sql = true;
                                     } else if (passedObj.split("|")[1].contains("ip")) {
-                                        SS.get(i).camera = passedObj.split("|")[2];
+                                        SS.get(i).ip = passedObj.split("|")[2];
                                         should_write_sql = true;
                                     } else if (passedObj.split("|")[1].contains("address")) {
                                         SS.get(i).addres = passedObj.split("|")[2];

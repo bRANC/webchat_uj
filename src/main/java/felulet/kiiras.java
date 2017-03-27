@@ -201,7 +201,7 @@ public class kiiras extends javax.swing.JFrame {
                 for (int i = 0; i < cc.SS.size(); i++) {
                     if (cc.SS.get(i).get_should_con()) {
                         for (int j = 0; j < ip.size(); j++) {
-                            if (ip.get(j).ip.equals(cc.SS.get(i).ip)) {
+                            if (ip.get(j).ip.equals(cc.SS.get(i).ip) || ip.get(j).ip.equals(cc.SS.get(i).ip)) {
                                 if (cc.SS.get(i).conn_cam()) {
                                     vph.get(j).connect(ip.get(j).ip, ip.get(j).port_jv);
                                     varas(20);
