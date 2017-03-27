@@ -106,7 +106,7 @@ public class Playback implements Runnable {
                         if (szamlalo >= 4) {
                             szamlalo=0;
                             sdl.flush();
-                            System.out.println("audio flush");
+                            //System.out.println("audio flush");
                         }
                         //System.out.println("figy: "+figyelo);
                     } else {

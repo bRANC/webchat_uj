@@ -323,13 +323,16 @@ public class ChatClient implements Runnable, ActionListener {
 
     public void set_status(String status) {
         if (status.contains("camera|")) {
-            own_cam = status.split("|")[1];
+            own_ip = status.substring("camera|".length());
+            //System.out.println(own_cam + "  " + status);
         }
         if (status.contains("ip|")) {
-            own_ip = status.split("|")[1];
+            own_ip = status.substring("ip|".length());
+            //System.out.println(own_ip + "  " + status);
         }
         if (status.contains("address|")) {
-            own_address = status.split("|")[1];
+            own_address = status.substring("address|".length());
+            //System.out.println(own_address + "  " + status);
         }
         this.status = status;
         new setstat().execute();
@@ -978,7 +981,7 @@ public class ChatClient implements Runnable, ActionListener {
             }
 
             if (counterhit > spikesensitivity || keypressed) {
-                System.out.println(counterhit);
+                //System.out.println(counterhit);
                 totalcounter = 16;//record for 2 seconds of sound no matter what
                 setButtonTalkColor(Color.red);
                 //  btnTalk.setText("Stop Talk " + counterhit);
