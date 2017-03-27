@@ -26,6 +26,8 @@ import javax.swing.SwingWorker;
 import felulet.screensaver.ScreenSaver;
 import base.client.ChatClient;
 import base.server.ChatServer;
+import felulet.panel.pallet_form;
+import felulet.panel.weather_panel;
 import webcam.agent.StreamServerAgent;
 import sqlite.sqlite;
 
@@ -72,7 +74,7 @@ public class kiiras extends javax.swing.JFrame {
     }
 
     ArrayList<videopanelhandler> vph = new ArrayList<>();
-    ArrayList<local> lch = new ArrayList<>();
+    ArrayList<pallet_form> lch = new ArrayList<>();
     ArrayList<JPanel> panelcam = new ArrayList<>();
 
     void setup_receiv() {
@@ -81,10 +83,10 @@ public class kiiras extends javax.swing.JFrame {
         panelcam.add(panelcam2);
         panelcam.add(panelcam3);
 
-        lch.add(new local());
-        lch.add(new local());
-        lch.add(new local());
-        lch.add(new local());
+        lch.add(new pallet_form("Zalaegerszeg", "363335226d56b6cdec4e85c6c7323e0e", "AIzaSyCK4A-bn35g1EX2Jgm6IpHFioh3Ctb99QI"));
+        lch.add(new pallet_form("Zalaegerszeg", "363335226d56b6cdec4e85c6c7323e0e", "AIzaSyCK4A-bn35g1EX2Jgm6IpHFioh3Ctb99QI"));
+        lch.add(new pallet_form("Zalaegerszeg", "363335226d56b6cdec4e85c6c7323e0e", "AIzaSyCK4A-bn35g1EX2Jgm6IpHFioh3Ctb99QI"));
+        lch.add(new pallet_form("Zalaegerszeg", "363335226d56b6cdec4e85c6c7323e0e", "AIzaSyCK4A-bn35g1EX2Jgm6IpHFioh3Ctb99QI"));
 
         for (int i = 0; i < 4; i++) {
             vph.add(new videopanelhandler());
@@ -116,6 +118,9 @@ public class kiiras extends javax.swing.JFrame {
         fullscreen();
         //videoPannel.setPreferredSize(dimension);
         //Dimension dm = new Dimension(600, 600);
+        for (int i = 0; i < vph.size(); i++) {
+            set_weat(i);
+        }
     }
 
     void varas(int ido) {
@@ -348,6 +353,7 @@ StreamServerAgent serverAgent;
             jButton1.setText("Camera off");
             cam_bool = false;
             cc.set_status("camera|on");
+            set_cam(0);
         } else {
             //serverAgent.vait();
             for (int i = 0; i < vph.size(); i++) {
@@ -356,7 +362,14 @@ StreamServerAgent serverAgent;
             jButton1.setText("Camera on");
             cam_bool = true;
             cc.set_status("camera|off");
+            for (int i = 0; i < vph.size(); i++) {
+                set_weat(i);
+            }
         }
+        cc.handsfree(true);
+        cc.talk();
+        jButton2.setText("talk " + cc.is_talking());
+
     }
 
     class connect_agent extends SwingWorker<Void, Void> {
