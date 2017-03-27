@@ -25,11 +25,23 @@ public class ChatClient implements Runnable, ActionListener {
             this.name = name;
             this.status = status.replace("|", "");
         }
+        public boolean should_check_camera = false;
+
+        public boolean get_should_con() {
+            boolean stat = should_check_camera;
+            should_check_camera = false;
+            return stat;
+        }
+
+        public boolean conn_cam() {
+            return camera.equals("on");
+        }
 
         public String name;
         public String status;
         public String camera = "";
         public String ip = "";
+        public String addres = "";
     }
 
     private ClientShared clientShared;
@@ -291,28 +303,44 @@ public class ChatClient implements Runnable, ActionListener {
     }
     String status = "";
     String ssaver = "";
+    String own_cam = "", own_ip = "", own_address = "";
+
+    public void send_own_inf() {
+        set_status("camera|" + own_cam);
+        varas(100);
+        set_status("ip|" + own_ip);
+        varas(100);
+        set_status("address|" + own_address);
+    }
+
+    void varas(int ido) {
+        try {
+            Thread.sleep(ido);
+        } catch (Exception e) {
+            //System.out.println(e);
+        }
+    }
 
     public void set_status(String status) {
-        if (status.equals("connect")) {
-            if (this.status.equals("scrennsaver")) {
-                new setstat().execute();
-            } else {
-                this.status = status;
-                new setstat().execute();
-            }
-        } else {
-            this.status = status;
-            new setstat().execute();
-
+        if (status.contains("camera|")) {
+            own_cam = status.split("|")[1];
         }
+        if (status.contains("ip|")) {
+            own_ip = status.split("|")[1];
+        }
+        if (status.contains("address|")) {
+            own_address = status.split("|")[1];
+        }
+        this.status = status;
+        new setstat().execute();
     }
 
     class setstat extends SwingWorker<Void, Void> {
 
         @Override
         protected Void doInBackground() throws Exception {
-            while (!isConnected()) {//wait for connection
-            }
+            while (!isConnected()) {
+            }//wait for connection
             try {
                 for (int i = 0; i < SS.size(); i++) {
                     if (SS.get(i).name.equals(NickName)) {
@@ -517,6 +545,7 @@ public class ChatClient implements Runnable, ActionListener {
         }
         imRunning = false;
         System.exit(0);
+
     }
 
     public class vectorandsize implements Serializable {
@@ -555,6 +584,14 @@ public class ChatClient implements Runnable, ActionListener {
         @Override
         protected void done() {
         }
+
+    }
+    public boolean should_write_sql = false;
+
+    public boolean get_should_write() {
+        boolean stat = should_write_sql;
+        should_write_sql = false;
+        return stat;
 
     }
 
@@ -621,6 +658,7 @@ public class ChatClient implements Runnable, ActionListener {
                         } else if (sizeread < 100 && passedObj.length() >= 2 && passedObj.substring(0, 2).equals("NN")) {
                             NickNameVector.addElement(passedObj.substring(2));
                             SS.add(new screensaver(passedObj.substring(2), "online"));
+                            send_own_inf();
                             // Not Taking
                         } else if (sizeread < 100 && passedObj.length() >= 2 && passedObj.substring(0, 2).equals("NT")) {
                             if (NickName != "") {
@@ -660,8 +698,14 @@ public class ChatClient implements Runnable, ActionListener {
                                 if (SS.get(i).name.equals(passedObj.substring(2).split("|")[0])) {
                                     if (passedObj.split("|")[1].contains("camera")) {
                                         SS.get(i).camera = passedObj.split("|")[2];
+                                        SS.get(i).should_check_camera = true;
+                                        should_write_sql = true;
                                     } else if (passedObj.split("|")[1].contains("ip")) {
                                         SS.get(i).camera = passedObj.split("|")[2];
+                                        should_write_sql = true;
+                                    } else if (passedObj.split("|")[1].contains("address")) {
+                                        SS.get(i).addres = passedObj.split("|")[2];
+                                        should_write_sql = true;
                                     }
                                     SS.get(i).status = passedObj.split("|")[1];
                                 }
@@ -768,6 +812,7 @@ public class ChatClient implements Runnable, ActionListener {
             txtOutput.moveCaretPosition(txtOutput.getText().length());
         } catch (Exception exp) {
             exp.printStackTrace();
+
         }
 
     }

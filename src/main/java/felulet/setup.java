@@ -229,7 +229,7 @@ public class setup extends javax.swing.JFrame {
 
     public void sqlitefel() {//id,nation,name,ip,jcport,jvcport,upnp,weathercam,weatherforecast
         try {
-            inn.fel("update nation set "
+            inn.fel("update api set "
                     + "weather_api_key ='" + jweatapi.getText() + "',"
                     + "geo_api_key='" + jgeoapi.getText() + "'"
                     + " where ID = " + 0 + ";");

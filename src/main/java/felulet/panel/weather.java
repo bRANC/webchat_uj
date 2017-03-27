@@ -24,7 +24,6 @@ public class weather {
     class hely {
 
         public String formattedaddres = "", lat = "", lng = "";
-
     }
 
     public void get_hely(String hely, String api) {
@@ -76,28 +75,19 @@ public class weather {
     }
 
     public String get_icon(int nap) {
-        String alma = "";
-        alma = daily.getDay(nap).icon();
-        return alma;
+        return daily.getDay(nap).icon();
     }
 
     public String get_summary(int nap) {
-        String alma = "";
-        alma = daily.getDay(nap).icon().replace("\"", "").replace("-", " ").replace("day", "").trim();
-        //System.out.println(alma);
-        return alma;
+        return daily.getDay(nap).icon().replace("\"", "").replace("-", " ").replace("day", "").trim();
     }
 
     public String get_temp_max(int nap) {
-        String alma = "";
-        alma = daily.getDay(nap).temperatureMax() + " C";
-        return alma;
+        return daily.getDay(nap).temperatureMax() + " C";
     }
 
     public String get_temp_min(int nap) {
-        String alma = "";
-        alma = daily.getDay(nap).temperatureMin() + " C";
-        return alma;
+        return daily.getDay(nap).temperatureMin() + " C";
     }
 
 }

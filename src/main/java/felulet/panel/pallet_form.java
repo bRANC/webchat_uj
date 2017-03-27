@@ -32,7 +32,7 @@ public class pallet_form extends javax.swing.JPanel {
     /**
      * Creates new form weather_form
      */
-    String location = "", weather_api_key = "", google_api_key = "";
+    public String location = "", weather_api_key = "", google_api_key = "";
     weather wet;
     ArrayList<weather_panel> wp = new ArrayList<>();
 
@@ -79,13 +79,39 @@ public class pallet_form extends javax.swing.JPanel {
             layout.addLayoutComponent(wp.get(i), gbc);
 
         }
+
 //        set_wet_image(weather, wet.icon);
 //        w_summary.setText(wet.summary);
 //        w_temp.setText(wet.temperature);
-
         // set_wet_image(weather1, wet.icon_n);
         // w_summary1.setText(wet.summary_n);
         // w_temp1.setText(wet.temperature_n);
+    }
+
+    public void set_location(String location) {
+        this.location = location;
+    }
+
+    public void wet_update() {
+        wet = new weather(location, weather_api_key, google_api_key);
+        for (int i = 0; i < elore; i++) {
+            if (i == 0) {
+                wp.get(i).w_summary.setText(wet.summary + "  " + wet.temperature);
+                wp.get(i).feels_like.setText(wet.apparenttemp);
+                wp.get(i).w_max_temp.setText(wet.get_temp_max(i));
+                wp.get(i).w_min_temp.setText(wet.get_temp_min(i));
+                wp.get(i).weather.setText("");
+                set_wet_image(wp.get(i).weather, wet.icon);
+            } else {
+                wp.get(i).w_summary.setText(wet.get_summary(i));
+                wp.get(i).weather.setText("");
+                wp.get(i).jLabel1.setText("");
+                wp.get(i).feels_like.setText("");
+                wp.get(i).w_max_temp.setText(wet.get_temp_max(i));
+                wp.get(i).w_min_temp.setText(wet.get_temp_min(i));
+                set_wet_image(wp.get(i).weather, wet.get_icon(i));
+            }
+        }
     }
 
     public void set_wet_image(JLabel be, String icon_name) {

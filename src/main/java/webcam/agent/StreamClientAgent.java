@@ -45,7 +45,6 @@ public class StreamClientAgent implements IStreamClientAgent {
         logger.info("going to connect to stream server :{}", streamServerAddress);
 
         //clientBootstrap.setOption("connectTimeoutMillis", 10000);
-
         //logger.info("timeout :{}", clientBootstrap.getOption("connectTimeoutMillis"));
         //clientBootstrap.setOption("tcpNoDelay", true);
         //clientBootstrap.setOption("keepAlive", true);

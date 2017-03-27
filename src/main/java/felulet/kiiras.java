@@ -51,8 +51,14 @@ public class kiiras extends javax.swing.JFrame {
         initComponents();
         // server_start();  
         //VolatileImage <-- video memóriában is leképződő image   -Dsun.java2d.accthreshold=0
-        setup_receiv();
+
 //        local_things();
+        //varas(1000);
+        for (int i = 0; i < 4; i++) {
+            vph.add(new videopanelhandler());
+        }
+        sqlscan();
+        setup_receiv();
         Ct.execute();
         this.addWindowListener(new java.awt.event.WindowAdapter() {
             @Override
@@ -83,15 +89,10 @@ public class kiiras extends javax.swing.JFrame {
         panelcam.add(panelcam2);
         panelcam.add(panelcam3);
 
-        lch.add(new pallet_form("Zalaegerszeg", "363335226d56b6cdec4e85c6c7323e0e", "AIzaSyCK4A-bn35g1EX2Jgm6IpHFioh3Ctb99QI"));
-        lch.add(new pallet_form("Zalaegerszeg", "363335226d56b6cdec4e85c6c7323e0e", "AIzaSyCK4A-bn35g1EX2Jgm6IpHFioh3Ctb99QI"));
-        lch.add(new pallet_form("Zalaegerszeg", "363335226d56b6cdec4e85c6c7323e0e", "AIzaSyCK4A-bn35g1EX2Jgm6IpHFioh3Ctb99QI"));
-        lch.add(new pallet_form("Zalaegerszeg", "363335226d56b6cdec4e85c6c7323e0e", "AIzaSyCK4A-bn35g1EX2Jgm6IpHFioh3Ctb99QI"));
-
-        for (int i = 0; i < 4; i++) {
-            vph.add(new videopanelhandler());
-            //vph.get(i).start();
-        }
+//        lch.add(new pallet_form("Zalaegerszeg", "363335226d56b6cdec4e85c6c7323e0e", "AIzaSyCK4A-bn35g1EX2Jgm6IpHFioh3Ctb99QI"));
+//        lch.add(new pallet_form("Zalaegerszeg", "363335226d56b6cdec4e85c6c7323e0e", "AIzaSyCK4A-bn35g1EX2Jgm6IpHFioh3Ctb99QI"));
+//        lch.add(new pallet_form("Zalaegerszeg", "363335226d56b6cdec4e85c6c7323e0e", "AIzaSyCK4A-bn35g1EX2Jgm6IpHFioh3Ctb99QI"));
+//        lch.add(new pallet_form("Zalaegerszeg", "363335226d56b6cdec4e85c6c7323e0e", "AIzaSyCK4A-bn35g1EX2Jgm6IpHFioh3Ctb99QI"));
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.anchor = GridBagConstraints.CENTER;
         gbc.fill = GridBagConstraints.BOTH;
@@ -118,6 +119,11 @@ public class kiiras extends javax.swing.JFrame {
         fullscreen();
         //videoPannel.setPreferredSize(dimension);
         //Dimension dm = new Dimension(600, 600);
+        while (lch.size() < vph.size()) {
+            varas(10);
+            System.out.println(lch.size() + "  vph: " + vph.size());
+
+        }
         for (int i = 0; i < vph.size(); i++) {
             set_weat(i);
         }
@@ -144,7 +150,7 @@ public class kiiras extends javax.swing.JFrame {
 
         @Override
         protected Void doInBackground() throws Exception {
-            sqlscan();
+
             if (tryhard == 0) {
                 cas = new Chat_and_voice_server_start();
                 cas.execute();
@@ -172,6 +178,8 @@ public class kiiras extends javax.swing.JFrame {
             }
             cc.set_nickname(ip.get(0).name);
             cc.set_status("ip|" + outterip());
+            varas(100);
+            cc.set_status("address|" + lch.get(0).location);
             return null;
         }
 
@@ -179,6 +187,53 @@ public class kiiras extends javax.swing.JFrame {
         protected void done() {
         }
 
+    }
+
+    class user_watcher extends SwingWorker<Void, Void> {
+
+        Chat_and_voice_server_start cas;
+
+        @Override
+        protected Void doInBackground() throws Exception {
+            while (!this.isCancelled()) {
+                for (int i = 0; i < cc.SS.size(); i++) {
+                    if (cc.SS.get(i).get_should_con()) {
+                        for (int j = 0; j < ip.size(); j++) {
+                            if (ip.get(j).ip.equals(cc.SS.get(i).ip)) {
+                                if (cc.SS.get(i).conn_cam()) {
+                                    vph.get(j).connect(ip.get(j).ip, ip.get(j).port_jv);
+                                    varas(20);
+                                    set_cam(j);
+                                } else {
+                                    set_weat(j);
+                                }
+                            }
+                        }
+                    }
+                    if (cc.get_should_write()) {
+                        sqlite_write_cc();
+                    }
+                }
+                varas(200);
+            }
+            return null;
+        }
+    }
+
+    public void sqlite_write_cc() {
+        for (int i = 0; i < ip.size(); i++) {
+            for (int j = 0; j < cc.SS.size(); j++) {
+                if (ip.get(i).ip.equals(cc.SS.get(j).ip)) {
+                    try {
+                        inn.fel("update nation set "
+                                + " addres ='" + cc.SS.get(j).addres + "',"
+                                + " name ='" + cc.SS.get(j).name + "'"
+                                + " where ip = " + ip.get(i).ip + ";");
+                    } catch (Exception e) {
+                    }
+                }
+            }
+        }
     }
 
     String outterip() {
@@ -455,6 +510,7 @@ StreamServerAgent serverAgent;
             ResultSet rs1 = inn.le("select * from api;");
             rs1.next();
             String weather = rs1.getString("weather_api_key"), geo = rs1.getString("geo_api_key");
+            String helyi = "";
             while (rs.next()) {
                 switch (rs.getInt("id")) {
                     case 1:
@@ -467,6 +523,7 @@ StreamServerAgent serverAgent;
                         ip.get(ip.size() - 1).name = rs.getString("name");
                         ip.get(ip.size() - 1).upnp = rs.getBoolean("upnp");
                         tryhard = rs.getInt("tryhard");
+                        helyi = rs.getString("addres");
                         lch.add(new pallet_form(rs.getString("addres"), weather, geo));
                         break;
                     case 2:
@@ -501,6 +558,12 @@ StreamServerAgent serverAgent;
                         break;
                     default:
                         break;
+                }
+            }
+            System.out.println(vph.size() + "  lch: " + lch.size());
+            if (lch.size() != vph.size()) {
+                for (int i = lch.size(); i < vph.size(); i++) {
+                    lch.add(new pallet_form(helyi, weather, geo));
                 }
             }
         } catch (Exception e) {
