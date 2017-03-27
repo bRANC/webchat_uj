@@ -61,6 +61,21 @@ public class setup extends javax.swing.JFrame {
 
     public void readsql() {
         try {
+            try {
+                ResultSet rs = inn.le("select * from api;");
+                while (rs.next()) {
+                    try {
+                        jgeoapi.setText(rs.getString("geo_api_key"));
+                    } catch (Exception e) {
+                    }
+                    try {
+                        jweatapi.setText(rs.getString("weather_api_key"));
+                    } catch (Exception e) {
+                    }
+                }
+            } catch (Exception e) {
+            }
+
             ResultSet rs = inn.le("select * from nation;");
             while (rs.next()) {
                 switch (rs.getInt("id")) {
@@ -71,6 +86,10 @@ public class setup extends javax.swing.JFrame {
                         }
                         try {
                             jname.setText(rs.getString("name"));
+                        } catch (Exception e) {
+                        }
+                        try {
+                            jaddres.setText(rs.getString("addres"));
                         } catch (Exception e) {
                         }
                         try {
