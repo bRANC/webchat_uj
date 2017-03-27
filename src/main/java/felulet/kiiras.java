@@ -452,6 +452,9 @@ StreamServerAgent serverAgent;
         ip = new ArrayList();
         try {
             ResultSet rs = inn.le("select * from nation;");
+            ResultSet rs1 = inn.le("select * from api;");
+            rs1.next();
+            String weather = rs1.getString("weather_api_key"), geo = rs1.getString("geo_api_key");
             while (rs.next()) {
                 switch (rs.getInt("id")) {
                     case 1:
@@ -464,10 +467,12 @@ StreamServerAgent serverAgent;
                         ip.get(ip.size() - 1).name = rs.getString("name");
                         ip.get(ip.size() - 1).upnp = rs.getBoolean("upnp");
                         tryhard = rs.getInt("tryhard");
+                        lch.add(new pallet_form(rs.getString("addres"), weather, geo));
                         break;
                     case 2:
                         try {
                             ip.add(new ip(rs.getString("ip"), Integer.parseInt(rs.getString("jcport")), Integer.parseInt(rs.getString("jvcport"))));
+                            lch.add(new pallet_form(rs.getString("addres"), weather, geo));
                         } catch (Exception e) {
                         }
 //                        jcam1.setText(rs.getString("ip"));
@@ -477,6 +482,7 @@ StreamServerAgent serverAgent;
                     case 3:
                         try {
                             ip.add(new ip(rs.getString("ip"), Integer.parseInt(rs.getString("jcport")), Integer.parseInt(rs.getString("jvcport"))));
+                            lch.add(new pallet_form(rs.getString("addres"), weather, geo));
                         } catch (Exception e) {
                         }
 //                        jcam2.setText(rs.getString("ip"));
@@ -486,6 +492,7 @@ StreamServerAgent serverAgent;
                     case 4:
                         try {
                             ip.add(new ip(rs.getString("ip"), Integer.parseInt(rs.getString("jcport")), Integer.parseInt(rs.getString("jvcport"))));
+                            lch.add(new pallet_form(rs.getString("addres"), weather, geo));
                         } catch (Exception e) {
                         }
 //                        jcam3.setText(rs.getString("ip"));

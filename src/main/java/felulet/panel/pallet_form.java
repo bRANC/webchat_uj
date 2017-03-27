@@ -36,6 +36,8 @@ public class pallet_form extends javax.swing.JPanel {
     weather wet;
     ArrayList<weather_panel> wp = new ArrayList<>();
 
+    int elore = 5;
+
     public pallet_form(String location, String weather_api_key, String google_api_key) {
         this.location = location;
         this.weather_api_key = weather_api_key;
@@ -51,7 +53,7 @@ public class pallet_form extends javax.swing.JPanel {
         gbc.gridy = 0;
         GridBagLayout layout = (GridBagLayout) jPanel1.getLayout();
 
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < elore; i++) {
             wp.add(new weather_panel());
             gbc.gridx = i;
             jPanel1.add(wp.get(i));
