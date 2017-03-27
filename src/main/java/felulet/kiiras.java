@@ -180,6 +180,8 @@ public class kiiras extends javax.swing.JFrame {
             cc.set_status("ip|" + outterip());
             varas(100);
             cc.set_status("address|" + lch.get(0).location);
+            varas(100);
+            cc.set_status("camera|off");
             return null;
         }
 
