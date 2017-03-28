@@ -648,6 +648,7 @@ public class ChatClient implements Runnable, ActionListener {
                                     }
                                 }
                             } else {
+                                System.out.println("passedObj.substring(3): " + passedObj.substring(3));
                                 txtOutput.append("\n" + passedObj.substring(3));
                                 txtOutput.moveCaretPosition(txtOutput.getText().length());
                             }
