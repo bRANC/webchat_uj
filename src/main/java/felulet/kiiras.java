@@ -227,15 +227,27 @@ public class kiiras extends javax.swing.JFrame {
                 }
                 //cc.connect("localhost", port_szam(1) + "");
                 if (!cc.isConnected()) {
-                    cas = new Chat_and_voice_server_start();
-                    cas.execute();
-                    varas(200);
-                    cc.connect(localip, ip.get(0).port_jvc + "");
+                    for (int i = 0; i < local_ips.size(); i++) {
+                        System.out.println(local_ips.size() + "   " + !cc.isConnected());
+                        if (!cc.isConnected()) {
+                            try {
+                                cc.connect(local_ips.get(i), ip.get(0).port_jvc + "");
+                                if (cc.isConnected()) {
+                                    localip = local_ips.get(i);
+                                    varas(100);
+                                    cc.set_nickname(ip.get(0).name);
+                                    varas(100);
+                                    cc.set_status("innerip|" + localip);
+                                }
+                            } catch (Exception e) {
+                            }
+                        }
+                    }
                 } else {
 
                 }
             }
-            if (!localip.isEmpty()) {
+            if (localip.isEmpty()) {
                 cc.set_nickname(ip.get(0).name);
             }
             cc.set_status("ip|" + outterip());
@@ -245,7 +257,7 @@ public class kiiras extends javax.swing.JFrame {
             cc.set_status("camera|off");
             varas(100);
             //System.out.println("shouldip: " + Inet4Address.getLocalHost().getHostAddress());
-            if (!localip.isEmpty()) {
+            if (localip.isEmpty()) {
                 cc.set_status("innerip|" + cc.getconn_ip());
             }
             return null;

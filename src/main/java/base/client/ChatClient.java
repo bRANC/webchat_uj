@@ -630,11 +630,11 @@ public class ChatClient implements Runnable, ActionListener {
                         // Command or text message determination
                         // Wouldn't this run into problems with large text messages?
                         String passedObj = "";
-                        if (sizeread < 100 && sizeread >= 2) {
+                        if (sizeread < 200 && sizeread >= 2) {
                             passedObj = new String(bytepassedObj, 0, sizeread);
-                            //System.out.println(passedObj);
-                        }
 
+                        }
+                        System.out.println(new String(bytepassedObj, 0, sizeread));
                         // Text message
                         if (sizeread < 100 && sizeread > 3 && passedObj.substring(0, 3).equals("TXT")) {
                             // TODO: Should probably just clear the oldest message line
@@ -713,9 +713,9 @@ public class ChatClient implements Runnable, ActionListener {
                             }
                             // Receive status
                         } else if (sizeread < 100 && passedObj.length() >= 2 && passedObj.substring(0, 2).equals("SS")) {
-                            System.out.println("status,passobj: " + passedObj);
+
                             for (int i = 0; i < SS.size(); i++) {
-                                
+
                                 if (SS.get(i).name.equals(passedObj.substring(2).split("|")[0])) {
                                     if (passedObj.split("|")[1].contains("camera")) {
                                         SS.get(i).camera = passedObj.split("|")[2];
@@ -731,7 +731,7 @@ public class ChatClient implements Runnable, ActionListener {
                                         SS.get(i).addres = passedObj.split("|")[2];
                                         should_write_sql = true;
                                     }
-                                    
+
                                     //SS.get(i).status = passedObj.split("|")[1];
                                 }
                             }
