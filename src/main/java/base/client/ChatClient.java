@@ -23,7 +23,7 @@ public class ChatClient implements Runnable, ActionListener {
 
         public screensaver(String name, String status) {
             this.name = name;
-            this.status = status.replace("|", "");
+            this.status = status.replace(";", "");
         }
         public boolean should_check_camera = false;
 
@@ -314,13 +314,13 @@ public class ChatClient implements Runnable, ActionListener {
 
     public void send_own_inf() {
         varas(100);
-        set_status("camera|" + own_cam);
+        set_status("camera;" + own_cam);
         varas(100);
-        set_status("ip|" + own_ip);
+        set_status("ip;" + own_ip);
         varas(100);
-        set_status("innerip|" + own_intip);
+        set_status("innerip;" + own_intip);
         varas(100);
-        set_status("address|" + own_address);
+        set_status("address;" + own_address);
         varas(100);
     }
 
@@ -334,20 +334,20 @@ public class ChatClient implements Runnable, ActionListener {
 
     public void set_status(String status) {
         status = status.replace("/", "");
-        if (status.contains("camera|")) {
-            own_cam = status.substring("camera|".length());
+        if (status.contains("camera;")) {
+            own_cam = status.substring("camera;".length());
             System.out.println(own_cam + " : camera");
         }
-        if (status.contains("ip|")) {
-            own_ip = status.substring("ip|".length());
+        if (status.contains("ip;")) {
+            own_ip = status.substring("ip;".length());
             System.out.println(own_ip + " : ip");
         }
-        if (status.contains("innerip|")) {
-            own_intip = status.substring("innerip|".length());
+        if (status.contains("innerip;")) {
+            own_intip = status.substring("innerip;".length());
             System.out.println(own_intip + " : innerip");
         }
-        if (status.contains("address|")) {
-            own_address = status.substring("address|".length());
+        if (status.contains("address;")) {
+            own_address = status.substring("address;".length());
             System.out.println(own_address + " : address");
         }
         this.status = status;
@@ -367,7 +367,7 @@ public class ChatClient implements Runnable, ActionListener {
                     }
                 }
                 System.out.println("set_stat:                " + status);
-                out.write(("SS" + NickName + "|" + status + MultiChatConstants.BREAKER).getBytes());
+                out.write(("SS" + NickName + ";" + status + MultiChatConstants.BREAKER).getBytes());
                 out.flush();
             } catch (Exception e) {
             }
@@ -593,7 +593,7 @@ public class ChatClient implements Runnable, ActionListener {
             }
             try {
                 String info = "";
-                out.write(("fetch" + NickName + "|" + info + MultiChatConstants.BREAKER).getBytes());
+                out.write(("fetch" + NickName + ";" + info + MultiChatConstants.BREAKER).getBytes());
                 out.flush();
             } catch (Exception e) {
             }
@@ -713,29 +713,33 @@ public class ChatClient implements Runnable, ActionListener {
                             // Receive status
                         } else if (sizeread < 200 && passedObj.length() >= 2 && passedObj.substring(0, 2).equals("SS")) {
                             System.out.println("SS: " + passedObj);
+                            for (int i = 0; i < passedObj.split(";").length; i++) {
+                                System.out.println(passedObj.split(";")[i]);
+                            }
+
                             for (int i = 0; i < SS.size(); i++) {
-                                if (SS.get(i).name.equals(passedObj.substring(2).split("|")[0])) {
+                                if (SS.get(i).name.equals(passedObj.substring(2).split(";")[0])) {
                                     System.out.print("passobj: ");
-                                    if (passedObj.split("|")[1].contains("camera")) {
-                                        SS.get(i).camera = passedObj.split("|")[3];
+                                    if (passedObj.split(";")[1].contains("camera")) {
+                                        SS.get(i).camera = passedObj.split(";")[3];
                                         System.out.println(SS.get(i).camera);
                                         SS.get(i).should_check_camera = true;
                                         should_write_sql = true;
-                                    } else if (passedObj.split("|")[1].contains("innerip")) {
-                                        SS.get(i).innerip = passedObj.split("|")[3];
+                                    } else if (passedObj.split(";")[1].contains("innerip")) {
+                                        SS.get(i).innerip = passedObj.split(";")[3];
                                         System.out.println(SS.get(i).innerip);
                                         should_write_sql = true;
-                                    } else if (passedObj.split("|")[1].contains("ip")) {
-                                        SS.get(i).ip = passedObj.split("|")[3];
+                                    } else if (passedObj.split(";")[1].contains("ip")) {
+                                        SS.get(i).ip = passedObj.split(";")[3];
                                         System.out.println(SS.get(i).ip);
                                         should_write_sql = true;
-                                    } else if (passedObj.split("|")[1].contains("address")) {
-                                        SS.get(i).addres = passedObj.split("|")[3];
+                                    } else if (passedObj.split(";")[1].contains("address")) {
+                                        SS.get(i).addres = passedObj.split(";")[3];
                                         System.out.println(SS.get(i).addres);
                                         should_write_sql = true;
                                     }
                                     System.out.println(passedObj.substring(3));
-                                    //SS.get(i).status = passedObj.split("|")[1];
+                                    //SS.get(i).status = passedObj.split(";")[1];
                                 }
                             }
                             // Received voice data
@@ -968,7 +972,7 @@ public class ChatClient implements Runnable, ActionListener {
 
             byte[] b2 = null;
             if (localbyte == null) { // if i'm not talking and using hands free mode
-                localbyte = ("NT|".getBytes());
+                localbyte = ("NT;".getBytes());
                 setDataSize(localbyte.length);
             } else {
                 b2 = new byte[getDataSize() + 1];

@@ -208,7 +208,7 @@ public class kiiras extends javax.swing.JFrame {
                                 varas(100);
                                 cc.set_nickname(ip.get(0).name);
                                 varas(100);
-                                cc.set_status("innerip|" + localip);
+                                cc.set_status("innerip;" + localip);
                             }
                         } catch (Exception e) {
                         }
@@ -237,7 +237,7 @@ public class kiiras extends javax.swing.JFrame {
                                     varas(100);
                                     cc.set_nickname(ip.get(0).name);
                                     varas(100);
-                                    cc.set_status("innerip|" + localip);
+                                    cc.set_status("innerip;" + localip);
                                 }
                             } catch (Exception e) {
                             }
@@ -250,15 +250,15 @@ public class kiiras extends javax.swing.JFrame {
             if (localip.isEmpty()) {
                 cc.set_nickname(ip.get(0).name);
             }
-            cc.set_status("ip|" + outterip());
+            cc.set_status("ip;" + outterip());
             varas(100);
-            cc.set_status("address|" + lch.get(0).location);
+            cc.set_status("address;" + lch.get(0).location);
             varas(100);
-            cc.set_status("camera|off");
+            cc.set_status("camera;off");
             varas(100);
             //System.out.println("shouldip: " + Inet4Address.getLocalHost().getHostAddress());
             if (localip.isEmpty()) {
-                cc.set_status("innerip|" + cc.getconn_ip());
+                cc.set_status("innerip;" + cc.getconn_ip());
             }
             return null;
         }
