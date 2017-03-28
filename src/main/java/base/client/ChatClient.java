@@ -336,19 +336,19 @@ public class ChatClient implements Runnable, ActionListener {
         status = status.replace("/", "");
         if (status.contains("camera;")) {
             own_cam = status.substring("camera;".length());
-            System.out.println(own_cam + " : camera");
+            //System.out.println(own_cam + " : camera");
         }
         if (status.contains("ip;")) {
             own_ip = status.substring("ip;".length());
-            System.out.println(own_ip + " : ip");
+            //System.out.println(own_ip + " : ip");
         }
         if (status.contains("innerip;")) {
             own_intip = status.substring("innerip;".length());
-            System.out.println(own_intip + " : innerip");
+            //System.out.println(own_intip + " : innerip");
         }
         if (status.contains("address;")) {
             own_address = status.substring("address;".length());
-            System.out.println(own_address + " : address");
+            //System.out.println(own_address + " : address");
         }
         this.status = status;
         new setstat().execute();
@@ -366,10 +366,11 @@ public class ChatClient implements Runnable, ActionListener {
                         SS.get(i).status = status;
                     }
                 }
-                System.out.println("set_stat:                " + status);
+                System.out.println("set_stat:                " + "SS;" + NickName + ";" + status);
                 out.write(("SS;" + NickName + ";" + status + MultiChatConstants.BREAKER).getBytes());
                 out.flush();
             } catch (Exception e) {
+                System.out.println("setstat exception: " + e.toString());
             }
             return null;
         }
