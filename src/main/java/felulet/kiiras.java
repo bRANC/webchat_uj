@@ -250,6 +250,7 @@ public class kiiras extends javax.swing.JFrame {
             if (localip.isEmpty()) {
                 cc.set_nickname(ip.get(0).name);
             }
+            varas(100);
             cc.set_status("ip;" + outterip());
             varas(100);
             cc.set_status("address;" + lch.get(0).location);
