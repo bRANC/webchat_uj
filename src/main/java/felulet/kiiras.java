@@ -27,7 +27,7 @@ import felulet.screensaver.ScreenSaver;
 import base.client.ChatClient;
 import base.server.ChatServer;
 import felulet.panel.pallet_form;
-import felulet.panel.weather_panel;
+import java.net.Inet4Address;
 import webcam.agent.StreamServerAgent;
 import sqlite.sqlite;
 
@@ -182,6 +182,9 @@ public class kiiras extends javax.swing.JFrame {
             cc.set_status("address|" + lch.get(0).location);
             varas(100);
             cc.set_status("camera|off");
+            varas(100);
+            System.out.println("shouldip: " + Inet4Address.getLocalHost().getHostAddress());
+            cc.set_status("innerip|" + Inet4Address.getLocalHost().getHostAddress());
             return null;
         }
 
@@ -201,8 +204,10 @@ public class kiiras extends javax.swing.JFrame {
                 for (int i = 0; i < cc.SS.size(); i++) {
                     if (cc.SS.get(i).get_should_con()) {
                         for (int j = 0; j < ip.size(); j++) {
-                            if (ip.get(j).ip.equals(cc.SS.get(i).ip) || ip.get(j).ip.equals(cc.SS.get(i).ip)) {
+                            if (ip.get(j).ip.equals(cc.SS.get(i).ip) || ip.get(j).ip.equals(cc.SS.get(i).innerip)) {
+                                System.out.println("find inner: " + cc.SS.get(i).innerip + " or ip: " + cc.SS.get(i).ip);
                                 if (cc.SS.get(i).conn_cam()) {
+                                    System.out.println("cummect: " + cc.SS.get(i).innerip);
                                     vph.get(j).connect(ip.get(j).ip, ip.get(j).port_jv);
                                     varas(20);
                                     set_cam(j);

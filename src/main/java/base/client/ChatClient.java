@@ -237,6 +237,8 @@ public class ChatClient implements Runnable, ActionListener {
     String connectAddr;
     int connectPort;
 
+    String inetarder = "";
+
     public void connect(String ip, String port) {
         try {
             connectAddr = ip;
@@ -251,7 +253,7 @@ public class ChatClient implements Runnable, ActionListener {
             in = socket.getInputStream();
             out = socket.getOutputStream();
             out.flush();
-
+            inetarder = socket.getLocalAddress().toString();
             Thread t = new Thread(this, "socket listener");
             t.start();
 
@@ -262,6 +264,10 @@ public class ChatClient implements Runnable, ActionListener {
         } catch (java.io.IOException iox) {
             System.out.println("not connected");
         }
+    }
+
+    public String getconn_ip() {
+        return inetarder;
     }
 
     public boolean isConnected() {
@@ -304,7 +310,7 @@ public class ChatClient implements Runnable, ActionListener {
     }
     String status = "";
     String ssaver = "";
-    String own_cam = "", own_ip = "", own_address = "";
+    String own_cam = "", own_ip = "", own_intip = "", own_address = "";
 
     public void send_own_inf() {
         set_status("camera|" + own_cam);
@@ -330,6 +336,10 @@ public class ChatClient implements Runnable, ActionListener {
         if (status.contains("ip|")) {
             own_ip = status.substring("ip|".length());
             System.out.println(own_ip + "  " + status);
+        }
+        if (status.contains("innerip|")) {
+            own_intip = status.substring("innerip|".length());
+            System.out.println(own_intip + "  " + status);
         }
         if (status.contains("address|")) {
             own_address = status.substring("address|".length());
