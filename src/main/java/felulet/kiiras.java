@@ -48,6 +48,7 @@ public class kiiras extends javax.swing.JFrame {
     wcamera cam = new wcamera();
     Boolean int_cam_update = true, send = false;
     Chatstartup Ct = new Chatstartup();
+    user_watcher uw = new user_watcher();
 
     public kiiras() {
         System.setProperty("sun.java2d.opengl", "True");
@@ -65,7 +66,7 @@ public class kiiras extends javax.swing.JFrame {
         sqlscan();
         setup_receiv();
         Ct.execute();
-        new user_watcher().execute();
+        uw.execute();
         this.addWindowListener(new java.awt.event.WindowAdapter() {
             @Override
             public void windowClosing(java.awt.event.WindowEvent windowEvent) {
@@ -279,6 +280,7 @@ public class kiiras extends javax.swing.JFrame {
             while (!this.isCancelled()) {
                 for (int i = 0; i < cc.SS.size(); i++) {
                     if (cc.SS.get(i).get_should_con()) {
+                        System.out.println("cc.SS.get(i).get_should_con(): " + cc.SS.get(i).get_should_con());
                         for (int j = 0; j < ip.size(); j++) {
                             if (ip.get(j).ip.equals(cc.SS.get(i).ip) || ip.get(j).ip.equals(cc.SS.get(i).innerip)) {
                                 System.out.println("find inner: " + cc.SS.get(i).innerip + " or ip: " + cc.SS.get(i).ip);
