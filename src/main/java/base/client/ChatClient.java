@@ -718,7 +718,7 @@ public class ChatClient implements Runnable, ActionListener {
                                 System.out.println(i + " : " + passedObj.split(";")[i]);
                             }
                             for (int i = 0; i < SS.size(); i++) {
-                                if (SS.get(i).name.equals(passedObj.substring(1).split(";")[0])) {
+                                if (SS.get(i).name.equals(passedObj.substring(1).split(";")[1])) {
                                     SS.get(i).should_check_camera = true;
                                     System.out.print("passobj: ");
                                     if (passedObj.split(";")[2].contains("camera")) {
