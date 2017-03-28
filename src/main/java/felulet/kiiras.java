@@ -193,6 +193,7 @@ public class kiiras extends javax.swing.JFrame {
 
         @Override
         protected Void doInBackground() throws Exception {
+            cc.elso = 0;
             String localip = "";
             if (tryhard == 0) {
                 cas = new Chat_and_voice_server_start();
@@ -266,6 +267,8 @@ public class kiiras extends javax.swing.JFrame {
             if (localip.isEmpty()) {
                 cc.set_status("innerip;" + cc.getconn_ip());
             }
+            cc.elso++;
+            cc.elso++;
             return null;
         }
 
