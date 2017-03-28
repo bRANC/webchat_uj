@@ -228,6 +228,10 @@ public class kiiras extends javax.swing.JFrame {
                 }
                 //cc.connect("localhost", port_szam(1) + "");
                 if (!cc.isConnected()) {
+                    System.out.println("not an any server starting one");
+                    cas = new Chat_and_voice_server_start();
+                    cas.execute();
+                    varas(200);
                     for (int i = 0; i < local_ips.size(); i++) {
                         System.out.println(local_ips.size() + "   " + !cc.isConnected());
                         if (!cc.isConnected()) {
@@ -322,6 +326,7 @@ public class kiiras extends javax.swing.JFrame {
                                     + " name ='" + cc.SS.get(j).name + "'"
                                     + " where ip = " + ip.get(i).ip + ";");
                         } catch (Exception e) {
+                            System.out.println("sqlite_write_cc: " + e.toString());
                         }
                     }
                 }

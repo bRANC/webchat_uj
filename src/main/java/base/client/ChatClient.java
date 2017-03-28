@@ -313,6 +313,7 @@ public class ChatClient implements Runnable, ActionListener {
     String own_cam = "off", own_ip = "", own_intip = "", own_address = "";
 
     public void send_own_inf() {
+        System.out.println("sending own info");
         varas(100);
         set_status("camera;" + own_cam);
         varas(100);
