@@ -65,6 +65,7 @@ public class kiiras extends javax.swing.JFrame {
         sqlscan();
         setup_receiv();
         Ct.execute();
+        new user_watcher().execute();
         this.addWindowListener(new java.awt.event.WindowAdapter() {
             @Override
             public void windowClosing(java.awt.event.WindowEvent windowEvent) {
