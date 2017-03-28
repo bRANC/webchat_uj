@@ -317,6 +317,8 @@ public class ChatClient implements Runnable, ActionListener {
         varas(100);
         set_status("ip|" + own_ip);
         varas(100);
+        set_status("innerip|" + own_intip);
+        varas(100);
         set_status("address|" + own_address);
     }
 
@@ -331,19 +333,19 @@ public class ChatClient implements Runnable, ActionListener {
     public void set_status(String status) {
         if (status.contains("camera|")) {
             own_ip = status.substring("camera|".length());
-            System.out.println(own_cam + "  " + status);
+            System.out.println(own_cam + " : camera");
         }
         if (status.contains("ip|")) {
             own_ip = status.substring("ip|".length());
-            System.out.println(own_ip + "  " + status);
+            System.out.println(own_ip + " : ip");
         }
         if (status.contains("innerip|")) {
             own_intip = status.substring("innerip|".length());
-            System.out.println(own_intip + "  " + status);
+            System.out.println(own_intip + " : innerip");
         }
         if (status.contains("address|")) {
             own_address = status.substring("address|".length());
-            System.out.println(own_address + "  " + status);
+            System.out.println(own_address + " : address");
         }
         this.status = status;
         new setstat().execute();
@@ -724,7 +726,7 @@ public class ChatClient implements Runnable, ActionListener {
                                         SS.get(i).addres = passedObj.split("|")[2];
                                         should_write_sql = true;
                                     }
-                                    SS.get(i).status = passedObj.split("|")[1];
+                                    //SS.get(i).status = passedObj.split("|")[1];
                                 }
                             }
                             // Received voice data
