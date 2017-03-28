@@ -149,7 +149,7 @@ public class kiiras extends javax.swing.JFrame {
     }
     int tryhard = 0;
 
-    String getadapter() {
+    public void getadapter() {
         String chain = "";
         local_ips.clear();
         try {
@@ -160,7 +160,7 @@ public class kiiras extends javax.swing.JFrame {
         } catch (Exception e) {
         }
         chain += outterip();
-        return chain;
+        //return chain;
     }
     ArrayList<String> local_ips = new ArrayList<>();
 
@@ -174,10 +174,13 @@ public class kiiras extends javax.swing.JFrame {
                 a++;
                 localip += "Internal IP: " + inetAddress.toString().replace("/", "") + "\n";
                 local_ips.add(inetAddress.toString().replace("/", ""));
+                System.out.println(localip);
             }
         }
         if (a == 0) {
             localip = "";
+        } else {
+            System.out.println("localip numbers: " + a);
         }
         return localip;
     }
@@ -193,15 +196,20 @@ public class kiiras extends javax.swing.JFrame {
                 cas = new Chat_and_voice_server_start();
                 cas.execute();
                 varas(200);
+                getadapter();
                 for (int i = 0; i < local_ips.size(); i++) {
+                    System.out.println(local_ips.size() + "   " + !cc.isConnected());
                     if (!cc.isConnected()) {
-                        cc.connect(local_ips.get(i), ip.get(0).port_jvc + "");
-                        if (!cc.isConnected()) {
-                            localip = local_ips.get(i);
-                            varas(100);
-                            cc.set_nickname(ip.get(0).name);
-                            varas(100);
-                            cc.set_status("innerip|" + localip);
+                        try {
+                            cc.connect(local_ips.get(i), ip.get(0).port_jvc + "");
+                            if (cc.isConnected()) {
+                                localip = local_ips.get(i);
+                                varas(100);
+                                cc.set_nickname(ip.get(0).name);
+                                varas(100);
+                                cc.set_status("innerip|" + localip);
+                            }
+                        } catch (Exception e) {
                         }
                     }
                 }
@@ -221,19 +229,21 @@ public class kiiras extends javax.swing.JFrame {
                     cas = new Chat_and_voice_server_start();
                     cas.execute();
                     varas(200);
-                    cc.connect("localhost", ip.get(0).port_jvc + "");
+                    cc.connect(localip, ip.get(0).port_jvc + "");
                 } else {
 
                 }
             }
-            cc.set_nickname(ip.get(0).name);
+            if (!localip.isEmpty()) {
+                cc.set_nickname(ip.get(0).name);
+            }
             cc.set_status("ip|" + outterip());
             varas(100);
             cc.set_status("address|" + lch.get(0).location);
             varas(100);
             cc.set_status("camera|off");
             varas(100);
-            System.out.println("shouldip: " + Inet4Address.getLocalHost().getHostAddress());
+            //System.out.println("shouldip: " + Inet4Address.getLocalHost().getHostAddress());
             if (!localip.isEmpty()) {
                 cc.set_status("innerip|" + cc.getconn_ip());
             }

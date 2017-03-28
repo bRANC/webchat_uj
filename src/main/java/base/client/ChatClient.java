@@ -310,7 +310,7 @@ public class ChatClient implements Runnable, ActionListener {
     }
     String status = "";
     String ssaver = "";
-    String own_cam = "", own_ip = "", own_intip = "", own_address = "";
+    String own_cam = "off", own_ip = "", own_intip = "", own_address = "";
 
     public void send_own_inf() {
         set_status("camera|" + own_cam);
@@ -331,8 +331,9 @@ public class ChatClient implements Runnable, ActionListener {
     }
 
     public void set_status(String status) {
+        status = status.replace("/", "");
         if (status.contains("camera|")) {
-            own_ip = status.substring("camera|".length());
+            own_cam = status.substring("camera|".length());
             System.out.println(own_cam + " : camera");
         }
         if (status.contains("ip|")) {
@@ -363,7 +364,7 @@ public class ChatClient implements Runnable, ActionListener {
                         SS.get(i).status = status;
                     }
                 }
-                System.out.println("set_stat: " + status);
+                System.out.println("set_stat:                " + status);
                 out.write(("SS" + NickName + "|" + status + MultiChatConstants.BREAKER).getBytes());
                 out.flush();
             } catch (Exception e) {
