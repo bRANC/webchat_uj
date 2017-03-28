@@ -313,6 +313,7 @@ public class ChatClient implements Runnable, ActionListener {
     String own_cam = "off", own_ip = "", own_intip = "", own_address = "";
 
     public void send_own_inf() {
+        varas(100);
         set_status("camera|" + own_cam);
         varas(100);
         set_status("ip|" + own_ip);
@@ -320,6 +321,7 @@ public class ChatClient implements Runnable, ActionListener {
         set_status("innerip|" + own_intip);
         varas(100);
         set_status("address|" + own_address);
+        varas(100);
     }
 
     void varas(int ido) {
@@ -711,7 +713,9 @@ public class ChatClient implements Runnable, ActionListener {
                             }
                             // Receive status
                         } else if (sizeread < 100 && passedObj.length() >= 2 && passedObj.substring(0, 2).equals("SS")) {
+                            System.out.println("status,passobj: " + passedObj);
                             for (int i = 0; i < SS.size(); i++) {
+                                
                                 if (SS.get(i).name.equals(passedObj.substring(2).split("|")[0])) {
                                     if (passedObj.split("|")[1].contains("camera")) {
                                         SS.get(i).camera = passedObj.split("|")[2];
@@ -727,6 +731,7 @@ public class ChatClient implements Runnable, ActionListener {
                                         SS.get(i).addres = passedObj.split("|")[2];
                                         should_write_sql = true;
                                     }
+                                    
                                     //SS.get(i).status = passedObj.split("|")[1];
                                 }
                             }
