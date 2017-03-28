@@ -489,7 +489,7 @@ StreamServerAgent serverAgent;
             }
             jButton1.setText("Camera off");
             cam_bool = false;
-            cc.set_status("camera|on");
+            cc.set_status("camera;on");
             set_cam(0);
         } else {
             //serverAgent.vait();
@@ -498,7 +498,7 @@ StreamServerAgent serverAgent;
             }
             jButton1.setText("Camera on");
             cam_bool = true;
-            cc.set_status("camera|off");
+            cc.set_status("camera;off");
             for (int i = 0; i < vph.size(); i++) {
                 set_weat(i);
             }
