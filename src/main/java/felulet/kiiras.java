@@ -282,15 +282,17 @@ public class kiiras extends javax.swing.JFrame {
                     if (cc.SS.get(i).get_should_con()) {
                         System.out.println("cc.SS.get(i).get_should_con(): " + cc.SS.get(i).get_should_con());
                         for (int j = 0; j < ip.size(); j++) {
-                            if (ip.get(j).ip.equals(cc.SS.get(i).ip) || ip.get(j).ip.equals(cc.SS.get(i).innerip)) {
-                                System.out.println("find inner: " + cc.SS.get(i).innerip + " or ip: " + cc.SS.get(i).ip);
-                                if (cc.SS.get(i).conn_cam()) {
-                                    System.out.println("cummect: " + cc.SS.get(i).innerip);
-                                    vph.get(j).connect(ip.get(j).ip, ip.get(j).port_jv);
-                                    varas(20);
-                                    set_cam(j);
-                                } else {
-                                    set_weat(j);
+                            if (!ip.get(j).ip.isEmpty()) {
+                                if (ip.get(j).ip.equals(cc.SS.get(i).ip) || ip.get(j).ip.equals(cc.SS.get(i).innerip)) {
+                                    System.out.println("find inner: " + cc.SS.get(i).innerip + " or ip: " + cc.SS.get(i).ip);
+                                    if (cc.SS.get(i).conn_cam()) {
+                                        System.out.println("cummect: " + cc.SS.get(i).innerip);
+                                        vph.get(j).connect(ip.get(j).ip, ip.get(j).port_jv);
+                                        varas(20);
+                                        set_cam(j);
+                                    } else {
+                                        set_weat(j);
+                                    }
                                 }
                             }
                         }
@@ -308,13 +310,19 @@ public class kiiras extends javax.swing.JFrame {
     public void sqlite_write_cc() {
         for (int i = 0; i < ip.size(); i++) {
             for (int j = 0; j < cc.SS.size(); j++) {
-                if (ip.get(i).ip.equals(cc.SS.get(j).ip)) {
-                    try {
-                        inn.fel("update nation set "
-                                + " addres ='" + cc.SS.get(j).addres + "',"
-                                + " name ='" + cc.SS.get(j).name + "'"
-                                + " where ip = " + ip.get(i).ip + ";");
-                    } catch (Exception e) {
+                if (!ip.get(i).ip.isEmpty()) {
+                    if (ip.get(i).ip.equals(cc.SS.get(j).ip)) {
+                        try {
+                            System.out.println("update nation set "
+                                    + " addres ='" + cc.SS.get(j).addres + "',"
+                                    + " name ='" + cc.SS.get(j).name + "'"
+                                    + " where ip = " + ip.get(i).ip + ";");
+                            inn.fel("update nation set "
+                                    + " addres ='" + cc.SS.get(j).addres + "',"
+                                    + " name ='" + cc.SS.get(j).name + "'"
+                                    + " where ip = " + ip.get(i).ip + ";");
+                        } catch (Exception e) {
+                        }
                     }
                 }
             }
