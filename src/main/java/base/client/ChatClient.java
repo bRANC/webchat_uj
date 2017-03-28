@@ -367,7 +367,7 @@ public class ChatClient implements Runnable, ActionListener {
                     }
                 }
                 System.out.println("set_stat:                " + status);
-                out.write(("SS" + NickName + ";" + status + MultiChatConstants.BREAKER).getBytes());
+                out.write(("SS;" + NickName + ";" + status + MultiChatConstants.BREAKER).getBytes());
                 out.flush();
             } catch (Exception e) {
             }
@@ -715,9 +715,8 @@ public class ChatClient implements Runnable, ActionListener {
                         } else if (sizeread < 200 && passedObj.length() >= 2 && passedObj.substring(0, 2).equals("SS")) {
                             System.out.println("SS: " + passedObj);
                             for (int i = 0; i < passedObj.split(";").length; i++) {
-                                System.out.println(passedObj.split(";")[i]);
+                                System.out.println(i + " : " + passedObj.split(";")[i]);
                             }
-
                             for (int i = 0; i < SS.size(); i++) {
                                 if (SS.get(i).name.equals(passedObj.substring(2).split(";")[0])) {
                                     System.out.print("passobj: ");
