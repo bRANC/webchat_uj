@@ -632,9 +632,8 @@ public class ChatClient implements Runnable, ActionListener {
                         String passedObj = "";
                         if (sizeread < 200 && sizeread >= 2) {
                             passedObj = new String(bytepassedObj, 0, sizeread);
-
                         }
-                        System.out.println(new String(bytepassedObj, 0, sizeread));
+
                         // Text message
                         if (sizeread < 100 && sizeread > 3 && passedObj.substring(0, 3).equals("TXT")) {
                             // TODO: Should probably just clear the oldest message line
@@ -712,26 +711,30 @@ public class ChatClient implements Runnable, ActionListener {
                                 }
                             }
                             // Receive status
-                        } else if (sizeread < 100 && passedObj.length() >= 2 && passedObj.substring(0, 2).equals("SS")) {
-
+                        } else if (sizeread < 200 && passedObj.length() >= 2 && passedObj.substring(0, 2).equals("SS")) {
+                            System.out.println("SS: " + passedObj);
                             for (int i = 0; i < SS.size(); i++) {
-
                                 if (SS.get(i).name.equals(passedObj.substring(2).split("|")[0])) {
+                                    System.out.print("passobj: ");
                                     if (passedObj.split("|")[1].contains("camera")) {
-                                        SS.get(i).camera = passedObj.split("|")[2];
+                                        SS.get(i).camera = passedObj.split("|")[3];
+                                        System.out.println(SS.get(i).camera);
                                         SS.get(i).should_check_camera = true;
                                         should_write_sql = true;
                                     } else if (passedObj.split("|")[1].contains("innerip")) {
-                                        SS.get(i).innerip = passedObj.split("|")[2];
+                                        SS.get(i).innerip = passedObj.split("|")[3];
+                                        System.out.println(SS.get(i).innerip);
                                         should_write_sql = true;
                                     } else if (passedObj.split("|")[1].contains("ip")) {
-                                        SS.get(i).ip = passedObj.split("|")[2];
+                                        SS.get(i).ip = passedObj.split("|")[3];
+                                        System.out.println(SS.get(i).ip);
                                         should_write_sql = true;
                                     } else if (passedObj.split("|")[1].contains("address")) {
-                                        SS.get(i).addres = passedObj.split("|")[2];
+                                        SS.get(i).addres = passedObj.split("|")[3];
+                                        System.out.println(SS.get(i).addres);
                                         should_write_sql = true;
                                     }
-
+                                    System.out.println(passedObj.substring(3));
                                     //SS.get(i).status = passedObj.split("|")[1];
                                 }
                             }
