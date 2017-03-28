@@ -28,6 +28,11 @@ import base.client.ChatClient;
 import base.server.ChatServer;
 import felulet.panel.pallet_form;
 import java.net.Inet4Address;
+import java.net.InetAddress;
+import java.net.NetworkInterface;
+import java.net.SocketException;
+import java.util.Collections;
+import java.util.Enumeration;
 import webcam.agent.StreamServerAgent;
 import sqlite.sqlite;
 
@@ -144,18 +149,63 @@ public class kiiras extends javax.swing.JFrame {
     }
     int tryhard = 0;
 
+    String getadapter() {
+        String chain = "";
+        local_ips.clear();
+        try {
+            Enumeration<NetworkInterface> nets = NetworkInterface.getNetworkInterfaces();
+            for (NetworkInterface netint : Collections.list(nets)) {
+                chain += displayInterfaceInformation(netint);
+            }
+        } catch (Exception e) {
+        }
+        chain += outterip();
+        return chain;
+    }
+    ArrayList<String> local_ips = new ArrayList<>();
+
+    String displayInterfaceInformation(NetworkInterface netint) throws SocketException {
+        int a = 0;
+        String localip = "Adapter name: " + netint.getDisplayName() + "\n";
+        Enumeration<InetAddress> inetAddresses = netint.getInetAddresses();
+        //netint.get
+        for (InetAddress inetAddress : Collections.list(inetAddresses)) {
+            if (inetAddress.toString().contains(".") && !inetAddress.isLoopbackAddress()) {
+                a++;
+                localip += "Internal IP: " + inetAddress.toString().replace("/", "") + "\n";
+                local_ips.add(inetAddress.toString().replace("/", ""));
+            }
+        }
+        if (a == 0) {
+            localip = "";
+        }
+        return localip;
+    }
+
     class Chatstartup extends SwingWorker<Void, Void> {
 
         Chat_and_voice_server_start cas;
 
         @Override
         protected Void doInBackground() throws Exception {
-
+            String localip = "";
             if (tryhard == 0) {
                 cas = new Chat_and_voice_server_start();
                 cas.execute();
                 varas(200);
-                cc.connect("localhost", ip.get(0).port_jvc + "");
+                for (int i = 0; i < local_ips.size(); i++) {
+                    if (!cc.isConnected()) {
+                        cc.connect(local_ips.get(i), ip.get(0).port_jvc + "");
+                        if (!cc.isConnected()) {
+                            localip = local_ips.get(i);
+                            varas(100);
+                            cc.set_nickname(ip.get(0).name);
+                            varas(100);
+                            cc.set_status("innerip|" + localip);
+                        }
+                    }
+                }
+
             } else {
                 if (ip.size() > 0) {
                     for (int j = 0; j < tryhard; j++) {
@@ -184,7 +234,9 @@ public class kiiras extends javax.swing.JFrame {
             cc.set_status("camera|off");
             varas(100);
             System.out.println("shouldip: " + Inet4Address.getLocalHost().getHostAddress());
-            cc.set_status("innerip|" + Inet4Address.getLocalHost().getHostAddress());
+            if (!localip.isEmpty()) {
+                cc.set_status("innerip|" + cc.getconn_ip());
+            }
             return null;
         }
 
