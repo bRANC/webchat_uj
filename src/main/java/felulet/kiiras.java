@@ -493,15 +493,16 @@ StreamServerAgent serverAgent;
             set_cam(0);
         } else {
             //serverAgent.vait();
-            for (int i = 0; i < vph.size(); i++) {
-                dc(i);
-            }
+//            for (int i = 0; i < vph.size(); i++) {
+//                dc(i);
+//            }
             jButton1.setText("Camera on");
             cam_bool = true;
             cc.set_status("camera;off");
-            for (int i = 0; i < vph.size(); i++) {
-                set_weat(i);
-            }
+            set_weat(0);
+//            for (int i = 0; i < vph.size(); i++) {
+//                set_weat(i);
+//            }
         }
         cc.handsfree(true);
         cc.talk();
