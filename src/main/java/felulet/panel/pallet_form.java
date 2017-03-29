@@ -38,7 +38,7 @@ public class pallet_form extends javax.swing.JPanel {
 
     int elore = 5;
 
-    public pallet_form(String location, String weather_api_key, String google_api_key, String sc_logo) {
+    public pallet_form(String location, String weather_api_key, String google_api_key, String sc_logo, String sc_name) {
         this.location = location;
         this.weather_api_key = weather_api_key;
         this.google_api_key = google_api_key;
@@ -46,6 +46,9 @@ public class pallet_form extends javax.swing.JPanel {
         initComponents();
         if (!sc_logo.isEmpty()) {
             set_custom_image(school_icon, sc_logo);
+        }
+        if (!sc_name.isEmpty()) {
+            school_name.setText(sc_name);
         }
 
         GridBagConstraints gbc = new GridBagConstraints();
@@ -93,6 +96,19 @@ public class pallet_form extends javax.swing.JPanel {
 
     public void set_location(String location) {
         this.location = location;
+    }
+
+    public void set_sc_name(String sc_name) {
+
+        if (!sc_name.isEmpty()) {
+            school_name.setText(sc_name);
+        }
+    }
+
+    public void set_sc_icon(String sc_logo) {
+        if (!sc_logo.isEmpty()) {
+            set_custom_image(school_icon, sc_logo);
+        }
     }
 
     public void wet_update() {
@@ -166,18 +182,18 @@ public class pallet_form extends javax.swing.JPanel {
         }
     }
 
-    ImageIcon getScaledImage(Image srcImg, int bound_width , int bound_height ) {
+    ImageIcon getScaledImage(Image srcImg, int bound_width, int bound_height) {
         int original_width = srcImg.getWidth(this);
         int original_height = srcImg.getWidth(this);
         int new_width = original_width;
         int new_height = original_height;
 
-        if (original_width > bound_width ) {
-            new_width = bound_width ;
+        if (original_width > bound_width) {
+            new_width = bound_width;
             new_height = (new_width * original_height) / original_width;
         }
-        if (new_height > bound_height ) {
-            new_height = bound_height ;
+        if (new_height > bound_height) {
+            new_height = bound_height;
             new_width = (new_height * original_width) / original_height;
         }
 
