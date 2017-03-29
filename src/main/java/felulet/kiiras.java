@@ -48,6 +48,7 @@ public class kiiras extends javax.swing.JFrame {
     wcamera cam = new wcamera();
     Boolean int_cam_update = true, send = false;
     Chatstartup Ct = new Chatstartup();
+    user_watcher uw = new user_watcher();
 
     public kiiras() {
         System.setProperty("sun.java2d.opengl", "True");
@@ -65,7 +66,7 @@ public class kiiras extends javax.swing.JFrame {
         sqlscan();
         setup_receiv();
         Ct.execute();
-        new user_watcher().execute();
+        uw.execute();
         this.addWindowListener(new java.awt.event.WindowAdapter() {
             @Override
             public void windowClosing(java.awt.event.WindowEvent windowEvent) {
@@ -192,6 +193,7 @@ public class kiiras extends javax.swing.JFrame {
 
         @Override
         protected Void doInBackground() throws Exception {
+            cc.elso = 0;
             String localip = "";
             if (tryhard == 0) {
                 cas = new Chat_and_voice_server_start();
@@ -227,6 +229,10 @@ public class kiiras extends javax.swing.JFrame {
                 }
                 //cc.connect("localhost", port_szam(1) + "");
                 if (!cc.isConnected()) {
+                    System.out.println("not an any server starting one");
+                    cas = new Chat_and_voice_server_start();
+                    cas.execute();
+                    varas(200);
                     for (int i = 0; i < local_ips.size(); i++) {
                         System.out.println(local_ips.size() + "   " + !cc.isConnected());
                         if (!cc.isConnected()) {
@@ -250,6 +256,7 @@ public class kiiras extends javax.swing.JFrame {
             if (localip.isEmpty()) {
                 cc.set_nickname(ip.get(0).name);
             }
+            varas(100);
             cc.set_status("ip;" + outterip());
             varas(100);
             cc.set_status("address;" + lch.get(0).location);
@@ -260,6 +267,8 @@ public class kiiras extends javax.swing.JFrame {
             if (localip.isEmpty()) {
                 cc.set_status("innerip;" + cc.getconn_ip());
             }
+            cc.elso++;
+            cc.elso++;
             return null;
         }
 
@@ -278,16 +287,19 @@ public class kiiras extends javax.swing.JFrame {
             while (!this.isCancelled()) {
                 for (int i = 0; i < cc.SS.size(); i++) {
                     if (cc.SS.get(i).get_should_con()) {
+                        System.out.println("cc.SS.get(i).get_should_con(): " + cc.SS.get(i).get_should_con());
                         for (int j = 0; j < ip.size(); j++) {
-                            if (ip.get(j).ip.equals(cc.SS.get(i).ip) || ip.get(j).ip.equals(cc.SS.get(i).innerip)) {
-                                System.out.println("find inner: " + cc.SS.get(i).innerip + " or ip: " + cc.SS.get(i).ip);
-                                if (cc.SS.get(i).conn_cam()) {
-                                    System.out.println("cummect: " + cc.SS.get(i).innerip);
-                                    vph.get(j).connect(ip.get(j).ip, ip.get(j).port_jv);
-                                    varas(20);
-                                    set_cam(j);
-                                } else {
-                                    set_weat(j);
+                            if (!ip.get(j).ip.isEmpty()) {
+                                if (ip.get(j).ip.equals(cc.SS.get(i).ip) || ip.get(j).ip.equals(cc.SS.get(i).innerip)) {
+                                    System.out.println("find inner: " + cc.SS.get(i).innerip + " or ip: " + cc.SS.get(i).ip);
+                                    if (cc.SS.get(i).conn_cam()) {
+                                        System.out.println("cummect: " + cc.SS.get(i).innerip);
+                                        vph.get(j).connect(ip.get(j).ip, ip.get(j).port_jv);
+                                        varas(20);
+                                        set_cam(j);
+                                    } else {
+                                        set_weat(j);
+                                    }
                                 }
                             }
                         }
@@ -305,13 +317,20 @@ public class kiiras extends javax.swing.JFrame {
     public void sqlite_write_cc() {
         for (int i = 0; i < ip.size(); i++) {
             for (int j = 0; j < cc.SS.size(); j++) {
-                if (ip.get(i).ip.equals(cc.SS.get(j).ip)) {
-                    try {
-                        inn.fel("update nation set "
-                                + " addres ='" + cc.SS.get(j).addres + "',"
-                                + " name ='" + cc.SS.get(j).name + "'"
-                                + " where ip = " + ip.get(i).ip + ";");
-                    } catch (Exception e) {
+                if (!ip.get(i).ip.isEmpty()) {
+                    if (ip.get(i).ip.equals(cc.SS.get(j).ip)) {
+                        try {
+                            System.out.println("update nation set "
+                                    + " addres ='" + cc.SS.get(j).addres + "',"
+                                    + " name ='" + cc.SS.get(j).name + "'"
+                                    + " where ip = " + ip.get(i).ip + ";");
+                            inn.fel("update nation set "
+                                    + " addres ='" + cc.SS.get(j).addres + "',"
+                                    + " name ='" + cc.SS.get(j).name + "'"
+                                    + " where ip = " + ip.get(i).ip + ";");
+                        } catch (Exception e) {
+                            System.out.println("sqlite_write_cc: " + e.toString());
+                        }
                     }
                 }
             }
