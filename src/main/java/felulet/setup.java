@@ -28,6 +28,20 @@ import base.client.ChatClient;
 import com.google.maps.GeoApiContext;
 import com.google.maps.GeocodingApi;
 import com.google.maps.model.GeocodingResult;
+import java.awt.Graphics2D;
+import java.awt.Image;
+import java.awt.RenderingHints;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
+import javax.swing.JFileChooser;
+import javax.swing.JLabel;
+import javax.swing.filechooser.FileFilter;
+import javax.swing.filechooser.FileNameExtensionFilter;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
 import sqlite.sqlite;
 
 /**
@@ -82,6 +96,11 @@ public class setup extends javax.swing.JFrame {
                     case 1:
                         try {
                             upnpbool.setSelected(rs.getBoolean("upnp"));
+                        } catch (Exception e) {
+                        }
+                        try {
+                            image_place = rs.getString("sc_logo");
+                            set_custom_image(school_icon, image_place);
                         } catch (Exception e) {
                         }
                         try {
@@ -256,7 +275,8 @@ public class setup extends javax.swing.JFrame {
         }
         try {
             inn.fel("update nation set "
-                    + " addres ='" + jaddres.getText() + "'"
+                    + " addres ='" + jaddres.getText() + "',"
+                    + " sc_logo = '" + image_place + "'"
                     + " where ID = " + 1 + ";");
         } catch (Exception e) {
         }
@@ -407,7 +427,7 @@ public class setup extends javax.swing.JFrame {
         jButton3 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
         jButton5 = new javax.swing.JButton();
-        jLabel16 = new javax.swing.JLabel();
+        school_icon = new javax.swing.JLabel();
         jLabel19 = new javax.swing.JLabel();
         jTextField1 = new javax.swing.JTextField();
         jLabel20 = new javax.swing.JLabel();
@@ -981,6 +1001,11 @@ public class setup extends javax.swing.JFrame {
         jPanel3.add(jButton4, gridBagConstraints);
 
         jButton5.setText("Set School logo");
+        jButton5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton5ActionPerformed(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 9;
@@ -990,7 +1015,7 @@ public class setup extends javax.swing.JFrame {
         gridBagConstraints.insets = new java.awt.Insets(10, 10, 10, 10);
         jPanel3.add(jButton5, gridBagConstraints);
 
-        jLabel16.setText("jLabel16");
+        school_icon.setText("jLabel16");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 8;
@@ -998,7 +1023,7 @@ public class setup extends javax.swing.JFrame {
         gridBagConstraints.gridheight = 3;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
-        jPanel3.add(jLabel16, gridBagConstraints);
+        jPanel3.add(school_icon, gridBagConstraints);
 
         jLabel19.setBackground(new java.awt.Color(0, 0, 0));
         jLabel19.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
@@ -1025,7 +1050,7 @@ public class setup extends javax.swing.JFrame {
 
         jLabel20.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel20.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel20.setText("Ration 1:1 scaled to 64X64");
+        jLabel20.setText("Ratio maintained, scaled to 128X128");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 9;
@@ -1153,6 +1178,124 @@ public class setup extends javax.swing.JFrame {
         hely--;
     }//GEN-LAST:event_jButton4ActionPerformed
 
+    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+        // TODO add your handling code here:
+        school_icon();
+    }//GEN-LAST:event_jButton5ActionPerformed
+
+    public void school_icon() {
+        FileFilter filter = new FileNameExtensionFilter("Images", "png", "jpg", "jpeg", "bmp");
+        JFileChooser filec = new JFileChooser();
+        filec.setFileFilter(filter);
+        int result = filec.showOpenDialog(new JFrame());
+        if (result == JFileChooser.APPROVE_OPTION) {
+            copy_to_images_scicon(filec.getSelectedFile());
+        }
+    }
+    String image_place = "", extension = "";
+
+    public void copy_to_images_scicon(File src) {
+        extension = FilenameUtils.getExtension(src.getAbsolutePath());
+
+        //File source = new File("H:\\work-temp\\file");
+        image_place = "lib/images/" + jaddres.getText().trim() + "_schoolimg." + extension;
+        File dest = new File(image_place);//letárolás
+        //inn.fel(update helyi where location = nation value ) "lib/images/" + location + "_schoolimg." + extension
+        try {
+            FileUtils.copyFile(src, dest);
+            set_custom_image(school_icon, image_place);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public void set_custom_image(JLabel be, String uri) {
+        try {
+            be.setText("");
+            ImageIcon img = new ImageIcon(uri);
+
+            be.setIcon(getScaledImageIcon(img.getImage(), 128, 128));
+            
+            save_resized_image(uri);
+            
+            be.setVerticalAlignment(JLabel.CENTER);
+        } catch (Exception e) {
+            System.out.println("set_custom_image: " + e);
+        }
+    }
+
+    public void save_resized_image(String uri) {
+        try {
+            ImageIcon imgic = new ImageIcon(uri);
+            Image img = getScaledImage(imgic.getImage(), 128, 128);
+
+            BufferedImage bi = new BufferedImage(img.getWidth(null), img.getHeight(null), BufferedImage.TYPE_INT_ARGB);
+
+            Graphics2D g2 = bi.createGraphics();
+            g2.drawImage(img, 0, 0, null);
+            g2.dispose();
+            ImageIO.write(bi, extension, new File(image_place));
+        } catch (Exception e) {
+        }
+    }
+
+    Image getScaledImage(Image srcImg, int bound_width, int bound_height) {
+        int original_width = srcImg.getWidth(this);
+        int original_height = srcImg.getWidth(this);
+        int new_width = original_width;
+        int new_height = original_height;
+
+        if (original_width > bound_width) {
+            new_width = bound_width;
+            new_height = (new_width * original_height) / original_width;
+        }
+        if (new_height > bound_height) {
+            new_height = bound_height;
+            new_width = (new_height * original_width) / original_height;
+        }
+
+        BufferedImage resizedImg = new BufferedImage(new_width, new_height, BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g2 = resizedImg.createGraphics();
+
+        g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+        g2.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        //System.out.println("new_width: " + new_width + "  new_height: " + new_height);
+        g2.drawImage(srcImg, 0, 0, new_width, new_height, null);
+        g2.dispose();
+
+        return resizedImg;
+    }
+
+    ImageIcon getScaledImageIcon(Image srcImg, int bound_width, int bound_height) {
+        int original_width = srcImg.getWidth(this);
+        int original_height = srcImg.getWidth(this);
+        int new_width = original_width;
+        int new_height = original_height;
+
+        if (original_width > bound_width) {
+            new_width = bound_width;
+            new_height = (new_width * original_height) / original_width;
+        }
+        if (new_height > bound_height) {
+            new_height = bound_height;
+            new_width = (new_height * original_width) / original_height;
+        }
+
+        BufferedImage resizedImg = new BufferedImage(new_width, new_height, BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g2 = resizedImg.createGraphics();
+
+        g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+        g2.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        //System.out.println("new_width: " + new_width + "  new_height: " + new_height);
+        g2.drawImage(srcImg, 0, 0, new_width, new_height, null);
+        g2.dispose();
+
+        return new ImageIcon(resizedImg);
+    }
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel Jformattedaddres;
@@ -1172,7 +1315,6 @@ public class setup extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
-    private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel19;
@@ -1214,6 +1356,7 @@ public class setup extends javax.swing.JFrame {
     private javax.swing.JTextField jvcport3;
     private javax.swing.JTextField jvcportfiled;
     private javax.swing.JTextField jweatapi;
+    private javax.swing.JLabel school_icon;
     private javax.swing.JCheckBox upnpbool;
     // End of variables declaration//GEN-END:variables
 }

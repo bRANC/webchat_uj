@@ -32,18 +32,21 @@ public class pallet_form extends javax.swing.JPanel {
     /**
      * Creates new form weather_form
      */
-    public String location = "", weather_api_key = "", google_api_key = "";
+    public String location = "", weather_api_key = "", google_api_key = "", sc_logo = "";
     weather wet;
     ArrayList<weather_panel> wp = new ArrayList<>();
 
     int elore = 5;
 
-    public pallet_form(String location, String weather_api_key, String google_api_key) {
+    public pallet_form(String location, String weather_api_key, String google_api_key, String sc_logo) {
         this.location = location;
         this.weather_api_key = weather_api_key;
         this.google_api_key = google_api_key;
         wet = new weather(location, weather_api_key, google_api_key);
         initComponents();
+        if (!sc_logo.isEmpty()) {
+            set_custom_image(school_icon, sc_logo);
+        }
 
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.anchor = GridBagConstraints.CENTER;
@@ -156,19 +159,36 @@ public class pallet_form extends javax.swing.JPanel {
         try {
             be.setText("");
             ImageIcon img = new ImageIcon(uri);
-            be.setIcon(getScaledImage(img.getImage(), 64, 64));
+            be.setIcon(getScaledImage(img.getImage(), 128, 128));
             be.setVerticalAlignment(JLabel.CENTER);
         } catch (Exception e) {
             System.out.println("set_custom_image: " + e);
         }
     }
 
-    ImageIcon getScaledImage(Image srcImg, int w, int h) {
-        BufferedImage resizedImg = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
+    ImageIcon getScaledImage(Image srcImg, int bound_width , int bound_height ) {
+        int original_width = srcImg.getWidth(this);
+        int original_height = srcImg.getWidth(this);
+        int new_width = original_width;
+        int new_height = original_height;
+
+        if (original_width > bound_width ) {
+            new_width = bound_width ;
+            new_height = (new_width * original_height) / original_width;
+        }
+        if (new_height > bound_height ) {
+            new_height = bound_height ;
+            new_width = (new_height * original_width) / original_height;
+        }
+
+        BufferedImage resizedImg = new BufferedImage(new_width, new_height, BufferedImage.TYPE_INT_ARGB);
         Graphics2D g2 = resizedImg.createGraphics();
 
         g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
-        g2.drawImage(srcImg, 0, 0, w, h, null);
+        g2.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        //System.out.println("new_width: " + new_width + "  new_height: " + new_height);
+        g2.drawImage(srcImg, 0, 0, new_width, new_height, null);
         g2.dispose();
 
         return new ImageIcon(resizedImg);

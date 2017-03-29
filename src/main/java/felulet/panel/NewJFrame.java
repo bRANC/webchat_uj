@@ -24,7 +24,7 @@ public class NewJFrame extends javax.swing.JFrame {
     pallet_form wf;
 
     public void add_jpanel() {
-        wf = new pallet_form(jTextField1.getText(), "363335226d56b6cdec4e85c6c7323e0e", "AIzaSyCK4A-bn35g1EX2Jgm6IpHFioh3Ctb99QI");
+        //wf = new pallet_form(jTextField1.getText(), "363335226d56b6cdec4e85c6c7323e0e", "AIzaSyCK4A-bn35g1EX2Jgm6IpHFioh3Ctb99QI");
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.anchor = GridBagConstraints.CENTER;
         gbc.fill = GridBagConstraints.BOTH;
