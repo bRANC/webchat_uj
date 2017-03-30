@@ -109,7 +109,7 @@ public class setup extends javax.swing.JFrame {
                         } catch (Exception e) {
                         }
                         try {
-                            jname.setText(rs.getString("sc_name"));
+                            jsc_name.setText(rs.getString("sc_name"));
                         } catch (Exception e) {
                         }
                         try {
@@ -282,7 +282,7 @@ public class setup extends javax.swing.JFrame {
             inn.fel("update nation set "
                     + " addres ='" + jaddres.getText() + "',"
                     + " sc_logo = '" + image_place + "',"
-                    + " sc_name = '" + sc_name + "'"
+                    + " sc_name = '" + jsc_name.getText() + "'"
                     + " where ID = " + 1 + ";");
         } catch (Exception e) {
         }
@@ -435,7 +435,7 @@ public class setup extends javax.swing.JFrame {
         jButton5 = new javax.swing.JButton();
         school_icon = new javax.swing.JLabel();
         jLabel19 = new javax.swing.JLabel();
-        sc_name = new javax.swing.JTextField();
+        jsc_name = new javax.swing.JTextField();
         jLabel20 = new javax.swing.JLabel();
         jButton7 = new javax.swing.JButton();
         jButton8 = new javax.swing.JButton();
@@ -1052,7 +1052,7 @@ public class setup extends javax.swing.JFrame {
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
         gridBagConstraints.insets = new java.awt.Insets(10, 10, 10, 10);
-        jPanel3.add(sc_name, gridBagConstraints);
+        jPanel3.add(jsc_name, gridBagConstraints);
 
         jLabel20.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel20.setForeground(new java.awt.Color(255, 255, 255));
@@ -1355,13 +1355,13 @@ public class setup extends javax.swing.JFrame {
     private javax.swing.JTextField jgeoapi;
     private javax.swing.JTextArea jip;
     private javax.swing.JTextField jname;
+    private javax.swing.JTextField jsc_name;
     private javax.swing.JTextField jtryhard;
     private javax.swing.JTextField jvcport1;
     private javax.swing.JTextField jvcport2;
     private javax.swing.JTextField jvcport3;
     private javax.swing.JTextField jvcportfiled;
     private javax.swing.JTextField jweatapi;
-    private javax.swing.JTextField sc_name;
     private javax.swing.JLabel school_icon;
     private javax.swing.JCheckBox upnpbool;
     // End of variables declaration//GEN-END:variables

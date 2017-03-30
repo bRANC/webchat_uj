@@ -98,7 +98,7 @@ public class ChatClient implements Runnable, ActionListener {
     boolean HandsFree = false;
 
     // text chat varibles
-    private boolean nickEntered = false;
+    public boolean nickEntered = false;
     public String NickName = ""; // your own nick name
     public Vector NickNameVector = new Vector(); //list of nick names in room
     private String NicktoSend = ""; // private message in text chat.
@@ -825,7 +825,7 @@ public class ChatClient implements Runnable, ActionListener {
                         } else if (sizeread < 200 && passedObj.length() >= 2 && passedObj.substring(0, 2).equals("SS")) {
                             System.out.println("SS: " + passedObj);
                             for (int i = 0; i < passedObj.split(";").length; i++) {
-                               // System.out.println(i + " : " + passedObj.split(";")[i]);
+                                // System.out.println(i + " : " + passedObj.split(";")[i]);
                             }
                             for (int i = 0; i < SS.size(); i++) {
                                 if (SS.get(i).name.equals(passedObj.substring(1).split(";")[1])) {
@@ -837,7 +837,7 @@ public class ChatClient implements Runnable, ActionListener {
                                         should_write_sql = true;
                                     } else if (passedObj.split(";")[2].contains("innerip")) {
                                         SS.get(i).innerip = passedObj.split(";")[3];
-                                       // System.out.println(SS.get(i).innerip);
+                                        // System.out.println(SS.get(i).innerip);
                                         should_write_sql = true;
                                     } else if (passedObj.split(";")[2].contains("ip")) {
                                         SS.get(i).ip = passedObj.split(";")[3];
