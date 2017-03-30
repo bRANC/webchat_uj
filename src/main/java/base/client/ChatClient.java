@@ -364,6 +364,7 @@ public class ChatClient implements Runnable, ActionListener {
         @Override
         protected Void doInBackground() throws Exception {
             while (!isConnected()) {
+                varas(1);
             }//wait for connection
             try {
                 for (int i = 0; i < SS.size(); i++) {
@@ -596,6 +597,7 @@ public class ChatClient implements Runnable, ActionListener {
         @Override
         protected Void doInBackground() throws Exception {
             while (!isConnected()) {//wait for connection
+                varas(1);
             }
             try {
                 String info = "";
@@ -604,10 +606,6 @@ public class ChatClient implements Runnable, ActionListener {
             } catch (Exception e) {
             }
             return null;
-        }
-
-        @Override
-        protected void done() {
         }
 
     }

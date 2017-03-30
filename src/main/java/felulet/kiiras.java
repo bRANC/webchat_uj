@@ -272,10 +272,6 @@ public class kiiras extends javax.swing.JFrame {
             return null;
         }
 
-        @Override
-        protected void done() {
-        }
-
     }
 
     class user_watcher extends SwingWorker<Void, Void> {
@@ -533,7 +529,7 @@ StreamServerAgent serverAgent;
 
         @Override
         protected Void doInBackground() throws Exception {
-            while (true) {
+            while (!this.isCancelled()) {
                 boolean van = false;
                 ArrayList<Integer> for_delet = new ArrayList<>();
                 if (serverAgent.dc_ips.size() != 0) {
@@ -554,6 +550,7 @@ StreamServerAgent serverAgent;
                 serverAgent.dc_ips.clear();
                 varas(300);
             }
+            return null;
         }
 
         @Override

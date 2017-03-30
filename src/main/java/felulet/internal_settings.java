@@ -70,15 +70,21 @@ public class internal_settings extends javax.swing.JFrame {
 
         @Override
         protected Void doInBackground() throws Exception {
-            while (true) {
+            while (!this.isCancelled()) {
                 get_audio_things();
                 get_kamera_things();
+                varas(10);
             }
+            return null;
         }
 
-        @Override
-        protected void done() {
+    }
 
+    void varas(int ido) {
+        try {
+            Thread.sleep(ido);
+        } catch (Exception e) {
+            //System.out.println(e);
         }
     }
 
