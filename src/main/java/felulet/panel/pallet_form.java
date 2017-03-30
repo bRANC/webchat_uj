@@ -44,13 +44,15 @@ public class pallet_form extends javax.swing.JPanel {
         this.google_api_key = google_api_key;
         wet = new weather(location, weather_api_key, google_api_key);
         initComponents();
-        if (!sc_logo.isEmpty()) {
-            set_custom_image(school_icon, sc_logo);
+        try {
+            if (!sc_logo.isEmpty()) {
+                set_custom_image(school_icon, sc_logo);
+            }
+            if (!sc_name.isEmpty()) {
+                school_name.setText(sc_name);
+            }
+        } catch (Exception e) {
         }
-        if (!sc_name.isEmpty()) {
-            school_name.setText(sc_name);
-        }
-
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.anchor = GridBagConstraints.CENTER;
         gbc.fill = GridBagConstraints.BOTH;
