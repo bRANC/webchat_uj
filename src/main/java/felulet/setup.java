@@ -109,6 +109,10 @@ public class setup extends javax.swing.JFrame {
                         } catch (Exception e) {
                         }
                         try {
+                            jname.setText(rs.getString("sc_name"));
+                        } catch (Exception e) {
+                        }
+                        try {
                             jaddres.setText(rs.getString("addres"));
                         } catch (Exception e) {
                         }
@@ -277,7 +281,8 @@ public class setup extends javax.swing.JFrame {
         try {
             inn.fel("update nation set "
                     + " addres ='" + jaddres.getText() + "',"
-                    + " sc_logo = '" + image_place + "'"
+                    + " sc_logo = '" + image_place + "',"
+                    + " sc_name = '" + sc_name + "'"
                     + " where ID = " + 1 + ";");
         } catch (Exception e) {
         }
@@ -430,7 +435,7 @@ public class setup extends javax.swing.JFrame {
         jButton5 = new javax.swing.JButton();
         school_icon = new javax.swing.JLabel();
         jLabel19 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
+        sc_name = new javax.swing.JTextField();
         jLabel20 = new javax.swing.JLabel();
         jButton7 = new javax.swing.JButton();
         jButton8 = new javax.swing.JButton();
@@ -1047,7 +1052,7 @@ public class setup extends javax.swing.JFrame {
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
         gridBagConstraints.insets = new java.awt.Insets(10, 10, 10, 10);
-        jPanel3.add(jTextField1, gridBagConstraints);
+        jPanel3.add(sc_name, gridBagConstraints);
 
         jLabel20.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel20.setForeground(new java.awt.Color(255, 255, 255));
@@ -1338,7 +1343,6 @@ public class setup extends javax.swing.JFrame {
     private javax.swing.JRadioButton jRadioButton2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTabbedPane jTabbedPane1;
-    private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField2;
     private javax.swing.JTextField jaddres;
     private javax.swing.JTextField jcam1;
@@ -1357,6 +1361,7 @@ public class setup extends javax.swing.JFrame {
     private javax.swing.JTextField jvcport3;
     private javax.swing.JTextField jvcportfiled;
     private javax.swing.JTextField jweatapi;
+    private javax.swing.JTextField sc_name;
     private javax.swing.JLabel school_icon;
     private javax.swing.JCheckBox upnpbool;
     // End of variables declaration//GEN-END:variables
