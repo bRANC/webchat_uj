@@ -830,30 +830,25 @@ public class ChatClient implements Runnable, ActionListener {
                             for (int i = 0; i < SS.size(); i++) {
                                 if (SS.get(i).name.equals(passedObj.substring(1).split(";")[1])) {
                                     SS.get(i).should_check_camera = true;
+                                    should_write_sql = true;
                                     //System.out.print("passobj: ");
                                     if (passedObj.split(";")[2].contains("camera")) {
-                                        //SS.get(i).camera = passedObj.split(";")[3];
-                                        System.out.println(SS.get(i).camera);
-                                        should_write_sql = true;
+                                        SS.get(i).camera = passedObj.split(";")[3];
+                                        //System.out.println(SS.get(i).camera);                                        
                                     } else if (passedObj.split(";")[2].contains("innerip")) {
                                         SS.get(i).innerip = passedObj.split(";")[3];
                                         // System.out.println(SS.get(i).innerip);
-                                        should_write_sql = true;
                                     } else if (passedObj.split(";")[2].contains("ip")) {
                                         SS.get(i).ip = passedObj.split(";")[3];
                                         //System.out.println(SS.get(i).ip);
-                                        should_write_sql = true;
                                     } else if (passedObj.split(";")[2].contains("address")) {
                                         SS.get(i).addres = passedObj.split(";")[3];
                                         //System.out.println(SS.get(i).addres);
-                                        should_write_sql = true;
                                     } else if (passedObj.split(";")[2].contains("sc_name")) {
                                         SS.get(i).sc_name = passedObj.split(";")[3];
                                         //System.out.println(SS.get(i).sc_name);
-                                        should_write_sql = true;
                                     }
                                 }
-
                                 System.out.println(passedObj.substring(3));
                                 //SS.get(i).status = passedObj.split(";")[1];
                             }

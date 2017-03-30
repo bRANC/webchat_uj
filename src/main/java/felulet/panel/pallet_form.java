@@ -108,6 +108,12 @@ public class pallet_form extends javax.swing.JPanel {
         }
     }
 
+    public void set_address(String address) {
+        if (!address.isEmpty()) {
+            weather_cam.setText(address);
+        }
+    }
+
     public void set_sc_icon(String sc_logo) {
         System.out.println("set_sc_icon: " + sc_logo);
         if (!sc_logo.isEmpty()) {
@@ -235,7 +241,7 @@ public class pallet_form extends javax.swing.JPanel {
 
         school_icon.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         school_icon.setForeground(new java.awt.Color(255, 255, 255));
-        school_icon.setText("jLabel1");
+        school_icon.setText("Icon");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
@@ -244,7 +250,7 @@ public class pallet_form extends javax.swing.JPanel {
 
         school_name.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         school_name.setForeground(new java.awt.Color(255, 255, 255));
-        school_name.setText("jLabel2");
+        school_name.setText("School name");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 0;
@@ -254,7 +260,7 @@ public class pallet_form extends javax.swing.JPanel {
 
         weather_cam.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         weather_cam.setForeground(new java.awt.Color(255, 255, 255));
-        weather_cam.setText("jLabel3");
+        weather_cam.setText("Address");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;

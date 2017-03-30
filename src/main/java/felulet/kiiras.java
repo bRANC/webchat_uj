@@ -292,6 +292,8 @@ public class kiiras extends javax.swing.JFrame {
                                 if (ip.get(j).ip.equals(cc.SS.get(i).ip) || ip.get(j).ip.equals(cc.SS.get(i).innerip)) {
                                     lch.get(j).name = cc.SS.get(i).name;
                                     System.out.println("find inner: " + cc.SS.get(i).innerip + " or ip: " + cc.SS.get(i).ip);
+                                    lch.get(j).set_sc_name(cc.SS.get(j).sc_name);
+                                    lch.get(j).set_address(cc.SS.get(j).addres);
                                     if (cc.SS.get(i).conn_cam()) {
                                         System.out.println("cummect: " + cc.SS.get(i).innerip);
                                         vph.get(j).connect(ip.get(j).ip, ip.get(j).port_jv);
