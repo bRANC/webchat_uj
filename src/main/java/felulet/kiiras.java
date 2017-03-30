@@ -272,6 +272,10 @@ public class kiiras extends javax.swing.JFrame {
             if (localip.isEmpty()) {
                 cc.set_status("innerip;" + cc.getconn_ip());
             }
+            
+            varas(100);
+            cc.send_img(new ImageIcon(logo_name).getImage(), logo_name);
+            
             cc.elso++;
             cc.elso++;
             return null;
@@ -437,13 +441,7 @@ public class kiiras extends javax.swing.JFrame {
                 jButton3ActionPerformed(evt);
             }
         });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 2;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
-        getContentPane().add(jButton3, gridBagConstraints);
+        getContentPane().add(jButton3, new java.awt.GridBagConstraints());
 
         jButton4.setText("Screen Saver");
         jButton4.addActionListener(new java.awt.event.ActionListener() {
