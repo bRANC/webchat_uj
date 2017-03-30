@@ -96,7 +96,7 @@ public class ChatHandler extends Thread {
                     } else {
                         try {
                             synchronized (this) {
-                                wait(10);
+                                wait(1);
                             }
                         } catch (Exception e) {
                             e.printStackTrace();

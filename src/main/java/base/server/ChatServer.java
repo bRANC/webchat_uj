@@ -12,7 +12,6 @@ public class ChatServer extends Thread {
     kiiras ki;
 
     public ChatServer(int port) {
-        this.ki = ki;
         System.out.println("MultiUser Voice Chat server starting...");
         this.port = port;
         ServerSocket serverSocket = null;

@@ -237,6 +237,9 @@ public class ChatClient implements Runnable, ActionListener {
     String connectAddr;
     int connectPort;
 
+    ObjectInputStream ois;
+    ObjectOutputStream oos;
+
     String inetarder = "";
 
     public void connect(String ip, String port) {
@@ -252,6 +255,10 @@ public class ChatClient implements Runnable, ActionListener {
             System.out.println("Connected.");
             in = socket.getInputStream();
             out = socket.getOutputStream();
+            //picture dolgok
+            ois = new ObjectInputStream(socket.getInputStream());
+            oos = new ObjectOutputStream(socket.getOutputStream());
+            //picture dolgok vége
             out.flush();
             inetarder = socket.getLocalAddress().toString();
             Thread t = new Thread(this, "socket listener");
@@ -327,6 +334,24 @@ public class ChatClient implements Runnable, ActionListener {
             set_status("address;" + own_address);
             varas(100);
         }
+    }
+
+    public image_socket is = new image_socket();
+
+    public void send_img(Image img) {
+        try {
+            oos.writeObject(is);
+            oos.flush();
+        } catch (Exception e) {
+        }
+
+    }
+
+    class image_socket {
+
+        Image img;
+        String place = "";
+        String name = "";
     }
 
     void varas(int ido) {
@@ -636,6 +661,14 @@ public class ChatClient implements Runnable, ActionListener {
                         String passedObj = "";
                         if (sizeread < 200 && sizeread >= 2) {
                             passedObj = new String(bytepassedObj, 0, sizeread);
+                        }
+                        Object obj = ois.readObject();
+                        if (obj instanceof image_socket) {
+
+                            image_socket i = (image_socket) obj;
+                            System.out.println("image name: " + i.name);
+                            System.out.println("haha sikerült");
+
                         }
 
                         // Text message

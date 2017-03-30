@@ -1198,7 +1198,7 @@ public class setup extends javax.swing.JFrame {
         extension = FilenameUtils.getExtension(src.getAbsolutePath());
 
         //File source = new File("H:\\work-temp\\file");
-        image_place = "lib/images/" + jaddres.getText().trim() + "_schoolimg." + extension;
+        image_place = "lib/images/" + jaddres.getText().trim() + "_" + jname.getText().trim() + "_schoolimg." + extension;
         File dest = new File(image_place);//letárolás
         //inn.fel(update helyi where location = nation value ) "lib/images/" + location + "_schoolimg." + extension
         try {
@@ -1216,9 +1216,9 @@ public class setup extends javax.swing.JFrame {
             ImageIcon img = new ImageIcon(uri);
 
             be.setIcon(getScaledImageIcon(img.getImage(), 128, 128));
-            
+
             save_resized_image(uri);
-            
+
             be.setVerticalAlignment(JLabel.CENTER);
         } catch (Exception e) {
             System.out.println("set_custom_image: " + e);
