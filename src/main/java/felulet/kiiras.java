@@ -33,6 +33,7 @@ import java.net.NetworkInterface;
 import java.net.SocketException;
 import java.util.Collections;
 import java.util.Enumeration;
+import javax.swing.ImageIcon;
 import webcam.agent.StreamServerAgent;
 import sqlite.sqlite;
 
@@ -602,6 +603,8 @@ StreamServerAgent serverAgent;
 
     sqlite inn = new sqlite("twin.db3");
 
+    String logo_name = "";
+
     void sqlscan() {
         ip = new ArrayList();
         try {
@@ -610,6 +613,8 @@ StreamServerAgent serverAgent;
             rs1.next();
             String weather = rs1.getString("weather_api_key"), geo = rs1.getString("geo_api_key");
             String helyi = "";
+            String sc_name = "";
+            String sc_logo = "";
             while (rs.next()) {
                 switch (rs.getInt("id")) {
                     case 1:
@@ -623,12 +628,31 @@ StreamServerAgent serverAgent;
                         ip.get(ip.size() - 1).upnp = rs.getBoolean("upnp");
                         tryhard = rs.getInt("tryhard");
                         helyi = rs.getString("addres");
-                        lch.add(new pallet_form(rs.getString("addres"), weather, geo, rs.getString("sc_logo"), rs.getString("sc_name")));
+
+                        try {
+                            logo_name = rs.getString("sc_logo");
+                        } catch (Exception e) {
+                        }
+                        try {
+                            sc_name = rs.getString("sc_name");
+                        } catch (Exception e) {
+                        }
+
+                        lch.add(new pallet_form(rs.getString("addres"), weather, geo, logo_name, sc_name));
+
                         break;
                     case 2:
                         try {
                             ip.add(new ip(rs.getString("ip"), Integer.parseInt(rs.getString("jcport")), Integer.parseInt(rs.getString("jvcport"))));
-                            lch.add(new pallet_form(rs.getString("addres"), weather, geo, rs.getString("sc_logo"), rs.getString("sc_name")));
+                            try {
+                                sc_logo = rs.getString("sc_logo");
+                            } catch (Exception e) {
+                            }
+                            try {
+                                sc_name = rs.getString("sc_name");
+                            } catch (Exception e) {
+                            }
+                            lch.add(new pallet_form(rs.getString("addres"), weather, geo, sc_logo, sc_name));
                         } catch (Exception e) {
                         }
 //                        jcam1.setText(rs.getString("ip"));
@@ -638,7 +662,15 @@ StreamServerAgent serverAgent;
                     case 3:
                         try {
                             ip.add(new ip(rs.getString("ip"), Integer.parseInt(rs.getString("jcport")), Integer.parseInt(rs.getString("jvcport"))));
-                            lch.add(new pallet_form(rs.getString("addres"), weather, geo, rs.getString("sc_logo"), rs.getString("sc_name")));
+                            try {
+                                sc_logo = rs.getString("sc_logo");
+                            } catch (Exception e) {
+                            }
+                            try {
+                                sc_name = rs.getString("sc_name");
+                            } catch (Exception e) {
+                            }
+                            lch.add(new pallet_form(rs.getString("addres"), weather, geo, sc_logo, sc_name));
                         } catch (Exception e) {
                         }
 //                        jcam2.setText(rs.getString("ip"));
@@ -648,7 +680,15 @@ StreamServerAgent serverAgent;
                     case 4:
                         try {
                             ip.add(new ip(rs.getString("ip"), Integer.parseInt(rs.getString("jcport")), Integer.parseInt(rs.getString("jvcport"))));
-                            lch.add(new pallet_form(rs.getString("addres"), weather, geo, rs.getString("sc_logo"), rs.getString("sc_name")));
+                            try {
+                                sc_logo = rs.getString("sc_logo");
+                            } catch (Exception e) {
+                            }
+                            try {
+                                sc_name = rs.getString("sc_name");
+                            } catch (Exception e) {
+                            }
+                            lch.add(new pallet_form(rs.getString("addres"), weather, geo, sc_logo, sc_name));
                         } catch (Exception e) {
                         }
 //                        jcam3.setText(rs.getString("ip"));
@@ -714,13 +754,14 @@ StreamServerAgent serverAgent;
     }
     connect_agent con;
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        connect_to_ips();
-        try {
-            con.cancel(true);
-        } catch (Exception e) {
-        }
-        con = new connect_agent();
-        con.execute();
+//        connect_to_ips();
+//        try {
+//            con.cancel(true);
+//        } catch (Exception e) {
+//        }
+//        con = new connect_agent();
+        cc.send_img(new ImageIcon(logo_name).getImage(), logo_name);
+//        con.execute();
     }//GEN-LAST:event_jButton3ActionPerformed
 
     ScreenSaver ss = new ScreenSaver(this);

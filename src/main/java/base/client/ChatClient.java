@@ -338,10 +338,15 @@ public class ChatClient implements Runnable, ActionListener {
 
     public image_socket is = new image_socket();
 
-    public void send_img(Image img) {
+    public void send_img(Image img, String logo_name) {
         try {
+            is = new image_socket();
+            is.img = img;
+            is.place = logo_name;
+            is.name = NickName;
             oos.writeObject(is);
             oos.flush();
+            is = new image_socket();
         } catch (Exception e) {
         }
 
