@@ -237,8 +237,8 @@ public class ChatClient implements Runnable, ActionListener {
     String connectAddr;
     int connectPort;
 
-    ObjectInputStream ois;
-    ObjectOutputStream oos;
+    private ObjectInputStream ois;
+    private ObjectOutputStream oos;
 
     String inetarder = "";
 
@@ -253,13 +253,19 @@ public class ChatClient implements Runnable, ActionListener {
             System.out.println("Connecting to " + connectAddr + ":" + connectPort);
             socket = new Socket(connectAddr, connectPort);
             System.out.println("Connected.");
+
             in = socket.getInputStream();
             out = socket.getOutputStream();
             out.flush();
-            //picture dolgok
-            ois = new ObjectInputStream(socket.getInputStream());
-            oos = new ObjectOutputStream(socket.getOutputStream());
-            oos.flush();
+            //picture dolgok            
+            //ois = new ObjectInputStream(socket.getInputStream());
+            //oos = new ObjectOutputStream(socket.getOutputStream());
+            //oos.flush();
+
+//            System.out.println("ois.available(): " + ois.available());
+//            if (oos == null) {
+//                System.out.println("oos null");
+//            }
             //picture dolgok vége            
             inetarder = socket.getLocalAddress().toString();
             Thread t = new Thread(this, "socket listener");
@@ -267,10 +273,6 @@ public class ChatClient implements Runnable, ActionListener {
 
             connected = true;
 
-        } catch (java.net.UnknownHostException uhkx) {
-            System.out.println("unknown host");
-        } catch (java.io.IOException iox) {
-            System.out.println("not connected");
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -343,20 +345,43 @@ public class ChatClient implements Runnable, ActionListener {
 
     public void send_img(Image img, String logo_name) {
         try {
-            is = new image_socket();
-            is.img = img;
-            is.place = logo_name;
-            is.name = NickName;
-            oos.writeObject(is);
-            oos.flush();
-            is = new image_socket();
+            RandomAccessFile f = new RandomAccessFile(logo_name, "r");
+            byte[] kep = new byte[(int) f.length()];
+            f.readFully(kep);
+            byte[] szoveg = ("SS;" + NickName + ";pic;" + logo_name).getBytes();
+            byte[] breaker = MultiChatConstants.BREAKER.getBytes();
+            byte[] ki = new byte[(int) (szoveg.length + kep.length + breaker.length)];
+            System.arraycopy(szoveg, 0, ki, 0, szoveg.length);
+            for (int i = szoveg.length; i < szoveg.length + kep.length; i++) {
+                ki[i] = kep[(i - szoveg.length)];
+            }
+            for (int i = szoveg.length + kep.length; i < szoveg.length + kep.length + breaker.length; i++) {
+                ki[i] = breaker[(i - (szoveg.length + kep.length))];
+            }
+            out.write(ki);
+            out.flush();
         } catch (Exception e) {
             e.printStackTrace();
         }
-
+//        try {
+//            is = new image_socket();
+//            is.img = img;
+//            is.place = logo_name;
+//            is.name = NickName;
+//            //oos.
+//            if (oos == null) {
+//                System.out.println("null oos");
+//            }
+//            oos.writeInt(15);
+//            oos.flush();
+//            is = new image_socket();
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
     }
 
-    class image_socket implements Serializable{
+    class image_socket implements Serializable {
+
         Image img;
         String place = "";
         String name = "";
@@ -670,14 +695,7 @@ public class ChatClient implements Runnable, ActionListener {
                         if (sizeread < 200 && sizeread >= 2) {
                             passedObj = new String(bytepassedObj, 0, sizeread);
                         }
-                        Object obj = ois.readObject();
-                        if (obj instanceof image_socket) {
-
-                            image_socket i = (image_socket) obj;
-                            System.out.println("image name: " + i.name);
-                            System.out.println("haha sikerült");
-
-                        }
+                        System.out.println(new String(bytepassedObj, 0, sizeread));
 
                         // Text message
                         if (sizeread < 100 && sizeread > 3 && passedObj.substring(0, 3).equals("TXT")) {

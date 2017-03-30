@@ -30,10 +30,11 @@ public class weather {
         try {
             GeoApiContext context = new GeoApiContext().setApiKey(api);
             context.setQueryRateLimit(8);//10 a free
+            //context.
             GeocodingResult[] results = GeocodingApi.geocode(context, hely).await();//blocking mode
             for (GeocodingResult result : results) {
-                System.out.println(result.formattedAddress);
-                System.out.println("lat: " + result.geometry.location.lat + " lng:" + result.geometry.location.lng);
+                //System.out.println(result.formattedAddress);
+                //System.out.println("lat: " + result.geometry.location.lat + " lng:" + result.geometry.location.lng);
                 geo.formattedaddres = result.formattedAddress;
                 geo.lat = result.geometry.location.lat + "";
                 geo.lng = result.geometry.location.lng + "";

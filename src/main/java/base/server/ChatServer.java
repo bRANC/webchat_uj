@@ -21,7 +21,7 @@ public class ChatServer extends Thread {
             System.out.println("Listening on port " + port);
             while (true) {
                 socket = serverSocket.accept();
-                System.out.println("Connection receive from " + socket.getRemoteSocketAddress());
+                System.out.println("Connection receive from " + socket.getRemoteSocketAddress().toString().replace("/", ""));
                 ChatHandler handler = new ChatHandler(socket);
                 handler.start();
             }

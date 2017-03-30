@@ -699,7 +699,7 @@ StreamServerAgent serverAgent;
                         break;
                 }
             }
-            System.out.println(vph.size() + "  lch: " + lch.size());
+            //System.out.println(vph.size() + "  lch: " + lch.size());
             if (lch.size() != vph.size()) {
                 for (int i = lch.size(); i < vph.size(); i++) {
                     lch.add(new pallet_form(helyi, weather, geo, "", ""));
