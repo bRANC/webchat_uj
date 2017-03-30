@@ -51,6 +51,7 @@ public class VideoPanel extends JPanel {
         Graphics2D g2 = (Graphics2D) g;
         //if (megy) { experementel
         if (image == null) {
+
             g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
             g2.setBackground(Color.BLACK);
             g2.fillRect(0, 0, getWidth(), getHeight());
@@ -84,10 +85,15 @@ public class VideoPanel extends JPanel {
 
             g2.setColor(Color.WHITE);
             g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
-            g2.drawString(str, (getWidth() - w) / 2, cy - h);
-            w = metrics.stringWidth(str);
-            h = metrics.getHeight();
-            g2.drawString(str, (getWidth() - w) / 2, cy - 2 * h);
+            g2.drawString(str, (getWidth() - w) / 2, cy + (h * 4));
+            if (!megy) {
+                g2.setColor(Color.BLACK);
+                g2.clearRect(cx, cx, 200, 200);
+                
+                //g2.
+                //g2.fillRect(cx, cx, 200, 200);
+            }
+
         } else {
             //owner.getGraphics().drawImage(image, 0, 0, image.getWidth(), image.getHeight(), null);
             //g2.clearRect(0, 0, image.getWidth(), image.getHeight());

@@ -43,9 +43,10 @@ public class pallet_form extends javax.swing.JPanel {
         this.location = location;
         this.weather_api_key = weather_api_key;
         this.google_api_key = google_api_key;
-        
+
         wet = new weather(location, weather_api_key, google_api_key);
-        initComponents();weather_cam.setText(location);//késöbb törölni kell
+        initComponents();
+        weather_cam.setText(location);//késöbb törölni kell
         try {
             if (!sc_logo.isEmpty()) {
                 set_custom_image(school_icon, sc_logo);
@@ -248,6 +249,9 @@ public class pallet_form extends javax.swing.JPanel {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
+        gridBagConstraints.gridheight = 2;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.weighty = 1.0;
         gridBagConstraints.insets = new java.awt.Insets(10, 10, 10, 10);
         add(school_icon, gridBagConstraints);
 
@@ -258,6 +262,8 @@ public class pallet_form extends javax.swing.JPanel {
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.weighty = 1.0;
         gridBagConstraints.insets = new java.awt.Insets(10, 10, 10, 10);
         add(school_name, gridBagConstraints);
 
@@ -266,7 +272,10 @@ public class pallet_form extends javax.swing.JPanel {
         weather_cam.setText("Address");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.VERTICAL;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.weighty = 1.0;
         gridBagConstraints.insets = new java.awt.Insets(10, 10, 10, 10);
         add(weather_cam, gridBagConstraints);
 
@@ -276,6 +285,12 @@ public class pallet_form extends javax.swing.JPanel {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.gridheight = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.weighty = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(10, 10, 10, 10);
         add(jPanel1, gridBagConstraints);
     }// </editor-fold>//GEN-END:initComponents
 

@@ -34,6 +34,7 @@ import java.net.SocketException;
 import java.util.Collections;
 import java.util.Enumeration;
 import javax.swing.ImageIcon;
+import javax.swing.JRootPane;
 import webcam.agent.StreamServerAgent;
 import sqlite.sqlite;
 
@@ -52,9 +53,12 @@ public class kiiras extends javax.swing.JFrame {
     user_watcher uw = new user_watcher();
 
     public kiiras() {
+        fullscreen();
+        
         System.setProperty("sun.java2d.opengl", "True");
         System.setProperty("Dsun.java2d.d3d", "True");
         System.setProperty("Dsun.java2d.accthreshold", "0");
+        
         initComponents();
         // server_start();  
         //VolatileImage <-- video memóriában is leképződő image   -Dsun.java2d.accthreshold=0
@@ -83,7 +87,7 @@ public class kiiras extends javax.swing.JFrame {
             }
         }
         );
-        fullscreen();
+        
         cam.stop_camera_listener();
     }
 
@@ -272,10 +276,10 @@ public class kiiras extends javax.swing.JFrame {
             if (localip.isEmpty()) {
                 cc.set_status("innerip;" + cc.getconn_ip());
             }
-            
+
             varas(100);
             cc.send_img(new ImageIcon(logo_name).getImage(), logo_name);
-            
+
             cc.elso++;
             cc.elso++;
             return null;
@@ -441,7 +445,13 @@ public class kiiras extends javax.swing.JFrame {
                 jButton3ActionPerformed(evt);
             }
         });
-        getContentPane().add(jButton3, new java.awt.GridBagConstraints());
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
+        getContentPane().add(jButton3, gridBagConstraints);
 
         jButton4.setText("Screen Saver");
         jButton4.addActionListener(new java.awt.event.ActionListener() {
@@ -577,8 +587,15 @@ StreamServerAgent serverAgent;
     }
 
     public void fullscreen() {
+
+//        ez tűnteti el az ablakot
+        JFrame frame = this;
+//        frame.setUndecorated(true);
+        frame.getRootPane().setWindowDecorationStyle(JRootPane.NONE);
+//        eddig
         this.setExtendedState(JFrame.MAXIMIZED_BOTH);
-        //    this.setUndecorated(true);
+        //   this.setUndecorated(true);
+
     }
 
     public void hide() {

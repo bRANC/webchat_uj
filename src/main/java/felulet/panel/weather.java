@@ -56,18 +56,18 @@ public class weather {
         FIOCurrently currently = new FIOCurrently(fio);
         daily = new FIODaily(fio);
 
-        temperatureMin = currently.get().temperatureMin() + " C";
-        temperatureMax = currently.get().temperatureMax() + " C";
+        temperatureMin = currently.get().temperatureMin() + "";
+        temperatureMax = currently.get().temperatureMax() + "";
         summary = currently.get().summary().replace("\"", "") + "";
         precipprob = currently.get().precipProbability() + "";
         precipint = currently.get().precipIntensity() + "";
         icon = currently.get().icon() + "";
         cloudcover = currently.get().cloudCover() + "";
-        apparenttemp = currently.get().apparentTemperature() + " C";
+        apparenttemp = currently.get().apparentTemperature() + "";
         pressure = currently.get().pressure() + "";
         dewpoint = currently.get().dewPoint() + "";
         ozone = currently.get().ozone() + "";
-        temperature = currently.get().temperature() + " C";
+        temperature = currently.get().temperature() + "";
         humidity = currently.get().humidity() + "";
         time = currently.get().time() + "";
 
@@ -84,11 +84,11 @@ public class weather {
     }
 
     public String get_temp_max(int nap) {
-        return daily.getDay(nap).temperatureMax() + " C";
+        return daily.getDay(nap).temperatureMax()+"";
     }
 
     public String get_temp_min(int nap) {
-        return daily.getDay(nap).temperatureMin() + " C";
+        return daily.getDay(nap).temperatureMin()+"";
     }
 
 }

@@ -1221,7 +1221,7 @@ public class setup extends javax.swing.JFrame {
             be.setText("");
             ImageIcon img = new ImageIcon(uri);
 
-            be.setIcon(getScaledImageIcon(img.getImage(), 128, 128));
+            be.setIcon(getScaledImageIcon(img.getImage(), 64, 64));
 
             save_resized_image(uri);
 
@@ -1234,7 +1234,7 @@ public class setup extends javax.swing.JFrame {
     public void save_resized_image(String uri) {
         try {
             ImageIcon imgic = new ImageIcon(uri);
-            Image img = getScaledImage(imgic.getImage(), 128, 128);
+            Image img = getScaledImage(imgic.getImage(), 64, 64);
 
             BufferedImage bi = new BufferedImage(img.getWidth(null), img.getHeight(null), BufferedImage.TYPE_INT_ARGB);
 
