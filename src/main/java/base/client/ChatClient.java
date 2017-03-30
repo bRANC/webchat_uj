@@ -724,7 +724,7 @@ public class ChatClient implements Runnable, ActionListener {
                                 String img = be.split(";")[2];
 
                                 for (int i = 0; i < SS.size(); i++) {
-                                    if (SS.get(i).name.equals(passedObj.substring(1).split(";")[1])) {
+                                    if (SS.get(i).name.equals(name)) {
 
                                         int read = in.read(bytepassedObj);
                                         String hossz = "PIC;" + name + ";" + img + ";";
