@@ -33,10 +33,17 @@ public class ChatClient implements Runnable, ActionListener {
             return stat;
         }
 
+        public boolean get_new_pic() {
+            boolean stat = new_pic;
+            new_pic = false;
+            return stat;
+        }
+
         public boolean conn_cam() {
             return camera.equals("on");
         }
 
+        public boolean new_pic = false;
         public String name;
         public String status;
         public String camera = "";
@@ -44,6 +51,7 @@ public class ChatClient implements Runnable, ActionListener {
         public String innerip = "";
         public String addres = "";
         public String pic_hely = "";
+        public String sc_name = "";
     }
 
     private ClientShared clientShared;
@@ -323,7 +331,7 @@ public class ChatClient implements Runnable, ActionListener {
     }
     String status = "";
     String ssaver = "";
-    String own_cam = "off", own_ip = "", own_intip = "", own_address = "";
+    String own_cam = "off", own_ip = "", own_intip = "", own_address = "", sc_name = "";
 
     public Integer elso = 0;
 
@@ -338,6 +346,8 @@ public class ChatClient implements Runnable, ActionListener {
             set_status("innerip;" + own_intip);
             varas(100);
             set_status("address;" + own_address);
+            varas(100);
+            set_status("sc_name;" + sc_name);
             varas(100);
         }
     }
@@ -415,6 +425,9 @@ public class ChatClient implements Runnable, ActionListener {
         if (status.contains("address;")) {
             own_address = status.substring("address;".length());
             //System.out.println(own_address + " : address");
+        }
+        if (status.contains("sc_name;")) {
+            sc_name = status.substring("sc_name;".length());
         }
         this.status = status;
         new setstat().execute();
@@ -670,13 +683,18 @@ public class ChatClient implements Runnable, ActionListener {
         }
 
     }
-    public boolean should_write_sql = false;
+    public boolean should_write_sql = false, new_pic = false;
 
     public boolean get_should_write() {
         boolean stat = should_write_sql;
         should_write_sql = false;
         return stat;
+    }
 
+    public boolean get_new_pic() {
+        boolean stat = new_pic;
+        new_pic = false;
+        return stat;
     }
 
     public class ClientMessageHandlerThread extends Thread {
@@ -704,18 +722,26 @@ public class ChatClient implements Runnable, ActionListener {
                                 String be = new String(bytepassedObj, 0, sizeread);
                                 String name = be.split(";")[1];
                                 String img = be.split(";")[2];
-                                String hossz = "PIC;" + name + ";" + img + ";";
 
-                                int read = in.read(bytepassedObj);
+                                for (int i = 0; i < SS.size(); i++) {
+                                    if (SS.get(i).name.equals(passedObj.substring(1).split(";")[1])) {
 
-                                System.out.println(hossz);
+                                        int read = in.read(bytepassedObj);
+                                        String hossz = "PIC;" + name + ";" + img + ";";
 
-                                FileOutputStream as = new FileOutputStream(img);
-                                as.write(bytepassedObj, hossz.getBytes().length, (sizeread - hossz.getBytes().length));
-                                as.flush();
-                                as.close();
+                                        System.out.println(hossz);
+
+                                        SS.get(i).pic_hely = name;
+                                        SS.get(i).new_pic = true;
+                                        new_pic = true;
+
+                                        FileOutputStream as = new FileOutputStream(img);
+                                        as.write(bytepassedObj, hossz.getBytes().length, (sizeread - hossz.getBytes().length));
+                                        as.flush();
+                                        as.close();
+                                    }
+                                }
                             }
-
                         } catch (Exception e) {
                         }
                         // Text message
@@ -799,34 +825,39 @@ public class ChatClient implements Runnable, ActionListener {
                         } else if (sizeread < 200 && passedObj.length() >= 2 && passedObj.substring(0, 2).equals("SS")) {
                             System.out.println("SS: " + passedObj);
                             for (int i = 0; i < passedObj.split(";").length; i++) {
-                                System.out.println(i + " : " + passedObj.split(";")[i]);
+                               // System.out.println(i + " : " + passedObj.split(";")[i]);
                             }
                             for (int i = 0; i < SS.size(); i++) {
                                 if (SS.get(i).name.equals(passedObj.substring(1).split(";")[1])) {
                                     SS.get(i).should_check_camera = true;
                                     //System.out.print("passobj: ");
                                     if (passedObj.split(";")[2].contains("camera")) {
-                                        SS.get(i).camera = passedObj.split(";")[3];
+                                        //SS.get(i).camera = passedObj.split(";")[3];
                                         System.out.println(SS.get(i).camera);
-
                                         should_write_sql = true;
                                     } else if (passedObj.split(";")[2].contains("innerip")) {
                                         SS.get(i).innerip = passedObj.split(";")[3];
-                                        System.out.println(SS.get(i).innerip);
+                                       // System.out.println(SS.get(i).innerip);
                                         should_write_sql = true;
                                     } else if (passedObj.split(";")[2].contains("ip")) {
                                         SS.get(i).ip = passedObj.split(";")[3];
-                                        System.out.println(SS.get(i).ip);
+                                        //System.out.println(SS.get(i).ip);
                                         should_write_sql = true;
                                     } else if (passedObj.split(";")[2].contains("address")) {
                                         SS.get(i).addres = passedObj.split(";")[3];
-                                        System.out.println(SS.get(i).addres);
+                                        //System.out.println(SS.get(i).addres);
+                                        should_write_sql = true;
+                                    } else if (passedObj.split(";")[2].contains("sc_name")) {
+                                        SS.get(i).sc_name = passedObj.split(";")[3];
+                                        //System.out.println(SS.get(i).sc_name);
                                         should_write_sql = true;
                                     }
-                                    System.out.println(passedObj.substring(3));
-                                    //SS.get(i).status = passedObj.split(";")[1];
                                 }
+
+                                System.out.println(passedObj.substring(3));
+                                //SS.get(i).status = passedObj.split(";")[1];
                             }
+
                             // Received voice data
                         } else {
 //                            boolean playThisPacket = true;

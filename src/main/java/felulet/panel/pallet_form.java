@@ -36,6 +36,7 @@ public class pallet_form extends javax.swing.JPanel {
     weather wet;
     ArrayList<weather_panel> wp = new ArrayList<>();
 
+    public String name = "";
     int elore = 5;
 
     public pallet_form(String location, String weather_api_key, String google_api_key, String sc_logo, String sc_name) {
@@ -108,6 +109,7 @@ public class pallet_form extends javax.swing.JPanel {
     }
 
     public void set_sc_icon(String sc_logo) {
+        System.out.println("set_sc_icon: " + sc_logo);
         if (!sc_logo.isEmpty()) {
             set_custom_image(school_icon, sc_logo);
         }

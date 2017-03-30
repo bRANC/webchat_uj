@@ -264,6 +264,8 @@ public class kiiras extends javax.swing.JFrame {
             varas(100);
             cc.set_status("camera;off");
             varas(100);
+            cc.set_status("sc_name;" + sc_name);
+            varas(100);
             //System.out.println("shouldip: " + Inet4Address.getLocalHost().getHostAddress());
             if (localip.isEmpty()) {
                 cc.set_status("innerip;" + cc.getconn_ip());
@@ -277,17 +279,16 @@ public class kiiras extends javax.swing.JFrame {
 
     class user_watcher extends SwingWorker<Void, Void> {
 
-        Chat_and_voice_server_start cas;
-
         @Override
         protected Void doInBackground() throws Exception {
             while (!this.isCancelled()) {
                 for (int i = 0; i < cc.SS.size(); i++) {
                     if (cc.SS.get(i).get_should_con()) {
-                        System.out.println("cc.SS.get(i).get_should_con(): " + cc.SS.get(i).get_should_con());
+                        //System.out.println("cc.SS.get(i).get_should_con(): " + cc.SS.get(i).get_should_con());
                         for (int j = 0; j < ip.size(); j++) {
                             if (!ip.get(j).ip.isEmpty()) {
                                 if (ip.get(j).ip.equals(cc.SS.get(i).ip) || ip.get(j).ip.equals(cc.SS.get(i).innerip)) {
+                                    lch.get(j).name = cc.SS.get(i).name;
                                     System.out.println("find inner: " + cc.SS.get(i).innerip + " or ip: " + cc.SS.get(i).ip);
                                     if (cc.SS.get(i).conn_cam()) {
                                         System.out.println("cummect: " + cc.SS.get(i).innerip);
@@ -305,6 +306,15 @@ public class kiiras extends javax.swing.JFrame {
                         sqlite_write_cc();
                     }
                 }
+                if (cc.get_new_pic()) {
+                    for (int j = 0; j < cc.SS.size(); j++) {
+                        for (int k = 0; k < lch.size(); k++) {
+                            if (cc.SS.get(j).name.equals(lch.get(k).name)) {
+                                lch.get(k).set_sc_icon(cc.SS.get(j).pic_hely);
+                            }
+                        }
+                    }
+                }
                 varas(200);
             }
             return null;
@@ -319,11 +329,15 @@ public class kiiras extends javax.swing.JFrame {
                         try {
                             System.out.println("update nation set "
                                     + " addres ='" + cc.SS.get(j).addres + "',"
-                                    + " name ='" + cc.SS.get(j).name + "'"
+                                    + " name ='" + cc.SS.get(j).name + "',"
+                                    + " sc_logo ='" + cc.SS.get(j).pic_hely + "',"
+                                    + " sc_name ='" + cc.SS.get(j).name + "'"
                                     + " where ip = " + ip.get(i).ip + ";");
                             inn.fel("update nation set "
                                     + " addres ='" + cc.SS.get(j).addres + "',"
-                                    + " name ='" + cc.SS.get(j).name + "'"
+                                    + " name ='" + cc.SS.get(j).name + "',"
+                                    + " sc_logo ='" + cc.SS.get(j).pic_hely + "',"
+                                    + " sc_name ='" + cc.SS.get(j).name + "'"
                                     + " where ip = " + ip.get(i).ip + ";");
                         } catch (Exception e) {
                             System.out.println("sqlite_write_cc: " + e.toString());
@@ -603,7 +617,7 @@ StreamServerAgent serverAgent;
 
     sqlite inn = new sqlite("twin.db3");
 
-    String logo_name = "";
+    String logo_name = "", sc_name = "";
 
     void sqlscan() {
         ip = new ArrayList();
@@ -634,7 +648,7 @@ StreamServerAgent serverAgent;
                         } catch (Exception e) {
                         }
                         try {
-                            sc_name = rs.getString("sc_name");
+                            this.sc_name = rs.getString("sc_name");
                         } catch (Exception e) {
                         }
 
