@@ -255,11 +255,12 @@ public class ChatClient implements Runnable, ActionListener {
             System.out.println("Connected.");
             in = socket.getInputStream();
             out = socket.getOutputStream();
+            out.flush();
             //picture dolgok
             ois = new ObjectInputStream(socket.getInputStream());
             oos = new ObjectOutputStream(socket.getOutputStream());
-            //picture dolgok vége
-            out.flush();
+            oos.flush();
+            //picture dolgok vége            
             inetarder = socket.getLocalAddress().toString();
             Thread t = new Thread(this, "socket listener");
             t.start();
@@ -270,6 +271,8 @@ public class ChatClient implements Runnable, ActionListener {
             System.out.println("unknown host");
         } catch (java.io.IOException iox) {
             System.out.println("not connected");
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -348,12 +351,12 @@ public class ChatClient implements Runnable, ActionListener {
             oos.flush();
             is = new image_socket();
         } catch (Exception e) {
+            e.printStackTrace();
         }
 
     }
 
-    class image_socket {
-
+    class image_socket implements Serializable{
         Image img;
         String place = "";
         String name = "";
