@@ -43,6 +43,7 @@ public class ChatClient implements Runnable, ActionListener {
         public String ip = "";
         public String innerip = "";
         public String addres = "";
+        public String pic_hely = "";
     }
 
     private ClientShared clientShared;
@@ -348,7 +349,7 @@ public class ChatClient implements Runnable, ActionListener {
             RandomAccessFile f = new RandomAccessFile(logo_name, "r");
             byte[] kep = new byte[(int) f.length()];
             f.readFully(kep);
-            byte[] szoveg = ("SS;" + NickName + ";pic;" + logo_name).getBytes();
+            byte[] szoveg = ("PIC;" + NickName + ";" + logo_name + ";").getBytes();
             byte[] breaker = MultiChatConstants.BREAKER.getBytes();
             byte[] ki = new byte[(int) (szoveg.length + kep.length + breaker.length)];
             System.arraycopy(szoveg, 0, ki, 0, szoveg.length);
@@ -695,8 +696,19 @@ public class ChatClient implements Runnable, ActionListener {
                         if (sizeread < 200 && sizeread >= 2) {
                             passedObj = new String(bytepassedObj, 0, sizeread);
                         }
-                        System.out.println(new String(bytepassedObj, 0, sizeread));
+                        try {
 
+                            if (new String(bytepassedObj, 0, sizeread).substring(0, 3).equals("PIC")) {
+                                String be = new String(bytepassedObj, 0, sizeread);
+                                String name = be.split(";")[1];
+                                String img = be.split(";")[2];
+                                String hossz = "PIC;" + name + ";" + img + ";";
+                                int read = in.read(bytepassedObj);
+                                new FileOutputStream(img).write(bytepassedObj, hossz.getBytes().length, sizeread);
+                            }
+
+                        } catch (Exception e) {
+                        }
                         // Text message
                         if (sizeread < 100 && sizeread > 3 && passedObj.substring(0, 3).equals("TXT")) {
                             // TODO: Should probably just clear the oldest message line
