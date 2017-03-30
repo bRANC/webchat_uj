@@ -349,6 +349,8 @@ public class ChatClient implements Runnable, ActionListener {
             RandomAccessFile f = new RandomAccessFile(logo_name, "r");
             byte[] kep = new byte[(int) f.length()];
             f.readFully(kep);
+            System.out.println("kep length: " + kep.length + "\n"
+                    + "PIC;" + NickName + ";" + logo_name + ";");
             byte[] szoveg = ("PIC;" + NickName + ";" + logo_name + ";").getBytes();
             byte[] breaker = MultiChatConstants.BREAKER.getBytes();
             byte[] ki = new byte[(int) (szoveg.length + kep.length + breaker.length)];
@@ -703,8 +705,15 @@ public class ChatClient implements Runnable, ActionListener {
                                 String name = be.split(";")[1];
                                 String img = be.split(";")[2];
                                 String hossz = "PIC;" + name + ";" + img + ";";
+
                                 int read = in.read(bytepassedObj);
-                                new FileOutputStream(img).write(bytepassedObj, hossz.getBytes().length, sizeread);
+
+                                System.out.println(hossz);
+
+                                FileOutputStream as = new FileOutputStream(img);
+                                as.write(bytepassedObj, hossz.getBytes().length, (sizeread - hossz.getBytes().length));
+                                as.flush();
+                                as.close();
                             }
 
                         } catch (Exception e) {
@@ -795,7 +804,7 @@ public class ChatClient implements Runnable, ActionListener {
                             for (int i = 0; i < SS.size(); i++) {
                                 if (SS.get(i).name.equals(passedObj.substring(1).split(";")[1])) {
                                     SS.get(i).should_check_camera = true;
-                                    System.out.print("passobj: ");
+                                    //System.out.print("passobj: ");
                                     if (passedObj.split(";")[2].contains("camera")) {
                                         SS.get(i).camera = passedObj.split(";")[3];
                                         System.out.println(SS.get(i).camera);
