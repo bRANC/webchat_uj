@@ -731,7 +731,7 @@ public class ChatClient implements Runnable, ActionListener {
 
                                         System.out.println(hossz);
 
-                                        SS.get(i).pic_hely = name;
+                                        SS.get(i).pic_hely = img;
                                         SS.get(i).new_pic = true;
                                         new_pic = true;
 
