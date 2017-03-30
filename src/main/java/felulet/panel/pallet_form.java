@@ -43,6 +43,7 @@ public class pallet_form extends javax.swing.JPanel {
         this.location = location;
         this.weather_api_key = weather_api_key;
         this.google_api_key = google_api_key;
+        weather_cam.setText(location);//késöbb törölni kell
         wet = new weather(location, weather_api_key, google_api_key);
         initComponents();
         try {
@@ -110,7 +111,9 @@ public class pallet_form extends javax.swing.JPanel {
 
     public void set_address(String address) {
         if (!address.isEmpty()) {
+            location = address;
             weather_cam.setText(address);
+            wet_update();
         }
     }
 

@@ -656,7 +656,8 @@ StreamServerAgent serverAgent;
                         } catch (Exception e) {
                         }
 
-                        lch.add(new pallet_form(rs.getString("addres"), weather, geo, logo_name, sc_name));
+                        lch.add(new pallet_form(rs.getString("addres"), weather, geo, logo_name, this.sc_name));
+                        //lch.get(0).set_address(rs.getString("addres"));
 
                         break;
                     case 2:
