@@ -54,11 +54,11 @@ public class kiiras extends javax.swing.JFrame {
 
     public kiiras() {
         fullscreen();
-        
+
         System.setProperty("sun.java2d.opengl", "True");
         System.setProperty("Dsun.java2d.d3d", "True");
         System.setProperty("Dsun.java2d.accthreshold", "0");
-        
+
         initComponents();
         // server_start();  
         //VolatileImage <-- video memóriában is leképződő image   -Dsun.java2d.accthreshold=0
@@ -87,7 +87,7 @@ public class kiiras extends javax.swing.JFrame {
             }
         }
         );
-        
+        connect_matrix(true);
         cam.stop_camera_listener();
     }
 
@@ -858,6 +858,132 @@ StreamServerAgent serverAgent;
     public void set_text_ki(JTextArea txtOutput) {
         cc.set_txtout(txtOutput);
     }
+
+    String name = "kecske";
+    refresh ref = new refresh();
+    cmd cm = new cmd();
+    int button = 0;
+
+    public void connect_matrix(Boolean refresh) {
+        String be = http("http://webledmatrix.azurewebsites.net/clientApi/Register/" + name);
+        if (be.contains("Registered") || be.contains("Refreshed")) {
+            //System.out.println("done conn");
+            if (refresh) {
+                ref.execute();
+                varas(50);
+                cm.execute();
+            }
+        }
+    }
+
+    public void refresh_matrix() {
+        connect_matrix(false);
+    }
+
+    public void disconnect_matrix() {
+        cm.cancel(true);
+        ref.cancel(true);
+        varas(100);
+        String be = http("http://webledmatrix.azurewebsites.net/clientApi/Unregister/" + name);
+        if (be.contains("Unregistered") || be.contains("Not registered")) {
+            System.out.println("done dissconn");
+        }
+    }
+
+    public void get_command() {
+        //http://webledmatrix.azurewebsites.net/
+        String be = http("http://webledmatrix.azurewebsites.net/clientApi/Commands/" + name);
+        String comand[] = be.split("string");
+        String appendus = be.replace(":", "").replace("[", "").replace("]", "").replace("\"", "").trim();
+        System.out.println(appendus);
+        if (appendus.contains("left")) {
+            button--;
+            if (button == 0) {
+                button = 4;
+            }
+        } else if (appendus.contains("right")) {
+            button++;
+            if (button == 5) {
+                button = 1;
+            }
+        }
+        if (appendus.contains("back")) {
+            if (ss.isVisible()) {
+                ss.setVisible(false);
+            } else {
+                this.setVisible(false);
+            }
+        }
+        if (appendus.contains("ok")) {
+            switch (button) {
+                case 1:
+                    start_local_cam_server();            //VGA
+                    break;
+                case 2:
+                    //semmi
+                    break;
+                case 3:
+                    screensaver();
+                    break;
+                case 4:
+                    cc.handsfree(true);
+                    cc.talk();
+                    jButton2.setText("talk " + cc.is_talking());
+                    break;
+                default:
+                    break;
+            }
+        }
+        if (!appendus.isEmpty()) {
+//            area.append(appendus + "\n");
+        }
+    }
+
+    public String http(String page) {
+        String vissza = "";
+        try {
+            URL whatismyip = new URL(page);
+            BufferedReader in = new BufferedReader(new InputStreamReader(
+                    whatismyip.openStream()));
+            String hozza = "";
+            hozza += in.readLine();
+            while (!hozza.equals("null")) {
+                vissza += hozza + "\n";
+                hozza = "";
+                hozza += in.readLine();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return vissza;
+    }
+
+    class refresh extends SwingWorker<Void, Void> {
+
+        @Override
+        protected Void doInBackground() throws Exception {
+            while (!this.isCancelled()) {
+                refresh_matrix();
+                varas(3000);
+            }
+            return null;
+        }
+
+    }
+
+    class cmd extends SwingWorker<Void, Void> {
+
+        @Override
+        protected Void doInBackground() throws Exception {
+            while (!this.isCancelled()) {
+                get_command();
+                varas(100);
+            }
+            return null;
+        }
+
+    }
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
