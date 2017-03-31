@@ -28,12 +28,14 @@ import base.client.ChatClient;
 import com.google.maps.GeoApiContext;
 import com.google.maps.GeocodingApi;
 import com.google.maps.model.GeocodingResult;
+import java.awt.Desktop;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.net.URI;
 import java.nio.file.StandardCopyOption;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
@@ -50,11 +52,11 @@ import sqlite.sqlite;
  * @author branc
  */
 public class setup extends javax.swing.JFrame {
-
+    
     wcamera Cm;
     ChatClient cc = new ChatClient(true);
     boolean flip = true;
-
+    
     sqlite inn = new sqlite("twin.db3");
 
     /**
@@ -64,7 +66,7 @@ public class setup extends javax.swing.JFrame {
         initComponents();
         this.setLocationRelativeTo(null);
         this.setExtendedState(JFrame.MAXIMIZED_BOTH);
-
+        
         try {
             InetAddress IP = InetAddress.getLocalHost();
             jip.setText(getadapter());
@@ -73,7 +75,18 @@ public class setup extends javax.swing.JFrame {
         }
         readsql();
     }
-
+    
+    public void openlink(String be) {
+        String url = be;
+        try {
+            if (Desktop.isDesktopSupported()) {
+                // Windows
+                Desktop.getDesktop().browse(new URI(url));
+            }
+        } catch (Exception e) {
+        }
+    }
+    
     public void readsql() {
         try {
             try {
@@ -90,7 +103,7 @@ public class setup extends javax.swing.JFrame {
                 }
             } catch (Exception e) {
             }
-
+            
             ResultSet rs = inn.le("select * from nation;");
             while (rs.next()) {
                 switch (rs.getInt("id")) {
@@ -179,7 +192,7 @@ public class setup extends javax.swing.JFrame {
             e.printStackTrace();
         }
     }
-
+    
     String outterip() {
         String chain = "";
         String gatway = "";
@@ -212,7 +225,7 @@ public class setup extends javax.swing.JFrame {
         chain += "\nDefault public IP: " + publicip;
         return chain;
     }
-
+    
     String getadapter() {
         String chain = "";
         local_ips.clear();
@@ -227,7 +240,7 @@ public class setup extends javax.swing.JFrame {
         return chain;
     }
     ArrayList<String> local_ips = new ArrayList<>();
-
+    
     String displayInterfaceInformation(NetworkInterface netint) throws SocketException {
         int a = 0;
         String localip = "Adapter name: " + netint.getDisplayName() + "\n";
@@ -245,7 +258,7 @@ public class setup extends javax.swing.JFrame {
         }
         return localip;
     }
-
+    
     void flip_flop_cam_horiz_read() {
         try {
             Scanner in = new Scanner(new FileReader("camera_horiz.txt"));
@@ -264,12 +277,12 @@ public class setup extends javax.swing.JFrame {
             System.out.println("not configured");
         }
     }
-
+    
     public void kiir() {
         sqlitefel();
         this.dispose();
     }
-
+    
     public void sqlitefel() {//id,nation,name,ip,jcport,jvcport,upnp,weathercam,weatherforecast
         try {
             inn.fel("update api set "
@@ -286,7 +299,7 @@ public class setup extends javax.swing.JFrame {
                     + " where ID = " + 1 + ";");
         } catch (Exception e) {
         }
-
+        
         for (int i = 1; i <= 4; i++) {
             switch (i) {
                 case 1:
@@ -336,9 +349,9 @@ public class setup extends javax.swing.JFrame {
                     break;
             }
         }
-
+        
     }
-
+    
     private UpnpService u; //when upnp is enabled, this points to the upnp service
 
     public void test_upnp() {
@@ -354,7 +367,7 @@ public class setup extends javax.swing.JFrame {
         }
         JOptionPane.showConfirmDialog(null, message, "UPnP status", JOptionPane.PLAIN_MESSAGE);
     }
-
+    
     boolean open_upnp(String ip) {
         boolean open = false;
         try {
@@ -437,6 +450,8 @@ public class setup extends javax.swing.JFrame {
         jLabel19 = new javax.swing.JLabel();
         jsc_name = new javax.swing.JTextField();
         jLabel20 = new javax.swing.JLabel();
+        jButton6 = new javax.swing.JButton();
+        jButton9 = new javax.swing.JButton();
         jButton7 = new javax.swing.JButton();
         jButton8 = new javax.swing.JButton();
 
@@ -1062,6 +1077,28 @@ public class setup extends javax.swing.JFrame {
         gridBagConstraints.gridy = 9;
         jPanel3.add(jLabel20, gridBagConstraints);
 
+        jButton6.setText("Get key");
+        jButton6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton6ActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 0;
+        jPanel3.add(jButton6, gridBagConstraints);
+
+        jButton9.setText("Get key");
+        jButton9.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton9ActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 5;
+        jPanel3.add(jButton9, gridBagConstraints);
+
         jTabbedPane1.addTab("School setup", jPanel3);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -1142,9 +1179,9 @@ public class setup extends javax.swing.JFrame {
         }
 
     }//GEN-LAST:event_jtryhardKeyPressed
-
+    
     ArrayList<String> adresses = new ArrayList();
-
+    
     public String get_hely(String hely, String api) {
         String vissza = "";
         try {
@@ -1159,14 +1196,14 @@ public class setup extends javax.swing.JFrame {
         }
         return vissza;
     }
-
+    
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         Jformattedaddres.setText(get_hely(jaddres.getText().trim(), jgeoapi.getText().trim()));
     }//GEN-LAST:event_jButton2ActionPerformed
-
+    
     int hely = 0;
-
+    
     public void step() {
         if (hely > adresses.size()) {
             hely = 0;
@@ -1189,6 +1226,14 @@ public class setup extends javax.swing.JFrame {
         school_icon();
     }//GEN-LAST:event_jButton5ActionPerformed
 
+    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
+        openlink("https://developers.google.com/maps/documentation/geolocation/get-api-key");
+    }//GEN-LAST:event_jButton6ActionPerformed
+
+    private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton9ActionPerformed
+        openlink("https://darksky.net/dev/");
+    }//GEN-LAST:event_jButton9ActionPerformed
+    
     public void school_icon() {
         FileFilter filter = new FileNameExtensionFilter("Images", "png", "jpg", "jpeg", "bmp");
         JFileChooser filec = new JFileChooser();
@@ -1199,7 +1244,7 @@ public class setup extends javax.swing.JFrame {
         }
     }
     String image_place = "", extension = "";
-
+    
     public void copy_to_images_scicon(File src) {
         extension = FilenameUtils.getExtension(src.getAbsolutePath());
 
@@ -1213,31 +1258,31 @@ public class setup extends javax.swing.JFrame {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
+        
     }
-
+    
     public void set_custom_image(JLabel be, String uri) {
         try {
             be.setText("");
             ImageIcon img = new ImageIcon(uri);
-
+            
             be.setIcon(getScaledImageIcon(img.getImage(), 64, 64));
-
+            
             save_resized_image(uri);
-
+            
             be.setVerticalAlignment(JLabel.CENTER);
         } catch (Exception e) {
             System.out.println("set_custom_image: " + e);
         }
     }
-
+    
     public void save_resized_image(String uri) {
         try {
             ImageIcon imgic = new ImageIcon(uri);
             Image img = getScaledImage(imgic.getImage(), 64, 64);
-
+            
             BufferedImage bi = new BufferedImage(img.getWidth(null), img.getHeight(null), BufferedImage.TYPE_INT_ARGB);
-
+            
             Graphics2D g2 = bi.createGraphics();
             g2.drawImage(img, 0, 0, null);
             g2.dispose();
@@ -1245,13 +1290,13 @@ public class setup extends javax.swing.JFrame {
         } catch (Exception e) {
         }
     }
-
+    
     Image getScaledImage(Image srcImg, int bound_width, int bound_height) {
         int original_width = srcImg.getWidth(this);
         int original_height = srcImg.getWidth(this);
         int new_width = original_width;
         int new_height = original_height;
-
+        
         if (original_width > bound_width) {
             new_width = bound_width;
             new_height = (new_width * original_height) / original_width;
@@ -1260,26 +1305,26 @@ public class setup extends javax.swing.JFrame {
             new_height = bound_height;
             new_width = (new_height * original_width) / original_height;
         }
-
+        
         BufferedImage resizedImg = new BufferedImage(new_width, new_height, BufferedImage.TYPE_INT_ARGB);
         Graphics2D g2 = resizedImg.createGraphics();
-
+        
         g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
         g2.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         //System.out.println("new_width: " + new_width + "  new_height: " + new_height);
         g2.drawImage(srcImg, 0, 0, new_width, new_height, null);
         g2.dispose();
-
+        
         return resizedImg;
     }
-
+    
     ImageIcon getScaledImageIcon(Image srcImg, int bound_width, int bound_height) {
         int original_width = srcImg.getWidth(this);
         int original_height = srcImg.getWidth(this);
         int new_width = original_width;
         int new_height = original_height;
-
+        
         if (original_width > bound_width) {
             new_width = bound_width;
             new_height = (new_width * original_height) / original_width;
@@ -1288,17 +1333,17 @@ public class setup extends javax.swing.JFrame {
             new_height = bound_height;
             new_width = (new_height * original_width) / original_height;
         }
-
+        
         BufferedImage resizedImg = new BufferedImage(new_width, new_height, BufferedImage.TYPE_INT_ARGB);
         Graphics2D g2 = resizedImg.createGraphics();
-
+        
         g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
         g2.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         //System.out.println("new_width: " + new_width + "  new_height: " + new_height);
         g2.drawImage(srcImg, 0, 0, new_width, new_height, null);
         g2.dispose();
-
+        
         return new ImageIcon(resizedImg);
     }
 
@@ -1312,8 +1357,10 @@ public class setup extends javax.swing.JFrame {
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
+    private javax.swing.JButton jButton6;
     private javax.swing.JButton jButton7;
     private javax.swing.JButton jButton8;
+    private javax.swing.JButton jButton9;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;

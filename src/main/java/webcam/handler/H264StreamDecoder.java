@@ -125,7 +125,7 @@ public class H264StreamDecoder extends OneToOneDecoder {
                     postion += iStreamCoder.decodeVideo(picture, iPacket, postion);
                     if (postion < 0) {
                         //throw new RuntimeException("error " + " decoding video");
-                        System.out.println("error decoding video");
+                        //System.out.println("error decoding video");
                     }
                     // if this is a complete picture, dispatch the picture
                     if (picture.isComplete()) {
