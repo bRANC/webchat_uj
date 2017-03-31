@@ -27,6 +27,7 @@ import felulet.screensaver.ScreenSaver;
 import base.client.ChatClient;
 import base.server.ChatServer;
 import felulet.panel.pallet_form;
+import java.awt.Color;
 import java.net.Inet4Address;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
@@ -35,6 +36,7 @@ import java.util.Collections;
 import java.util.Enumeration;
 import javax.swing.ImageIcon;
 import javax.swing.JRootPane;
+import javax.swing.UIManager;
 import webcam.agent.StreamServerAgent;
 import sqlite.sqlite;
 
@@ -58,7 +60,7 @@ public class kiiras extends javax.swing.JFrame {
         System.setProperty("sun.java2d.opengl", "True");
         System.setProperty("Dsun.java2d.d3d", "True");
         System.setProperty("Dsun.java2d.accthreshold", "0");
-
+        UIManager.put("Button.focus", Color.red);
         initComponents();
         // server_start();  
         //VolatileImage <-- video memóriában is leképződő image   -Dsun.java2d.accthreshold=0
@@ -83,6 +85,7 @@ public class kiiras extends javax.swing.JFrame {
                     serverAgent.stop();
                 } catch (Exception e) {
                 }
+                disconnect_matrix();
                 System.exit(0);
             }
         }
@@ -586,6 +589,8 @@ StreamServerAgent serverAgent;
 
     }
 
+    boolean is_full_sc = true;
+
     public void fullscreen() {
 
 //        ez tűnteti el az ablakot
@@ -594,8 +599,13 @@ StreamServerAgent serverAgent;
         frame.getRootPane().setWindowDecorationStyle(JRootPane.NONE);
 //        eddig
         this.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        is_full_sc = true;
         //   this.setUndecorated(true);
+    }
 
+    public void scmall_Screen() {
+        this.setExtendedState(JFrame.ICONIFIED);
+        is_full_sc = false;
     }
 
     public void hide() {
@@ -859,13 +869,12 @@ StreamServerAgent serverAgent;
         cc.set_txtout(txtOutput);
     }
 
-    String name = "kecske";
     refresh ref = new refresh();
     cmd cm = new cmd();
-    int button = 0;
+    int button = 1;
 
     public void connect_matrix(Boolean refresh) {
-        String be = http("http://webledmatrix.azurewebsites.net/clientApi/Register/" + name);
+        String be = http("http://webledmatrix.azurewebsites.net/clientApi/Register/" + ip.get(0).name);
         if (be.contains("Registered") || be.contains("Refreshed")) {
             //System.out.println("done conn");
             if (refresh) {
@@ -884,7 +893,7 @@ StreamServerAgent serverAgent;
         cm.cancel(true);
         ref.cancel(true);
         varas(100);
-        String be = http("http://webledmatrix.azurewebsites.net/clientApi/Unregister/" + name);
+        String be = http("http://webledmatrix.azurewebsites.net/clientApi/Unregister/" + ip.get(0).name);
         if (be.contains("Unregistered") || be.contains("Not registered")) {
             System.out.println("done dissconn");
         }
@@ -892,49 +901,76 @@ StreamServerAgent serverAgent;
 
     public void get_command() {
         //http://webledmatrix.azurewebsites.net/
-        String be = http("http://webledmatrix.azurewebsites.net/clientApi/Commands/" + name);
+        String be = http("http://webledmatrix.azurewebsites.net/clientApi/Commands/" + ip.get(0).name);
         String comand[] = be.split("string");
         String appendus = be.replace(":", "").replace("[", "").replace("]", "").replace("\"", "").trim();
-        System.out.println(appendus);
-        if (appendus.contains("left")) {
-            button--;
-            if (button == 0) {
-                button = 4;
+        if (!appendus.isEmpty()) {
+            System.out.println(button + " : " + be);
+            if (!is_full_sc) {
+                fullscreen();
             }
-        } else if (appendus.contains("right")) {
-            button++;
-            if (button == 5) {
-                button = 1;
+            if (appendus.contains("Left")) {
+                button--;
+                if (button == 0) {
+                    button = 4;
+                }
+            } else if (appendus.contains("Right")) {
+                button++;
+                if (button == 5) {
+                    button = 1;
+                }
             }
-        }
-        if (appendus.contains("back")) {
+            if (appendus.contains("Exit")) {
+                if (ss.isVisible()) {
+                    ss.setVisible(false);
+                } else if (is_full_sc) {
+                    scmall_Screen();
+                } else {
+                    fullscreen();
+                } //this.setVisible(false);
+            }
             if (ss.isVisible()) {
-                ss.setVisible(false);
-            } else {
-                this.setVisible(false);
+                send_text(appendus);
             }
-        }
-        if (appendus.contains("ok")) {
+            if (appendus.contains("OK")) {
+                switch (button) {
+                    case 1:
+                        start_local_cam_server();            //VGA
+                        break;
+                    case 2:
+                        //semmi
+                        break;
+                    case 3:
+                        screensaver();
+                        break;
+                    case 4:
+                        cc.handsfree(true);
+                        cc.talk();
+                        jButton2.setText("talk " + cc.is_talking());
+                        break;
+                    default:
+                        break;
+                }
+            }
+
             switch (button) {
                 case 1:
-                    start_local_cam_server();            //VGA
+                    jButton1.requestFocusInWindow();         //VGA
                     break;
                 case 2:
                     //semmi
+                    jButton3.requestFocusInWindow();
                     break;
                 case 3:
-                    screensaver();
+                    jButton4.requestFocusInWindow();
                     break;
                 case 4:
-                    cc.handsfree(true);
-                    cc.talk();
-                    jButton2.setText("talk " + cc.is_talking());
+                    jButton2.requestFocusInWindow();
                     break;
                 default:
                     break;
             }
-        }
-        if (!appendus.isEmpty()) {
+
 //            area.append(appendus + "\n");
         }
     }

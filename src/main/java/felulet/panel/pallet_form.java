@@ -150,12 +150,12 @@ public class pallet_form extends javax.swing.JPanel {
     public void set_wet_image(JLabel be, String icon_name) {
         try {
             be.setText("");
-            ImageIcon img = new ImageIcon("lib/images/" + icon_name.replace("\"", "") + ".png");
+            ImageIcon img = new ImageIcon("lib/images/" + icon_name.replace("\"", "").replace("-night", "") + ".png");
             //System.out.println(img.getImageLoadStatus() + "  " + img.getIconHeight() + " kecske: " + "lib/images/" + icon_name.replace("\"", "") + ".png");
             be.setIcon(getScaledImage(img.getImage(), 64, 64));
             be.setVerticalAlignment(JLabel.CENTER);
         } catch (Exception e) {
-            System.out.println("set_wet_image: " + e);
+            System.out.println("set_wet_image: " + icon_name + " : " + e);
         }
     }
 
