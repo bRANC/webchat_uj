@@ -19,7 +19,7 @@
                         <manifest>
                             <addClasspath>true</addClasspath>
                             <classpathPrefix>lib/</classpathPrefix>
-                            <mainClass>setupvagycam</mainClass>
+                            <mainClass>felulet.setupvagycam</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
