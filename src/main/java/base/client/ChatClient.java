@@ -683,7 +683,7 @@ public class ChatClient implements Runnable, ActionListener {
         }
 
     }
-    public boolean should_write_sql = false, new_pic = false;
+    public boolean should_write_sql = false, new_pic = false, turncamera = false;
 
     public boolean get_should_write() {
         boolean stat = should_write_sql;
@@ -694,6 +694,12 @@ public class ChatClient implements Runnable, ActionListener {
     public boolean get_new_pic() {
         boolean stat = new_pic;
         new_pic = false;
+        return stat;
+    }
+    
+    public boolean turncamera() {
+        boolean stat = turncamera;
+        turncamera = false;
         return stat;
     }
 
@@ -755,6 +761,14 @@ public class ChatClient implements Runnable, ActionListener {
                                     if ((passedObj.substring(3)).contains(NickNameVector.elementAt(i) + "")) {
                                         send_to = NickNameVector.elementAt(i) + "";
                                         new get_sysinfo().execute();
+                                    }
+                                }
+                            } else if (passedObj.substring(3).contains("cam")) {
+                                for (int i = 0; i < NickNameVector.size(); i++) {
+                                    if ((passedObj.split(";")[2]).contains(NickNameVector.elementAt(i) + "")) {
+                                        if (passedObj.split(";")[1].contains("switch")) {
+                                            turncamera=true;
+                                        }
                                     }
                                 }
                             } else {

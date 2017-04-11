@@ -58,7 +58,11 @@ public class weather {
 
         temperatureMin = currently.get().temperatureMin() + "";
         temperatureMax = currently.get().temperatureMax() + "";
-        summary = currently.get().summary().replace("\"", "") + "";
+        try {
+            summary = (currently.get().summary().replace("\"", "") + "").split(" ")[0];
+        } catch (Exception e) {
+            summary = (currently.get().summary().replace("\"", "") + "");
+        }
         precipprob = currently.get().precipProbability() + "";
         precipint = currently.get().precipIntensity() + "";
         icon = currently.get().icon() + "";
@@ -84,11 +88,11 @@ public class weather {
     }
 
     public String get_temp_max(int nap) {
-        return daily.getDay(nap).temperatureMax()+"";
+        return daily.getDay(nap).temperatureMax() + "";
     }
 
     public String get_temp_min(int nap) {
-        return daily.getDay(nap).temperatureMin()+"";
+        return daily.getDay(nap).temperatureMin() + "";
     }
 
 }

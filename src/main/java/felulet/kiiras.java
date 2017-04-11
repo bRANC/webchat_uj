@@ -230,7 +230,9 @@ public class kiiras extends javax.swing.JFrame {
                     for (int j = 0; j < tryhard; j++) {
                         for (int i = 0; i < ip.size(); i++) {
                             if (!cc.isConnected()) {
-                                cc.connect(ip.get(i).ip, ip.get(i).port_jvc + "");
+                                if (!ip.get(i).ip.isEmpty()) {
+                                    cc.connect(ip.get(i).ip, ip.get(i).port_jvc + "");
+                                }
                             }
                         }
                     }
@@ -245,13 +247,15 @@ public class kiiras extends javax.swing.JFrame {
                         System.out.println(local_ips.size() + "   " + !cc.isConnected());
                         if (!cc.isConnected()) {
                             try {
-                                cc.connect(local_ips.get(i), ip.get(0).port_jvc + "");
-                                if (cc.isConnected()) {
-                                    localip = local_ips.get(i);
-                                    varas(100);
-                                    cc.set_nickname(ip.get(0).name);
-                                    varas(100);
-                                    cc.set_status("innerip;" + localip);
+                                if (!ip.get(i).ip.isEmpty()) {
+                                    cc.connect(local_ips.get(i), ip.get(0).port_jvc + "");
+                                    if (cc.isConnected()) {
+                                        localip = local_ips.get(i);
+                                        varas(100);
+                                        cc.set_nickname(ip.get(0).name);
+                                        varas(100);
+                                        cc.set_status("innerip;" + localip);
+                                    }
                                 }
                             } catch (Exception e) {
                             }
@@ -295,6 +299,9 @@ public class kiiras extends javax.swing.JFrame {
         @Override
         protected Void doInBackground() throws Exception {
             while (!this.isCancelled()) {
+                if (cc.turncamera()) {
+                    start_local_cam_server();
+                }
                 for (int i = 0; i < cc.SS.size(); i++) {
                     if (cc.SS.get(i).get_should_con()) {
                         //System.out.println("cc.SS.get(i).get_should_con(): " + cc.SS.get(i).get_should_con());
@@ -442,7 +449,6 @@ public class kiiras extends javax.swing.JFrame {
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
         getContentPane().add(jButton2, gridBagConstraints);
 
-        jButton3.setText("connect");
         jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton3ActionPerformed(evt);
@@ -804,7 +810,7 @@ StreamServerAgent serverAgent;
 //        } catch (Exception e) {
 //        }
 //        con = new connect_agent();
-        cc.send_img(new ImageIcon(logo_name).getImage(), logo_name);
+//        cc.send_img(new ImageIcon(logo_name).getImage(), logo_name);
 //        con.execute();
     }//GEN-LAST:event_jButton3ActionPerformed
 
