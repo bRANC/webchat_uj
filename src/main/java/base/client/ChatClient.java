@@ -449,16 +449,16 @@ public class ChatClient implements Runnable, ActionListener {
                 //     SS.get(i).status = status;
                 // }
                 // }
-                if (!status_tomb.isEmpty()) {
+                //if (!status_tomb.isEmpty()) {
                     System.out.println("status: " + status_tomb.size());
-                    status = status_tomb.get(0);
-                    status_tomb.remove(0);
+                    //status = status_tomb.get(0);
+                  //  status_tomb.remove(0);
                     if (status.equals("")) {
                         System.out.println("set_stat:                " + "SS;" + NickName + ";" + status);
                         out.write(("SS;" + NickName + ";" + status + MultiChatConstants.BREAKER).getBytes());
                         out.flush();
                         status = "";
-                    }
+                //    }
                 }
             } catch (Exception e) {
                 System.out.println("setstat exception: " + e.toString());
