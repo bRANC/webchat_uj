@@ -432,7 +432,7 @@ public class ChatClient implements Runnable, ActionListener {
             sc_name = status.substring("sc_name;".length());
         }
         status_tomb.add(status);
-        //this.status = status;
+        this.status = status;
         new setstat().execute();
     }
 
