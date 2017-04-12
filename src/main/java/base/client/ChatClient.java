@@ -408,6 +408,8 @@ public class ChatClient implements Runnable, ActionListener {
         }
     }
 
+    ArrayList<String> status_tomb = new ArrayList<>();
+
     public void set_status(String status) {
         status = status.replace("/", "");
         if (status.contains("camera;")) {
@@ -429,7 +431,8 @@ public class ChatClient implements Runnable, ActionListener {
         if (status.contains("sc_name;")) {
             sc_name = status.substring("sc_name;".length());
         }
-        this.status = status;
+        status_tomb.add(status);
+        //this.status = status;
         new setstat().execute();
     }
 
@@ -441,14 +444,22 @@ public class ChatClient implements Runnable, ActionListener {
                 varas(1);
             }//wait for connection
             try {
-                for (int i = 0; i < SS.size(); i++) {
-                    if (SS.get(i).name.equals(NickName)) {
-                        SS.get(i).status = status;
+                // for (int i = 0; i < SS.size(); i++) {
+                //   if (SS.get(i).name.equals(NickName)) {
+                //     SS.get(i).status = status;
+                // }
+                // }
+                if (!status_tomb.isEmpty()) {
+                    System.out.println("status: " + status_tomb.size());
+                    status = status_tomb.get(0);
+                    status_tomb.remove(0);
+                    if (status.equals("")) {
+                        System.out.println("set_stat:                " + "SS;" + NickName + ";" + status);
+                        out.write(("SS;" + NickName + ";" + status + MultiChatConstants.BREAKER).getBytes());
+                        out.flush();
+                        status = "";
                     }
                 }
-                System.out.println("set_stat:                " + "SS;" + NickName + ";" + status);
-                out.write(("SS;" + NickName + ";" + status + MultiChatConstants.BREAKER).getBytes());
-                out.flush();
             } catch (Exception e) {
                 System.out.println("setstat exception: " + e.toString());
             }
@@ -696,7 +707,7 @@ public class ChatClient implements Runnable, ActionListener {
         new_pic = false;
         return stat;
     }
-    
+
     public boolean turncamera() {
         boolean stat = turncamera;
         turncamera = false;
@@ -767,7 +778,7 @@ public class ChatClient implements Runnable, ActionListener {
                                 for (int i = 0; i < NickNameVector.size(); i++) {
                                     if ((passedObj.split(";")[2]).contains(NickNameVector.elementAt(i) + "")) {
                                         if (passedObj.split(";")[1].contains("switch")) {
-                                            turncamera=true;
+                                            turncamera = true;
                                         }
                                     }
                                 }
