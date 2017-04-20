@@ -409,6 +409,9 @@ public class ChatClient implements Runnable, ActionListener {
     }
 
     ArrayList<String> status_tomb = new ArrayList<>();
+    setstat a = new setstat();
+
+    int y = 0;
 
     public void set_status(String status) {
         status = status.replace("/", "");
@@ -431,43 +434,52 @@ public class ChatClient implements Runnable, ActionListener {
         if (status.contains("sc_name;")) {
             sc_name = status.substring("sc_name;".length());
         }
+        y++;
+        System.out.println("y: " + y);
         status_tomb.add(status);
+        for (int i = 0; i < status_tomb.size(); i++) {
+            System.out.println("status_tomb pre: " + i + " : " + status_tomb.get(i));
+        }
+
         this.status = status;
-        new setstat().execute();
+        if (a.running) {
+            a= new setstat();
+        }
+        a.execute();
+        //}
     }
 
     class setstat extends SwingWorker<Void, Void> {
 
+        boolean running = false;
+
         @Override
         protected Void doInBackground() throws Exception {
+            
+            System.out.println("started thread");
             while (!isConnected()) {
                 varas(1);
             }//wait for connection
-            try {
-                for (int i = 0; i < SS.size(); i++) {
-                    if (SS.get(i).name.equals(NickName)) {
-                        SS.get(i).status = status;
-                    }
+            do {
+                try {
+//                    System.out.println("try { status_tomb.size(): " + status_tomb.size());
+//                    System.out.println("status: " + status_tomb.size());
+                    System.out.println("set_statustat:                " + "SS;" + NickName + ";" + status_tomb.get(0));
+                    out.write(("SS;" + NickName + ";" + status_tomb.get(0) + MultiChatConstants.BREAKER).getBytes());
+                    status_tomb.remove(0);
+                    out.flush();                    
+                    varas(100);                    
+                } catch (Exception e) {
+                    System.out.println("setstat exception: " + e.toString());
                 }
-                //if (!status_tomb.isEmpty()) {
-                System.out.println("status: " + status_tomb.size());
-                //status = status_tomb.get(0);
-                //  status_tomb.remove(0);
-                //if (status.equals("")) {
-                System.out.println("set_stat:                " + "SS;" + NickName + ";" + status);
-                out.write(("SS;" + NickName + ";" + status + MultiChatConstants.BREAKER).getBytes());
-                out.flush();
-                status = "";
-                //    }
-                // }
-            } catch (Exception e) {
-                System.out.println("setstat exception: " + e.toString());
-            }
+            } while (status_tomb.size() != 0);
             return null;
         }
 
         @Override
         protected void done() {
+            running = true;
+            //this.doInBackground();
         }
 
     }
@@ -849,9 +861,6 @@ public class ChatClient implements Runnable, ActionListener {
                             // Receive status
                         } else if (sizeread < 200 && passedObj.length() >= 2 && passedObj.substring(0, 2).equals("SS")) {
                             System.out.println("SS: " + passedObj);
-                            for (int i = 0; i < passedObj.split(";").length; i++) {
-                                // System.out.println(i + " : " + passedObj.split(";")[i]);
-                            }
                             for (int i = 0; i < SS.size(); i++) {
                                 if (SS.get(i).name.equals(passedObj.substring(1).split(";")[1])) {
                                     SS.get(i).should_check_camera = true;
@@ -875,7 +884,6 @@ public class ChatClient implements Runnable, ActionListener {
                                     }
                                 }
                                 System.out.println(passedObj.substring(3));
-                                //SS.get(i).status = passedObj.split(";")[1];
                             }
 
                             // Received voice data

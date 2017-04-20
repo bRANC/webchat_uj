@@ -251,9 +251,9 @@ public class kiiras extends javax.swing.JFrame {
                                     cc.connect(local_ips.get(i), ip.get(0).port_jvc + "");
                                     if (cc.isConnected()) {
                                         localip = local_ips.get(i);
-                                        varas(100);
+                                        //varas(100);
                                         cc.set_nickname(ip.get(0).name);
-                                        varas(100);
+                                        //varas(100);
                                         cc.set_status("innerip;" + localip);
                                     }
                                 }
@@ -270,21 +270,21 @@ public class kiiras extends javax.swing.JFrame {
                     cc.set_nickname(ip.get(0).name);
                 }
             }
-            varas(100);
+            //varas(100);
             cc.set_status("ip;" + outterip());
-            varas(100);
+            //varas(100);
             cc.set_status("address;" + lch.get(0).location);
-            varas(100);
+            //varas(100);
             cc.set_status("camera;off");
-            varas(100);
+            //varas(100);
             cc.set_status("sc_name;" + sc_name);
-            varas(100);
+            //varas(100);
             //System.out.println("shouldip: " + Inet4Address.getLocalHost().getHostAddress());
             if (localip.isEmpty()) {
                 cc.set_status("innerip;" + cc.getconn_ip());
             }
 
-            varas(100);
+            //varas(100);
             cc.send_img(new ImageIcon(logo_name).getImage(), logo_name);
 
             cc.elso++;
